@@ -65,11 +65,45 @@ npm test
 - `GET /api/availability?date=YYYY-MM-DD` now returns generated slot data
 - Current app passes lint, production build, and localhost dev smoke check
 
-### Not started yet
-- Database schema creation
-- Booking UI implementation
-- Cloudflare deployment
-- Resend setup
+### Completed this session
+- Recovered the interrupted shadcn UI foundation and verified the app again
+- Created the Supabase project and saved local env vars
+- Added minimal Supabase helper modules for browser-safe and server-only access
+- Applied the initial SQL schema and RLS policies in Supabase
+- Added placeholder weekly availability rows for all 7 days
+- Implemented the first slot-generation helper and verified it through a real API route
+
+### Currently working
+- Home page renders correctly
+- Supabase connection works from the app
+- `availability`, `blocked_dates`, and `bookings` tables exist
+- Placeholder weekly availability is present in Supabase
+- `/api/availability` returns hourly placeholder slots for valid dates
+- Invalid availability requests return a clear `400` response
+
+### Unfinished work
+- Build the first booking page UI
+- Connect the booking page to `/api/availability`
+- Add booking form validation and submission API
+- Handle double-booking responses in the API
+- Build confirmation page
+- Build admin auth and dashboard
+- Configure Resend
+- Configure Cloudflare Pages
+- Add a real test suite beyond lint/build
+
+### Blockers or risks
+- No hard blocker right now
+- Availability data is placeholder only and should not be treated as final barber hours
+- `npm test` is not set up yet
+- Supabase free-tier inactivity pause is still a later risk during development
+
+### Manual setup still needed
+- Replace placeholder availability with the barber’s real schedule later
+- Add real blocked dates in Supabase later
+- Set up Resend API key and sender configuration
+- Set up Cloudflare Pages project and production env vars
+- Create the barber’s admin auth user in Supabase when admin work starts
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -101,4 +135,4 @@ Update this file:
 **Last Finished:** Implemented and verified the first availability backend slice against live Supabase data  
 **In Progress:** Phase 1 backend foundation for the public booking flow  
 **Needs User Action Next:** None for the next code step  
-**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then build the first booking page slice that fetches `/api/availability` for a selected date and renders the returned time slots.
+**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then build the first booking page slice that fetches `/api/availability` for a selected date and renders the returned time slots, verify it, and stop before adding booking submission.

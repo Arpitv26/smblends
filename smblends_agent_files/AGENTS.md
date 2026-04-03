@@ -181,3 +181,7 @@ Load only what is needed for the current task:
 **Recently Completed:** PRD, research brief, and technical design are finished  
 **Blocked By:** None  
 **Next Recommended Task:** Bootstrap the Next.js project, install shadcn/ui, and set up Supabase project creation instructions for the user
+
+
+## prompt for next time
+ Read AGENTS.md and agent_docs/project_brief.md first, then summarize the current state in 5–10 lines. Next, build the first booking page slice that lets the user pick a date, fetches /api/availability, and renders the returned time slots. Verify it, explain what changed and how to test it, and stop before adding booking submission.

@@ -6,7 +6,7 @@
 **Stack:** Next.js 14 (App Router) + TypeScript + Tailwind CSS + shadcn/ui + Supabase + Zod + Resend + Cloudflare Pages  
 **Primary Tool:** OpenAI Codex CLI in VS Code terminal  
 **User Level:** Level C — learning while building; AI should do most coding, but explain setup simply  
-**Current Phase:** Phase 0 — Setup and Foundation
+**Current Phase:** Phase 1 — Public MVP Flow foundation
 
 ## How I Should Think
 1. **Understand intent first.** Figure out what the user actually needs before writing code.
@@ -177,7 +177,10 @@ Load only what is needed for the current task:
 
 ## Current State (Update This Every Session)
 **Last Updated:** 2026-04-03  
-**Working On:** Phase 1 backend foundation for public slot availability  
-**Recently Completed:** PRD, research brief, technical design, AI-agent docs, initial Next.js 14 app bootstrap, repaired shadcn/ui foundation with passing lint/build/dev smoke checks, connected the app to Supabase env/client helpers with a successful live API check, prepared and applied the initial Supabase schema, seeded placeholder weekly availability, and added the first slot-generation helper plus availability API route with successful local verification  
-**Blocked By:** None  
-**Next Recommended Task:** Build the first booking page slice that calls `/api/availability` for a selected date and renders the returned slots
+**Completed This Session:** Recovered the interrupted shadcn/ui work, verified the app, created the Supabase project, saved env vars, added Supabase helpers, prepared and applied the initial schema/RLS SQL, seeded placeholder weekly availability in Supabase, implemented `lib/slots/get-available-slots.ts`, and added `GET /api/availability` with live verification against Supabase.  
+**Currently Working:** Phase 1 backend foundation for public slot availability.  
+**Currently Working Well:** `npm run lint` passes, `npm run build` passes, the homepage loads, Supabase env wiring works, the schema exists in Supabase, placeholder weekly availability exists for all 7 days, and `/api/availability?date=YYYY-MM-DD` returns slot JSON and validates bad input.  
+**Unfinished Work:** No public booking page UI yet, no booking submission API yet, no Zod booking validation yet, no blocked-date admin flow yet, no Resend setup yet, no Cloudflare setup yet, and no automated test suite beyond lint/build.  
+**Blockers Or Risks:** Current availability rows are placeholder values and must be replaced with the barber’s real schedule later. `npm test` is still not configured. Free-tier Supabase inactivity pause remains a future operational risk.  
+**Manual Setup Still Needed:** Replace placeholder weekly availability with the barber’s real schedule, set up a blocked-date workflow in Supabase later, configure Resend, configure Cloudflare Pages, and eventually create the barber’s admin auth user in Supabase.  
+**Next Recommended Task:** Build the first booking page slice that lets the user pick a date, calls `/api/availability`, and renders the returned slots without adding submission logic yet.
