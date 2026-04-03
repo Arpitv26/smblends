@@ -65,6 +65,7 @@ npm test
 - `GET /api/availability?date=YYYY-MM-DD` now returns generated slot data
 - First `/book` page slice added with a mobile-first date picker and live slot rendering
 - `/book` now supports slot selection and a validated booking-details draft form
+- The current MVP service is now fixed to `Haircut` in the booking UI
 - Current app passes lint, production build, and localhost dev smoke check
 
 ### Completed this session
@@ -73,6 +74,8 @@ npm test
 - Rendered returned time slots with clear empty, loading, error, and after-hours states
 - Added selectable slot cards and a booking-details form shell
 - Added a reusable Zod booking draft schema and client-side field validation
+- Locked the service display to a fixed `Haircut` value for the current MVP
+- Cleaned up the selected-slot badge layout
 - Updated the homepage CTA to point into the booking flow
 - Removed the stale duplicate `smblends_agent_files/AGENTS.md`
 - Verified the app again with lint, build, and local smoke checks
@@ -86,6 +89,7 @@ npm test
 - Invalid availability requests return a clear `400` response
 - `/book` loads the selected date and shows live slots from the API
 - `/book` now unlocks the booking-details form after slot selection
+- `/book` shows a fixed `Haircut` service instead of an editable service input
 
 ### Unfinished work
 - Add booking form validation and submission API
@@ -136,7 +140,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-04-03  
-**Last Finished:** Implemented and verified slot selection plus the first validated booking-details form on `/book`  
+**Last Finished:** Implemented and verified slot selection plus the first validated booking-details form on `/book`, with the MVP service fixed to `Haircut`  
 **In Progress:** Phase 1 public booking flow foundation before booking submission  
 **Needs User Action Next:** None for the next code step  
-**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then build `POST /api/bookings` using the shared Zod booking schema, insert bookings safely into Supabase with friendly duplicate-slot handling, verify it, and stop before adding email notifications.
+**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then build `POST /api/bookings` using the shared Zod booking schema, connect the current `/book` form to submit into Supabase with friendly duplicate-slot handling, verify it, and stop before adding email notifications.
