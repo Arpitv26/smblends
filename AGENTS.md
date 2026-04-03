@@ -177,7 +177,7 @@ Load only what is needed for the current task:
 
 ## Current State (Update This Every Session)
 **Last Updated:** 2026-04-03  
-**Working On:** Phase 0 foundation after initial Supabase schema migration prep  
-**Recently Completed:** PRD, research brief, technical design, AI-agent docs, initial Next.js 14 app bootstrap, repaired shadcn/ui foundation with passing lint/build/dev smoke checks, connected the app to Supabase env/client helpers with a successful live API check, and prepared the first local SQL migration for the MVP tables and RLS policies  
+**Working On:** Phase 1 backend foundation for public slot availability  
+**Recently Completed:** PRD, research brief, technical design, AI-agent docs, initial Next.js 14 app bootstrap, repaired shadcn/ui foundation with passing lint/build/dev smoke checks, connected the app to Supabase env/client helpers with a successful live API check, prepared and applied the initial Supabase schema, seeded placeholder weekly availability, and added the first slot-generation helper plus availability API route with successful local verification  
 **Blocked By:** None  
-**Next Recommended Task:** Apply the prepared initial schema in Supabase, then verify the new tables exist before seeding availability
+**Next Recommended Task:** Build the first booking page slice that calls `/api/availability` for a selected date and renders the returned slots

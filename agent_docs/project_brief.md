@@ -59,6 +59,10 @@ npm test
 - Minimal `lib/supabase/*` helpers added for browser-safe and server-only access
 - Live Supabase API check succeeded with HTTP 200
 - First local SQL migration added for `availability`, `blocked_dates`, and `bookings`
+- Initial schema applied successfully in Supabase
+- Placeholder weekly availability rows added for all 7 days
+- `lib/slots/get-available-slots.ts` now reads availability, blocked dates, and confirmed bookings
+- `GET /api/availability?date=YYYY-MM-DD` now returns generated slot data
 - Current app passes lint, production build, and localhost dev smoke check
 
 ### Not started yet
@@ -94,7 +98,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-04-03  
-**Last Finished:** Prepared the initial MVP schema migration locally and re-verified the app build  
-**In Progress:** Phase 0 foundation setup  
-**Needs User Action Next:** Apply the prepared schema SQL in the Supabase SQL editor  
-**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then guide me through applying the prepared initial Supabase schema in the dashboard one small step at a time and verify the tables exist.
+**Last Finished:** Implemented and verified the first availability backend slice against live Supabase data  
+**In Progress:** Phase 1 backend foundation for the public booking flow  
+**Needs User Action Next:** None for the next code step  
+**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then build the first booking page slice that fetches `/api/availability` for a selected date and renders the returned time slots.
