@@ -1,0 +1,39 @@
+import { z } from "zod";
+
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const PHONE_PATTERN = /^[0-9+()\-\s]{7,30}$/;
+
+export const bookingDraftSchema = z.object({
+  bookingDate: z.string().regex(ISO_DATE_PATTERN, "Choose a valid date."),
+  clientEmail: z
+    .string()
+    .trim()
+    .max(120, "Email must be 120 characters or less.")
+    .refine(
+      (value) => value.length === 0 || z.email().safeParse(value).success,
+      "Enter a valid email address."
+    ),
+  clientName: z
+    .string()
+    .trim()
+    .min(2, "Enter your name.")
+    .max(80, "Name must be 80 characters or less."),
+  clientPhone: z
+    .string()
+    .trim()
+    .min(7, "Enter your phone number.")
+    .max(30, "Phone number must be 30 characters or less.")
+    .regex(PHONE_PATTERN, "Enter a valid phone number."),
+  notes: z
+    .string()
+    .trim()
+    .max(500, "Notes must be 500 characters or less."),
+  serviceType: z
+    .string()
+    .trim()
+    .min(2, "Enter the service you want.")
+    .max(80, "Service must be 80 characters or less."),
+  timeSlot: z.string().min(1, "Choose a time slot.")
+});
+
+export type BookingDraft = z.infer<typeof bookingDraftSchema>;

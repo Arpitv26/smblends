@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function HomePage(): JSX.Element {
   return (
@@ -15,9 +15,12 @@ export default function HomePage(): JSX.Element {
           The next step is building the actual booking page in small verified
           slices.
         </p>
-        <Button className="mt-6 w-full" size="lg" type="button">
-          Start booking flow next
-        </Button>
+        <Link
+          className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg bg-white px-4 text-sm font-medium text-black transition hover:bg-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+          href="/book"
+        >
+          View booking availability
+        </Link>
       </section>
     </main>
   );

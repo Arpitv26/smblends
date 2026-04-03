@@ -63,15 +63,19 @@ npm test
 - Placeholder weekly availability rows added for all 7 days
 - `lib/slots/get-available-slots.ts` now reads availability, blocked dates, and confirmed bookings
 - `GET /api/availability?date=YYYY-MM-DD` now returns generated slot data
+- First `/book` page slice added with a mobile-first date picker and live slot rendering
+- `/book` now supports slot selection and a validated booking-details draft form
 - Current app passes lint, production build, and localhost dev smoke check
 
 ### Completed this session
-- Recovered the interrupted shadcn UI foundation and verified the app again
-- Created the Supabase project and saved local env vars
-- Added minimal Supabase helper modules for browser-safe and server-only access
-- Applied the initial SQL schema and RLS policies in Supabase
-- Added placeholder weekly availability rows for all 7 days
-- Implemented the first slot-generation helper and verified it through a real API route
+- Built the first booking page slice at `/book`
+- Added a client component that fetches `/api/availability` when the date changes
+- Rendered returned time slots with clear empty, loading, error, and after-hours states
+- Added selectable slot cards and a booking-details form shell
+- Added a reusable Zod booking draft schema and client-side field validation
+- Updated the homepage CTA to point into the booking flow
+- Removed the stale duplicate `smblends_agent_files/AGENTS.md`
+- Verified the app again with lint, build, and local smoke checks
 
 ### Currently working
 - Home page renders correctly
@@ -80,10 +84,10 @@ npm test
 - Placeholder weekly availability is present in Supabase
 - `/api/availability` returns hourly placeholder slots for valid dates
 - Invalid availability requests return a clear `400` response
+- `/book` loads the selected date and shows live slots from the API
+- `/book` now unlocks the booking-details form after slot selection
 
 ### Unfinished work
-- Build the first booking page UI
-- Connect the booking page to `/api/availability`
 - Add booking form validation and submission API
 - Handle double-booking responses in the API
 - Build confirmation page
@@ -132,7 +136,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-04-03  
-**Last Finished:** Implemented and verified the first availability backend slice against live Supabase data  
-**In Progress:** Phase 1 backend foundation for the public booking flow  
+**Last Finished:** Implemented and verified slot selection plus the first validated booking-details form on `/book`  
+**In Progress:** Phase 1 public booking flow foundation before booking submission  
 **Needs User Action Next:** None for the next code step  
-**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then build the first booking page slice that fetches `/api/availability` for a selected date and renders the returned time slots, verify it, and stop before adding booking submission.
+**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then build `POST /api/bookings` using the shared Zod booking schema, insert bookings safely into Supabase with friendly duplicate-slot handling, verify it, and stop before adding email notifications.

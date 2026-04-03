@@ -1,14 +1,7 @@
 import "server-only";
 
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/server";
-
-type AvailabilityRow = {
-  day_of_week: number;
-  end_time: string;
-  is_active: boolean;
-  slot_minutes: number;
-  start_time: string;
-};
+import type { AvailableSlot } from "@/lib/slots/types";
 
 type BlockedDateRow = {
   date: string;
@@ -18,10 +11,12 @@ type BookingRow = {
   time_slot: string;
 };
 
-export type AvailableSlot = {
-  isAfterHours: boolean;
-  label: string;
-  value: string;
+type AvailabilityRow = {
+  day_of_week: number;
+  end_time: string;
+  is_active: boolean;
+  slot_minutes: number;
+  start_time: string;
 };
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
