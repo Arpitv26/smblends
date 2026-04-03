@@ -50,12 +50,15 @@ npm test
 - PRD completed
 - Technical design completed
 - Agent instruction files generated
+- Next.js 14 app bootstrapped in the existing repo
+- Tailwind CSS and ESLint base setup added
+- Initial lint, production build, and localhost dev smoke check passed
 
 ### Not started yet
-- Repo bootstrap
 - Supabase project setup
 - Database schema creation
-- Next.js app implementation
+- shadcn/ui setup
+- Booking UI implementation
 - Cloudflare deployment
 - Resend setup
 
@@ -86,7 +89,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-04-02  
-**Last Finished:** Documentation and AI agent setup  
-**In Progress:** Waiting to bootstrap the codebase  
-**Needs User Action Next:** Create the project folder and start Codex in the repo  
-**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, summarize the current project state, then help me bootstrap the Next.js app step by step. Use very simple instructions for anything I need to do manually.
+**Last Finished:** Base Next.js 14 + Tailwind + ESLint bootstrap in the repo root  
+**In Progress:** Phase 0 foundation setup  
+**Needs User Action Next:** Approve the next small step to initialize shadcn/ui  
+**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then initialize shadcn/ui in the existing Next.js app and verify it without adding extra MVP features.

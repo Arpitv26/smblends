@@ -177,7 +177,7 @@ Load only what is needed for the current task:
 
 ## Current State (Update This Every Session)
 **Last Updated:** 2026-04-02  
-**Working On:** Initial repo setup and AI-agent documentation  
-**Recently Completed:** PRD, research brief, and technical design are finished  
+**Working On:** Phase 0 foundation after base Next.js bootstrap  
+**Recently Completed:** PRD, research brief, technical design, AI-agent docs, and initial Next.js 14 app bootstrap  
 **Blocked By:** None  
-**Next Recommended Task:** Bootstrap the Next.js project, install shadcn/ui, and set up Supabase project creation instructions for the user
+**Next Recommended Task:** Initialize shadcn/ui and add the first shared design tokens/components for the booking MVP
