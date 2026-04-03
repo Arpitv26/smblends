@@ -439,26 +439,21 @@ export function BookingAvailability({
             ) : null}
           </label>
 
-          <label className="block">
+          <div className="block">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
               Service
             </span>
-            <input
-              aria-invalid={touchedFields.serviceType && fieldErrors.serviceType ? true : undefined}
-              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={!selectedSlot}
-              onBlur={() => markFieldTouched("serviceType")}
-              onChange={(event) => updateField("serviceType", event.target.value)}
-              placeholder="Haircut"
-              type="text"
-              value={formValues.serviceType}
-            />
-            {touchedFields.serviceType && fieldErrors.serviceType ? (
-              <p className="mt-2 text-sm text-red-200">
-                {fieldErrors.serviceType}
+            <div
+              className={`rounded-2xl border border-white/10 bg-white/5 px-4 py-3 ${
+                selectedSlot ? "text-white" : "opacity-50"
+              }`}
+            >
+              <p className="text-base font-medium">Haircut</p>
+              <p className="mt-1 text-sm text-zinc-400">
+                Fixed service for the current MVP.
               </p>
-            ) : null}
-          </label>
+            </div>
+          </div>
 
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
