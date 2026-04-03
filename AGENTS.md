@@ -176,8 +176,8 @@ Load only what is needed for the current task:
 - Do NOT require code edits for the barber to use admin features.
 
 ## Current State (Update This Every Session)
-**Last Updated:** 2026-04-02  
-**Working On:** Phase 0 foundation after base Next.js bootstrap  
-**Recently Completed:** PRD, research brief, technical design, AI-agent docs, and initial Next.js 14 app bootstrap  
+**Last Updated:** 2026-04-03  
+**Working On:** Phase 0 foundation after shadcn/ui recovery and verification  
+**Recently Completed:** PRD, research brief, technical design, AI-agent docs, initial Next.js 14 app bootstrap, and repaired shadcn/ui foundation with passing lint/build/dev smoke checks  
 **Blocked By:** None  
-**Next Recommended Task:** Initialize shadcn/ui and add the first shared design tokens/components for the booking MVP
+**Next Recommended Task:** Start the first manual Supabase project setup step, then wire the env vars into the existing app foundation

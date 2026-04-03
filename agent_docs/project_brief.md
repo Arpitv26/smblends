@@ -52,12 +52,13 @@ npm test
 - Agent instruction files generated
 - Next.js 14 app bootstrapped in the existing repo
 - Tailwind CSS and ESLint base setup added
-- Initial lint, production build, and localhost dev smoke check passed
+- shadcn/ui base files added (`components.json`, `lib/utils.ts`, `components/ui/button.tsx`)
+- Interrupted shadcn theme setup repaired so the app builds again
+- Current app passes lint, production build, and localhost dev smoke check
 
 ### Not started yet
 - Supabase project setup
 - Database schema creation
-- shadcn/ui setup
 - Booking UI implementation
 - Cloudflare deployment
 - Resend setup
@@ -88,8 +89,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-04-02  
-**Last Finished:** Base Next.js 14 + Tailwind + ESLint bootstrap in the repo root  
+**Last Updated:** 2026-04-03  
+**Last Finished:** Recovered and verified the interrupted shadcn/ui foundation so the current app serves cleanly again  
 **In Progress:** Phase 0 foundation setup  
-**Needs User Action Next:** Approve the next small step to initialize shadcn/ui  
-**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then initialize shadcn/ui in the existing Next.js app and verify it without adding extra MVP features.
+**Needs User Action Next:** Complete the first small manual Supabase project creation step  
+**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then guide me through the first small manual Supabase project setup step and wait for my confirmation before the next one.
