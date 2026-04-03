@@ -54,10 +54,14 @@ npm test
 - Tailwind CSS and ESLint base setup added
 - shadcn/ui base files added (`components.json`, `lib/utils.ts`, `components/ui/button.tsx`)
 - Interrupted shadcn theme setup repaired so the app builds again
+- Supabase project created manually
+- `.env.local` saved with project URL, publishable key, and service role key
+- Minimal `lib/supabase/*` helpers added for browser-safe and server-only access
+- Live Supabase API check succeeded with HTTP 200
+- First local SQL migration added for `availability`, `blocked_dates`, and `bookings`
 - Current app passes lint, production build, and localhost dev smoke check
 
 ### Not started yet
-- Supabase project setup
 - Database schema creation
 - Booking UI implementation
 - Cloudflare deployment
@@ -90,7 +94,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-04-03  
-**Last Finished:** Recovered and verified the interrupted shadcn/ui foundation so the current app serves cleanly again  
+**Last Finished:** Prepared the initial MVP schema migration locally and re-verified the app build  
 **In Progress:** Phase 0 foundation setup  
-**Needs User Action Next:** Complete the first small manual Supabase project creation step  
-**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then guide me through the first small manual Supabase project setup step and wait for my confirmation before the next one.
+**Needs User Action Next:** Apply the prepared schema SQL in the Supabase SQL editor  
+**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then guide me through applying the prepared initial Supabase schema in the dashboard one small step at a time and verify the tables exist.

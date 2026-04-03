@@ -177,7 +177,7 @@ Load only what is needed for the current task:
 
 ## Current State (Update This Every Session)
 **Last Updated:** 2026-04-03  
-**Working On:** Phase 0 foundation after shadcn/ui recovery and verification  
-**Recently Completed:** PRD, research brief, technical design, AI-agent docs, initial Next.js 14 app bootstrap, and repaired shadcn/ui foundation with passing lint/build/dev smoke checks  
+**Working On:** Phase 0 foundation after initial Supabase schema migration prep  
+**Recently Completed:** PRD, research brief, technical design, AI-agent docs, initial Next.js 14 app bootstrap, repaired shadcn/ui foundation with passing lint/build/dev smoke checks, connected the app to Supabase env/client helpers with a successful live API check, and prepared the first local SQL migration for the MVP tables and RLS policies  
 **Blocked By:** None  
-**Next Recommended Task:** Start the first manual Supabase project setup step, then wire the env vars into the existing app foundation
+**Next Recommended Task:** Apply the prepared initial schema in Supabase, then verify the new tables exist before seeding availability

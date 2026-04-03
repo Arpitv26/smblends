@@ -116,12 +116,14 @@ Keep secrets out of the client when possible.
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 RESEND_API_KEY=
 BARBER_NOTIFICATION_EMAIL=
 NEXT_PUBLIC_APP_URL=
 ```
+
+If Supabase shows the older key name instead, `NEXT_PUBLIC_SUPABASE_ANON_KEY` is also acceptable as a fallback.
 
 ## Manual Setup Rule for This Project
 Whenever setup leaves the terminal and goes into a dashboard or website:
