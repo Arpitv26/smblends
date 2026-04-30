@@ -91,6 +91,7 @@ npm test
 - Current app passes lint, production build, and localhost dev smoke check
 - New barber configuration was captured in `agent_docs/clientInformation.md`
 - `/book` now supports the real service menu, add-ons, optional email, payment copy, policy copy, and estimated pricing
+- Supabase migration `20260430090000_real_smblends_booking_rules.sql` was applied manually in Supabase
 
 ### Completed this session
 - Confirmed appointments should be 60 minutes
@@ -100,14 +101,16 @@ npm test
 - Updated `/book` with service selection, add-on checkboxes, estimated total, payment copy, and policy copy
 - Updated homepage and booking page copy to use the real SMBLENDS content
 - Added `supabase/migrations/20260430090000_real_smblends_booking_rules.sql` for optional email, add-on storage, midnight availability, and real 60-minute availability rows
+- User applied the Supabase migration manually and checked that the website looks good
+- Changed the display/business name from `SMBLENDS._` to `SMBLENDS` while keeping Instagram as `@smblends._`
 - Verified with `npm run lint`, `npm run build`, and local smoke checks
 
 ### Currently working
 - Home page renders correctly
 - Supabase connection works from the app
 - `availability`, `blocked_dates`, and `bookings` tables exist
-- Placeholder weekly availability is present in Supabase
-- `/api/availability` returns slots for valid dates; it will reflect the real schedule after the latest Supabase migration is applied
+- Real 60-minute weekly availability and 9 PM-midnight after-hours rows are applied in Supabase
+- `/api/availability` returns slots for valid dates from the real schedule
 - Invalid availability requests return a clear `400` response
 - `/book` loads the selected date and shows live slots from the API
 - `/book` now unlocks the booking-details form after slot selection
@@ -116,27 +119,26 @@ npm test
 - `/book` previews the estimated total from local shared pricing config
 
 ### Unfinished work
-- Apply the new Supabase migration manually in the dashboard
 - Add booking submission API
 - Handle double-booking responses in the API
 - Build confirmation page
 - Build admin auth and dashboard
 - Configure Resend
 - Configure Cloudflare Pages
+- Final landing page polish with logo and haircut portfolio photos
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
 - No hard blocker right now
-- Live Supabase availability remains placeholder until the new migration is applied
 - `npm test` is not set up yet
 - Supabase free-tier inactivity pause is still a later risk during development
+- Logo and haircut portfolio images are intentionally deferred until the landing page polish pass near the end
 
 ### Manual setup still needed
-- Apply `supabase/migrations/20260430090000_real_smblends_booking_rules.sql` in Supabase
 - Add real blocked dates in Supabase later
 - Set up Resend API key and sender configuration
 - Set up Cloudflare Pages project and production env vars
-- Provide final logo and haircut portfolio photos for the public site
+- Provide final logo and haircut portfolio photos for the landing page polish pass
 - Create the barber’s admin auth user in Supabase when admin work starts
 
 ## Likely First Build Order
@@ -166,7 +168,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-04-30
-**Last Finished:** Updated the current build for 60-minute appointments, real services/add-ons, optional email, 9 PM after-hours handling, estimated pricing, payment/policy copy, and added the Supabase migration for matching database changes.
+**Last Finished:** Updated the current build for 60-minute appointments, real services/add-ons, optional email, 9 PM after-hours handling, estimated pricing, payment/policy copy, applied the Supabase migration for matching database changes, and changed display name to `SMBLENDS`.
 **In Progress:** Phase 1 public booking flow foundation before booking submission.
-**Needs User Action Next:** Apply the new Supabase SQL migration, then later provide the final logo and haircut portfolio photos.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`, confirm the Supabase migration has been applied, then build `POST /api/bookings` with server-side validation, server-side price calculation, optional email support, add-on storage, and friendly duplicate-slot handling.
+**Needs User Action Next:** None before the next code step. Later, provide the final logo and haircut portfolio photos for landing page polish.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. The Supabase migration has been applied and the current website looks good. Build `POST /api/bookings` with server-side validation, server-side price calculation, optional email support, add-on storage, availability recheck, and friendly duplicate-slot handling. Wire the current `/book` form to submit, verify it, and stop before adding email notifications or landing page logo/photos.
