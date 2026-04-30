@@ -29,7 +29,11 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - user can select a date
 - valid slots appear
 - blocked dates show no slots
-- after-hours slots are labeled
+- after-hours slots from 9:00 PM-12:00 AM are labeled
+- same-day booking is available when slots remain
+- service selection shows Haircut and Haircut & Beard
+- add-ons show Beard Fade / Line-up and Design
+- price preview matches service + add-ons + after-hours surcharge
 - form validation works
 - submit button behavior is clear
 
@@ -37,6 +41,8 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - valid booking succeeds
 - invalid payload fails with friendly message
 - duplicate booking fails safely
+- server calculates `price_charged`; it does not trust a client-submitted price
+- server marks 9:00 PM and later slots as after-hours
 - server returns useful JSON errors
 
 ### 4. Notifications
@@ -68,6 +74,9 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 ### Real booking tests before launch
 - complete 5 real test bookings
 - test at least one after-hours slot
+- test both base services
+- test each add-on
+- test price calculation for a standard slot and an after-hours slot
 - test one blocked date
 - test one duplicate booking attempt
 - test one admin login session

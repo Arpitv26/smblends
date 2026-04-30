@@ -67,9 +67,10 @@ export const bookingSchema = z.object({
   timeSlot: z.string().min(1),
   clientName: z.string().min(2).max(100),
   clientPhone: z.string().min(7).max(30),
-  clientEmail: z.string().email(),
-  serviceType: z.string().min(1),
-  notes: z.string().max(500).optional(),
+  clientEmail: z.string().email().optional(),
+  serviceType: z.enum(["Haircut", "Haircut & Beard"]),
+  addOns: z.array(z.enum(["Beard Fade / Line-up", "Design"])).default([]),
+  notes: z.string().max(500).optional()
 });
 ```
 
@@ -103,7 +104,38 @@ Always enforce these rules:
 3. Confirmed bookings remove matching slots.
 4. A DB unique constraint prevents duplicates.
 5. API errors remain user-friendly.
-6. Any slot at or after 8 PM is marked after-hours.
+6. Any slot at or after 9 PM is marked after-hours.
+7. Same-day bookings are allowed with no cutoff, as long as the slot is still available.
+8. Store the price charged from server-side pricing logic, not from a client-submitted price.
+
+## Smblends Business Rules
+- Standard hours:
+  - Monday-Friday: 4:00 PM-9:00 PM
+  - Saturday: 9:00 AM-9:00 PM
+  - Sunday: 3:00 PM-9:00 PM
+- After-hours:
+  - Every day: 9:00 PM-12:00 AM
+  - Surcharge: +$10
+- Slot length:
+  - 60 minutes
+- Services:
+  - Haircut: $20
+  - Haircut & Beard: $30
+- Add-ons:
+  - Beard Fade / Line-up: +$10
+  - Design: +$5
+- Payment:
+  - In person by cash or e-transfer
+  - E-transfer email: sanchitmehta51@gmail.com
+- Required booking fields:
+  - full name
+  - phone number
+  - date
+  - time
+  - service
+- Optional fields:
+  - email
+  - notes
 
 ## UI Rules
 ### Visual style

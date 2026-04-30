@@ -1,5 +1,6 @@
 import "server-only";
 
+import { AFTER_HOURS_START_MINUTES } from "@/lib/bookings/config";
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/server";
 import type { AvailableSlot } from "@/lib/slots/types";
 
@@ -20,7 +21,6 @@ type AvailabilityRow = {
 };
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const AFTER_HOURS_START_MINUTES = 20 * 60;
 
 function assertIsoDate(date: string): void {
   if (!DATE_PATTERN.test(date)) {
@@ -74,7 +74,7 @@ function parseTimeToMinutes(value: string): number {
 }
 
 function formatMinutesAsTime(minutes: number): string {
-  const hours = Math.floor(minutes / 60);
+  const hours = Math.floor(minutes / 60) % 24;
   const minuteValue = minutes % 60;
 
   return `${String(hours).padStart(2, "0")}:${String(minuteValue).padStart(2, "0")}:00`;
@@ -82,7 +82,7 @@ function formatMinutesAsTime(minutes: number): string {
 
 function formatSlotLabel(minutes: number): string {
   const meridiem = minutes >= 12 * 60 ? "PM" : "AM";
-  const hours24 = Math.floor(minutes / 60);
+  const hours24 = Math.floor(minutes / 60) % 24;
   const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
   const minuteValue = minutes % 60;
 
@@ -96,7 +96,9 @@ function buildSlotsForWindow(
   bookedTimes: Set<string>
 ): AvailableSlot[] {
   const startMinutes = parseTimeToMinutes(startTime);
-  const endMinutes = parseTimeToMinutes(endTime);
+  const rawEndMinutes = parseTimeToMinutes(endTime);
+  const endMinutes =
+    rawEndMinutes <= startMinutes ? rawEndMinutes + 24 * 60 : rawEndMinutes;
   const slots: AvailableSlot[] = [];
 
   for (

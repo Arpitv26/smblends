@@ -13,11 +13,33 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Hosting should be **Cloudflare Pages**
 - Backend should be **Supabase**
 - Notifications should be **email first with Resend**
-- Payments are **not** part of MVP
+- Online payments are **not** part of MVP
+- Payment is in person by cash or e-transfer
 - SMS is **not** part of MVP
 - The design should feel **dark, sleek, premium, minimal, modern**
 - The site must be **mobile-first**
 - User-facing scheduling must use **America/Vancouver**
+
+## Client Information Source
+- The barber's current business details live in `agent_docs/clientInformation.md`.
+- Treat that file as the source of truth for hours, services, pricing, policies, contact info, location, and homepage copy.
+- If code or docs conflict with `clientInformation.md`, pause and update the plan before coding.
+
+## Barber Business Rules
+- Business name: SMBLENDS
+- Owner/barber: Sanchit
+- Instagram: @smblends._
+- Notification/payment email: sanchitmehta51@gmail.com
+- Phone: +1 778-681-7694
+- Address: 6686 Imperial St, Burnaby, BC V5E 1M8
+- Standard hours: Monday-Friday 4:00 PM-9:00 PM, Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM
+- Appointment slot length: 60 minutes
+- After-hours: every day from 9:00 PM-12:00 AM with a +$10 surcharge
+- Services: Haircut $20, Haircut & Beard $30
+- Add-ons: Beard Fade / Line-up +$10, Design +$5
+- Same-day booking is enabled with no cutoff except real slot availability
+- Required booking fields: full name, phone number, date, time, service
+- Optional booking fields: email, notes
 
 ## Persistent Workflow Rules
 1. Stay within MVP.
@@ -65,34 +87,37 @@ npm test
 - `GET /api/availability?date=YYYY-MM-DD` now returns generated slot data
 - First `/book` page slice added with a mobile-first date picker and live slot rendering
 - `/book` now supports slot selection and a validated booking-details draft form
-- The current MVP service is now fixed to `Haircut` in the booking UI
+- `/book` has been updated from fixed `Haircut` to the real two-service menu
 - Current app passes lint, production build, and localhost dev smoke check
+- New barber configuration was captured in `agent_docs/clientInformation.md`
+- `/book` now supports the real service menu, add-ons, optional email, payment copy, policy copy, and estimated pricing
 
 ### Completed this session
-- Built the first booking page slice at `/book`
-- Added a client component that fetches `/api/availability` when the date changes
-- Rendered returned time slots with clear empty, loading, error, and after-hours states
-- Added selectable slot cards and a booking-details form shell
-- Added a reusable Zod booking draft schema and client-side field validation
-- Locked the service display to a fixed `Haircut` value for the current MVP
-- Cleaned up the selected-slot badge layout
-- Updated the homepage CTA to point into the booking flow
-- Removed the stale duplicate `smblends_agent_files/AGENTS.md`
-- Verified the app again with lint, build, and local smoke checks
+- Confirmed appointments should be 60 minutes
+- Added shared Smblends booking config for services, add-ons, slot length, after-hours threshold, and pricing
+- Updated booking validation for `Haircut`, `Haircut & Beard`, optional email, and selected add-ons
+- Updated slot logic so 9 PM and later is after-hours and overnight windows can end at midnight
+- Updated `/book` with service selection, add-on checkboxes, estimated total, payment copy, and policy copy
+- Updated homepage and booking page copy to use the real SMBLENDS content
+- Added `supabase/migrations/20260430090000_real_smblends_booking_rules.sql` for optional email, add-on storage, midnight availability, and real 60-minute availability rows
+- Verified with `npm run lint`, `npm run build`, and local smoke checks
 
 ### Currently working
 - Home page renders correctly
 - Supabase connection works from the app
 - `availability`, `blocked_dates`, and `bookings` tables exist
 - Placeholder weekly availability is present in Supabase
-- `/api/availability` returns hourly placeholder slots for valid dates
+- `/api/availability` returns slots for valid dates; it will reflect the real schedule after the latest Supabase migration is applied
 - Invalid availability requests return a clear `400` response
 - `/book` loads the selected date and shows live slots from the API
 - `/book` now unlocks the booking-details form after slot selection
-- `/book` shows a fixed `Haircut` service instead of an editable service input
+- `/book` lets clients choose `Haircut` or `Haircut & Beard`
+- `/book` lets clients select optional add-ons
+- `/book` previews the estimated total from local shared pricing config
 
 ### Unfinished work
-- Add booking form validation and submission API
+- Apply the new Supabase migration manually in the dashboard
+- Add booking submission API
 - Handle double-booking responses in the API
 - Build confirmation page
 - Build admin auth and dashboard
@@ -102,15 +127,16 @@ npm test
 
 ### Blockers or risks
 - No hard blocker right now
-- Availability data is placeholder only and should not be treated as final barber hours
+- Live Supabase availability remains placeholder until the new migration is applied
 - `npm test` is not set up yet
 - Supabase free-tier inactivity pause is still a later risk during development
 
 ### Manual setup still needed
-- Replace placeholder availability with the barber’s real schedule later
+- Apply `supabase/migrations/20260430090000_real_smblends_booking_rules.sql` in Supabase
 - Add real blocked dates in Supabase later
 - Set up Resend API key and sender configuration
 - Set up Cloudflare Pages project and production env vars
+- Provide final logo and haircut portfolio photos for the public site
 - Create the barber’s admin auth user in Supabase when admin work starts
 
 ## Likely First Build Order
@@ -139,8 +165,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-04-03  
-**Last Finished:** Implemented and verified slot selection plus the first validated booking-details form on `/book`, with the MVP service fixed to `Haircut`  
-**In Progress:** Phase 1 public booking flow foundation before booking submission  
-**Needs User Action Next:** None for the next code step  
-**Recommended Next Prompt:** Read `AGENTS.md` and `agent_docs/project_brief.md`, then build `POST /api/bookings` using the shared Zod booking schema, connect the current `/book` form to submit into Supabase with friendly duplicate-slot handling, verify it, and stop before adding email notifications.
+**Last Updated:** 2026-04-30
+**Last Finished:** Updated the current build for 60-minute appointments, real services/add-ons, optional email, 9 PM after-hours handling, estimated pricing, payment/policy copy, and added the Supabase migration for matching database changes.
+**In Progress:** Phase 1 public booking flow foundation before booking submission.
+**Needs User Action Next:** Apply the new Supabase SQL migration, then later provide the final logo and haircut portfolio photos.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`, confirm the Supabase migration has been applied, then build `POST /api/bookings` with server-side validation, server-side price calculation, optional email support, add-on storage, and friendly duplicate-slot handling.

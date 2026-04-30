@@ -106,6 +106,7 @@ Load only what is needed for the current task:
 - `agent_docs/product_requirements.md` — PRD requirements and scope guardrails
 - `agent_docs/testing.md` — verification strategy and manual test flows
 - `agent_docs/resources.md` — useful references and future expansion notes
+- `agent_docs/clientInformation.md` — barber-provided business rules, schedule, services, pricing, policies, contact info, location, and content
 
 ## Roadmap
 ### Phase 0: Setup and Foundation
@@ -176,14 +177,14 @@ Load only what is needed for the current task:
 - Do NOT require code edits for the barber to use admin features.
 
 ## Current State (Update This Every Session)
-**Last Updated:** 2026-04-03  
-**Completed This Session:** Built the first public booking page slice at `/book`, added a client availability component that fetches `GET /api/availability`, rendered returned time slots with after-hours labels, added selectable slots plus the first booking detail fields, added a reusable Zod booking draft schema for client-side validation, locked the current MVP service to a fixed `Haircut` value, cleaned up the selected-slot badge layout, updated the homepage CTA to link into the booking flow, verified lint/build/local smoke checks, and removed the stale duplicate `smblends_agent_files/AGENTS.md` so the root `AGENTS.md` is the single source of truth.  
-**Currently Working:** Phase 1 public MVP flow foundation with live availability, slot selection, and a validated booking draft UI.  
-**Currently Working Well:** `npm run lint` passes, `npm run build` passes, the homepage loads, `/book` renders, the date picker fetches live slot data, slots can be selected, the client detail form unlocks after slot selection, the service is fixed to `Haircut` for the current MVP, draft validation runs with Zod on the client, empty dates show a clear no-slots state, Supabase env wiring works, the schema exists in Supabase, placeholder weekly availability exists for all 7 days, and `/api/availability?date=YYYY-MM-DD` still returns slot JSON and validates bad input.  
-**Unfinished Work:** No booking submission API yet, no server-side booking payload validation route yet, no confirmation page yet, no blocked-date admin flow yet, no Resend setup yet, no Cloudflare setup yet, and no automated test suite beyond lint/build/manual smoke checks.  
-**Blockers Or Risks:** Current availability rows are placeholder values and must be replaced with the barber’s real schedule later. `npm test` is still not configured. Free-tier Supabase inactivity pause remains a future operational risk.  
-**Manual Setup Still Needed:** Replace placeholder weekly availability with the barber’s real schedule, set up a blocked-date workflow in Supabase later, configure Resend, configure Cloudflare Pages, and eventually create the barber’s admin auth user in Supabase.  
-**Next Recommended Task:** Build the booking submission slice: add `POST /api/bookings`, validate the payload with the shared Zod schema on the server, insert bookings safely into Supabase with friendly duplicate-slot handling, wire the current `/book` form to submit, verify it, and stop before adding email notifications.
+**Last Updated:** 2026-04-30
+**Completed This Session:** Locked appointments to 60 minutes, added shared Smblends service/add-on/pricing config, updated booking validation for `Haircut`, `Haircut & Beard`, optional email, and add-ons, changed slot logic to mark after-hours at 9 PM, updated `/book` with service selection, add-on checkboxes, estimated total, payment copy, and policy copy, updated homepage/book copy, added a Supabase migration for optional email/add-ons/real availability, and verified with `npm run lint`, `npm run build`, and local smoke checks.
+**Currently Working:** Phase 1 public MVP flow foundation with live availability, slot selection, service/add-on selection, estimated pricing, and a validated booking draft UI.
+**Currently Working Well:** `npm run lint` passes, `npm run build` passes, the homepage loads with real SMBLENDS copy, `/book` renders, the date picker fetches live slot data, slots can be selected, the client detail form unlocks after slot selection, service/add-on choices update the estimated total, draft validation runs with Zod on the client, empty dates show a clear no-slots state, and Supabase env wiring works.
+**Unfinished Work:** The Supabase migration in `supabase/migrations/20260430090000_real_smblends_booking_rules.sql` still needs to be applied manually in the Supabase SQL Editor, booking submission API is not built yet, no confirmation page yet, no blocked-date admin flow yet, no Resend setup yet, no Cloudflare setup yet, and no automated test suite beyond lint/build/manual smoke checks.
+**Blockers Or Risks:** Until the new SQL is applied in Supabase, live availability still uses the old placeholder rows. `npm test` is still not configured. Free-tier Supabase inactivity pause remains a future operational risk.
+**Manual Setup Still Needed:** Apply the new Supabase migration, set up a blocked-date workflow in Supabase later, configure Resend, configure Cloudflare Pages, provide final logo and haircut portfolio photos, and eventually create the barber’s admin auth user in Supabase.
+**Next Recommended Task:** Apply the Supabase migration, confirm the availability table now has the real 60-minute schedule plus 9 PM-midnight after-hours rows, then build `POST /api/bookings` with server-side price calculation and friendly duplicate-slot handling.
 
 ## Next session prompt
- Read AGENTS.md and agent_docs/project_brief.md first, then build POST /api/bookings using the shared Zod booking schema, connect the current /book form to submit into Supabase with friendly duplicate-slot handling, verify it, and stop before adding email notifications.
+ Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first, confirm the Supabase migration has been applied, then build `POST /api/bookings` with server-side validation, server-side price calculation, optional email support, add-on storage, and friendly duplicate-slot handling. Stop before adding email notifications.

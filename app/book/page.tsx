@@ -29,14 +29,14 @@ export default function BookingPage(): JSX.Element {
       <section className="mx-auto flex w-full max-w-5xl flex-col gap-8">
         <div className="rounded-[2rem] border border-white/10 bg-black/25 p-6 shadow-2xl shadow-black/25 backdrop-blur sm:p-8">
           <p className="text-xs uppercase tracking-[0.38em] text-zinc-400">
-            Smblends Booking
+            SMBLENDS Booking
           </p>
           <h1 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-            Choose a date, lock in a slot, and prepare the booking details.
+            Choose your cut, lock in a time, and review the total.
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300">
-            This slice keeps the same live availability flow, then adds the
-            first booking details form without submitting anything yet.
+            Appointments are 1 hour. Standard booking runs until 9 PM, and
+            after-hours slots add $10.
           </p>
         </div>
 

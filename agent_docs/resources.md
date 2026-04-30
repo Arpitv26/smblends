@@ -4,6 +4,7 @@
 - Use the PRD for scope.
 - Use the technical design for stack and folder layout.
 - Use the research brief for cost, deployment, and ownership decisions.
+- Use `agent_docs/clientInformation.md` as the current source of truth for the barber's business details.
 
 ## Codex Workflow References
 - Keep `AGENTS.md` as the main source of truth.
@@ -55,17 +56,18 @@ Use this when you need to collect the real business info before launch.
 - Do you want to allow same-day bookings?
 - If yes, how many hours ahead should someone be allowed to book?
 - Do you want to allow last-minute bookings late in the day?
-- Do you want to allow after-hours cuts at or after 8 PM?
+- Do you want to allow after-hours cuts at or after 9 PM?
 - If yes, what exact after-hours window should be bookable?
 - Are there any days you never work?
 - Are there any regular breaks that should not be bookable, like lunch or prayer time?
 - Are there any dates already blocked out for vacations, events, or personal time?
 
 ### Service details
-- What is the exact name of the service offered in MVP?
-- Is `Haircut` the exact label you want clients to see, or should it say something else like `Men's Haircut` or `Cut`?
-- What is the price for the normal haircut?
-- What is the price for after-hours cuts?
+- What exact service names should appear in MVP?
+- What is the price for each service?
+- What add-ons should clients be allowed to choose?
+- What is the price for each add-on?
+- What is the after-hours surcharge?
 - Are taxes included in the shown price or added later?
 - Is there anything included in the haircut that should be mentioned?
 - Are there any services that should not be listed yet but may be added later?
@@ -143,6 +145,8 @@ This is the minimum customer info the website should collect in MVP.
 - Phone number
 - Selected date
 - Selected time slot
+- Selected service
+- Selected add-ons, if any
 - Optional email for confirmation
 - Optional notes
 
@@ -150,7 +154,6 @@ This is the minimum customer info the website should collect in MVP.
 - Do you want to collect email, or keep it optional?
 - Do you want to collect notes, or remove notes to keep the form shorter?
 - Do you want to collect Instagram handle, or not at all?
-- Do you want to collect service choice later when more services exist?
 - Do you want to collect anything else that is truly necessary for the appointment?
 
 ### Files and assets to request

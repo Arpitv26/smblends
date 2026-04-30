@@ -2,6 +2,17 @@
 
 import { useEffect, useState } from "react";
 
+import {
+  ADD_ON_PRICES,
+  ADD_ON_TYPES,
+  AFTER_HOURS_SURCHARGE,
+  calculateBookingPrice,
+  formatPrice,
+  SERVICE_PRICES,
+  SERVICE_TYPES,
+  type AddOnType,
+  type ServiceType
+} from "@/lib/bookings/config";
 import type { AvailableSlot } from "@/lib/slots/types";
 import {
   bookingDraftSchema,
@@ -32,6 +43,7 @@ type FieldErrors = Partial<Record<BookingFieldName, string>>;
 type TouchedState = Record<BookingFieldName, boolean>;
 
 const EMPTY_TOUCHED_STATE: TouchedState = {
+  addOns: false,
   clientEmail: false,
   clientName: false,
   clientPhone: false,
@@ -41,6 +53,7 @@ const EMPTY_TOUCHED_STATE: TouchedState = {
 };
 
 const INITIAL_FORM_VALUES: BookingFormValues = {
+  addOns: [],
   clientEmail: "",
   clientName: "",
   clientPhone: "",
@@ -157,6 +170,13 @@ export function BookingAvailability({
   };
   const fieldErrors = buildFieldErrors(bookingDraft);
   const isDraftReady = Object.keys(fieldErrors).length === 0;
+  const estimatedPrice = selectedSlot
+    ? calculateBookingPrice({
+        addOns: formValues.addOns,
+        isAfterHours: selectedSlot.isAfterHours,
+        serviceType: formValues.serviceType
+      })
+    : null;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -243,6 +263,25 @@ export function BookingAvailability({
     }));
   }
 
+  function selectService(serviceType: ServiceType): void {
+    updateField("serviceType", serviceType);
+    markFieldTouched("serviceType");
+  }
+
+  function toggleAddOn(addOn: AddOnType): void {
+    setFormValues((currentValues) => {
+      const nextAddOns = currentValues.addOns.includes(addOn)
+        ? currentValues.addOns.filter((currentAddOn) => currentAddOn !== addOn)
+        : [...currentValues.addOns, addOn];
+
+      return {
+        ...currentValues,
+        addOns: nextAddOns
+      };
+    });
+    markFieldTouched("addOns");
+  }
+
   return (
     <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(21rem,0.85fr)]">
       <div className="rounded-[2rem] border border-white/10 bg-black/30 p-5 shadow-2xl shadow-black/30 backdrop-blur sm:p-6">
@@ -252,7 +291,7 @@ export function BookingAvailability({
               Booking Preview
             </p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">
-              Pick a date and choose an open time slot.
+              Pick a date and choose a 1-hour slot.
             </h2>
             <p className="mt-2 max-w-md text-sm leading-6 text-zinc-300">
               Times are shown in Vancouver time. Select one slot to unlock the
@@ -286,7 +325,7 @@ export function BookingAvailability({
               </p>
             </div>
             <div className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-amber-200">
-              After-hours start at 8 PM
+              After-hours start at 9 PM
             </div>
           </div>
 
@@ -364,7 +403,7 @@ export function BookingAvailability({
           </h3>
           <p className="mt-2 text-sm leading-6 text-zinc-300">
             {selectedSlot
-              ? "Fill in the client details below. Submission is still intentionally disabled in this slice."
+              ? "Fill in the client details below and review the estimated total."
               : "The form unlocks after you pick a time on the left. This keeps the booking flow clear on mobile."}
           </p>
         </div>
@@ -443,22 +482,80 @@ export function BookingAvailability({
             <span className="mb-2 block text-sm font-medium text-zinc-200">
               Service
             </span>
-            <div
-              className={`rounded-2xl border border-white/10 bg-white/5 px-4 py-3 ${
-                selectedSlot ? "text-white" : "opacity-50"
-              }`}
-            >
-              <p className="text-base font-medium">Haircut</p>
-              <p className="mt-1 text-sm text-zinc-400">
-                Fixed service for the current MVP.
+            <div className="grid gap-3 sm:grid-cols-2">
+              {SERVICE_TYPES.map((serviceType) => {
+                const isSelected = formValues.serviceType === serviceType;
+
+                return (
+                  <button
+                    className={`rounded-2xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                      isSelected
+                        ? "border-amber-300/70 bg-amber-300/12 text-white"
+                        : "border-white/10 bg-white/5 text-zinc-200 hover:border-white/20"
+                    }`}
+                    disabled={!selectedSlot}
+                    key={serviceType}
+                    onClick={() => selectService(serviceType)}
+                    type="button"
+                  >
+                    <span className="block text-base font-medium">
+                      {serviceType}
+                    </span>
+                    <span className="mt-1 block text-sm text-zinc-400">
+                      {formatPrice(SERVICE_PRICES[serviceType])}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            {touchedFields.serviceType && fieldErrors.serviceType ? (
+              <p className="mt-2 text-sm text-red-200">
+                {fieldErrors.serviceType}
               </p>
+            ) : null}
+          </div>
+
+          <div className="block">
+            <span className="mb-2 block text-sm font-medium text-zinc-200">
+              Add-ons
+              <span className="ml-2 text-zinc-500">Optional</span>
+            </span>
+            <div className="grid gap-3">
+              {ADD_ON_TYPES.map((addOn) => {
+                const isSelected = formValues.addOns.includes(addOn);
+
+                return (
+                  <label
+                    className={`flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 transition ${
+                      selectedSlot
+                        ? "border-white/10 bg-white/5 text-zinc-100"
+                        : "border-white/10 bg-white/5 text-zinc-100 opacity-50"
+                    }`}
+                    key={addOn}
+                  >
+                    <span>
+                      <span className="block text-sm font-medium">{addOn}</span>
+                      <span className="mt-1 block text-sm text-zinc-400">
+                        +{formatPrice(ADD_ON_PRICES[addOn])}
+                      </span>
+                    </span>
+                    <input
+                      checked={isSelected}
+                      className="size-5 accent-amber-300"
+                      disabled={!selectedSlot}
+                      onChange={() => toggleAddOn(addOn)}
+                      type="checkbox"
+                    />
+                  </label>
+                );
+              })}
             </div>
           </div>
 
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
               Email for confirmation
-              <span className="ml-2 text-zinc-500">Optional for now</span>
+              <span className="ml-2 text-zinc-500">Optional</span>
             </span>
             <input
               aria-invalid={touchedFields.clientEmail && fieldErrors.clientEmail ? true : undefined}
@@ -495,19 +592,48 @@ export function BookingAvailability({
               <p className="mt-2 text-sm text-red-200">{fieldErrors.notes}</p>
             ) : null}
           </label>
+
+          <div className="rounded-[1.5rem] border border-amber-300/20 bg-amber-300/10 p-4">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium text-amber-100">
+                  Estimated total
+                </p>
+                <p className="mt-1 text-sm leading-6 text-zinc-300">
+                  Pay cash or e-transfer. Payment is expected before or after
+                  the haircut.
+                </p>
+              </div>
+              <p className="text-2xl font-semibold text-white">
+                {estimatedPrice === null ? "--" : formatPrice(estimatedPrice)}
+              </p>
+            </div>
+            {selectedSlot?.isAfterHours ? (
+              <p className="mt-3 text-sm text-amber-100">
+                Includes the +{formatPrice(AFTER_HOURS_SURCHARGE)} after-hours
+                fee.
+              </p>
+            ) : null}
+          </div>
         </form>
 
         <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4">
           <p className="text-sm font-medium text-white">
             {selectedSlot && isDraftReady
-              ? "This draft is valid and ready for the next booking step."
-              : "Submission is not active yet. This slice only prepares and validates the booking details."}
+              ? "This booking draft is valid and ready for submission wiring."
+              : "Select a slot and fill the required fields to continue."}
           </p>
           <p className="mt-2 text-sm leading-6 text-zinc-400">
             {selectedSlot
-              ? "The next change will connect these fields to the booking API and handle double-booking safely."
+              ? "The next change will save this booking and handle double-booking safely."
               : "Select a slot first, then fill the form to preview the complete booking flow."}
           </p>
+          <div className="mt-4 border-t border-white/10 pt-4 text-sm leading-6 text-zinc-400">
+            <p>20 minutes late: $5 fee.</p>
+            <p>30 minutes late: marked as no-show.</p>
+            <p>Same-day cancellation or no-show: $10 fee on next cut.</p>
+            <p>Maximum 2 extra people per client.</p>
+          </div>
         </div>
       </div>
     </section>

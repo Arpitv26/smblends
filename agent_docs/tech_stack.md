@@ -125,6 +125,10 @@ NEXT_PUBLIC_APP_URL=
 
 If Supabase shows the older key name instead, `NEXT_PUBLIC_SUPABASE_ANON_KEY` is also acceptable as a fallback.
 
+Known production values from `agent_docs/clientInformation.md`:
+- `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
+- E-transfer display email: `sanchitmehta51@gmail.com`
+
 ## Manual Setup Rule for This Project
 Whenever setup leaves the terminal and goes into a dashboard or website:
 - tell the user exactly where to click
@@ -144,6 +148,8 @@ Whenever setup leaves the terminal and goes into a dashboard or website:
 - `slot_minutes`
 - `is_active`
 - `created_at`
+- Real Smblends rows should use 60-minute slots.
+- After-hours rows should run from `21:00:00` to `00:00:00`.
 
 ### `blocked_dates`
 - `id`
@@ -157,14 +163,17 @@ Whenever setup leaves the terminal and goes into a dashboard or website:
 - `time_slot`
 - `client_name`
 - `client_phone`
-- `client_email`
+- `client_email` (should be nullable/optional for the public MVP)
 - `service_type`
+- `add_ons` or equivalent structured add-on storage
 - `is_after_hours`
 - `price_charged`
 - `status`
 - `notes`
 - `created_at`
 - unique constraint on `(booking_date, time_slot)`
+
+Current schema note: the first migration still has `client_email text not null` and no add-on storage. Before the real booking submission is finalized, add a small migration so the database matches the barber's required fields and service menu.
 
 ## Suggested Supabase Modules
 - `lib/supabase/client.ts` — browser-safe client
@@ -178,7 +187,7 @@ Whenever setup leaves the terminal and goes into a dashboard or website:
 export type AvailableSlot = {
   value: string;           // e.g. "20:00:00"
   label: string;           // e.g. "8:00 PM"
-  isAfterHours: boolean;   // true if 8 PM or later
+  isAfterHours: boolean;   // true if 9 PM or later
 };
 
 export async function getAvailableSlots(date: string): Promise<AvailableSlot[]> {
@@ -187,7 +196,7 @@ export async function getAvailableSlots(date: string): Promise<AvailableSlot[]> 
   // 3. Read confirmed bookings for that date
   // 4. Generate 30-minute slots
   // 5. Remove already-booked slots
-  // 6. Mark 8 PM+ as after-hours
+  // 6. Mark 9 PM+ as after-hours
   return [];
 }
 ```
