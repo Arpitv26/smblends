@@ -105,13 +105,17 @@ npm test
 - Resend notification code is wired after booking creation, with barber notification and optional client confirmation
 - Local Resend test email was received successfully at the Resend account email
 - App-wide gold/amber accents were replaced with a premium black-and-white neutral palette across public booking, confirmation, and admin screens
+- Public landing page was rebuilt with the provided SMBLENDS logo, real haircut photos, hero slogan, booking CTAs, hamburger admin menu, contact panel, and infinite image marquee
 
 ### Completed this session
 - Replaced gold/amber styling with neutral black-and-white accents across public and admin UI
 - Updated selected states, focus rings, after-hours badges, total cards, and blocked-date warning panels to use zinc/white styling
 - Updated design docs to record that SMBLENDS should not use gold/amber accents
 - Verified no gold/amber references remain in app/component code
-- Verified with `npm run lint` and `npm run build`
+- Rebuilt the public homepage into a seamless visual landing page using `images/2A64B001-CE84-4633-A4E4-E7BAC1535EB1.png` as the hero logo and the `IMG_*.jpeg` haircut photos in an infinite right-to-left marquee
+- Added a top-right hamburger menu with `Book Now` and `Admin Login`
+- Added a contact panel with phone, email, Instagram, address, parking, and entry instructions
+- Verified with `npm run lint`, `npm run build`, and `curl -I http://localhost:3000`
 
 ### Currently working
 - Home page renders correctly
@@ -151,12 +155,14 @@ npm test
 - Malformed booking API payloads return a friendly validation message
 - Cancelled bookings are retained with `status = cancelled` and no longer block the public slot
 - Public booking, confirmation, and admin screens now follow the black-and-white neutral visual direction
+- `/` now shows the new SMBLENDS landing page with logo hero, booking CTA, animated haircut-photo strip, hamburger menu, and contact panel
 
 ### Unfinished work
 - Finish Resend domain verification so production emails can send to the barber email from a real sender
 - Run the remaining logged-in browser admin QA checks with the Supabase auth password, including cancel-booking behavior
 - Configure Cloudflare Pages
-- Final landing page layout/content polish with logo and haircut portfolio photos
+- Human visual review/tuning of the new landing page on desktop and mobile
+- Booking-page visual polish to match the new landing page direction
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
@@ -200,7 +206,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-01
-**Last Finished:** Replaced gold/amber styling with neutral black-and-white accents across public and admin UI. Updated selected states, focus rings, after-hours badges, total cards, and warning panels. Verified no gold/amber remains in app/component code, then ran lint and build successfully.
-**In Progress:** Phase 2 admin MVP is functionally complete. Admin login, upcoming bookings, cancellation, logout, no-show marking, no-show tracking, weekly availability toggles, and blocked-date management are now implemented. Visual polish has started with the app-wide palette change; landing page layout/content polish is next.
-**Needs User Action Next:** Run the remaining logged-in admin QA checks with the Supabase auth password, especially cancelling one test booking and confirming the slot reopens. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and the app-wide gold/amber accents have been replaced with a premium black-and-white neutral palette because Sanchit does not want gold styling. Cancelled bookings stay in Supabase with `status = cancelled` and reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. Before launch prep, continue the visual pass by polishing the public landing page layout and copy. Use the real SMBLENDS business details from `clientInformation.md`, keep it mobile-first, dark, sleek, premium, minimal, black-and-white, and stop before Cloudflare deployment unless explicitly asked.
+**Last Finished:** Rebuilt the public landing page with the provided SMBLENDS logo, real haircut portfolio image marquee, hero slogan, minimal booking CTAs, hamburger side menu for booking/admin login, and contact panel. Verified lint, build, and local `/` response.
+**In Progress:** Phase 2 admin MVP is functionally complete. Admin login, upcoming bookings, cancellation, logout, no-show marking, no-show tracking, weekly availability toggles, and blocked-date management are now implemented. Visual polish is underway: app palette and landing page are updated; booking-page visual polish is next after visual review.
+**Needs User Action Next:** Review the new landing page at `http://localhost:3000` on desktop/mobile sizes and point out spacing/cropping/copy changes. Run the remaining logged-in admin QA checks with the Supabase auth password later, especially cancelling one test booking and confirming the slot reopens. Later, verify a sending domain in Resend and configure Cloudflare Pages.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete. The app-wide gold/amber accents have been replaced with a premium black-and-white neutral palette, and the public landing page now uses the provided SMBLENDS logo plus the haircut portfolio images in an infinite marquee. Cancelled bookings stay in Supabase with `status = cancelled` and reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. Before launch prep, visually review/tune the landing page on desktop and mobile, then polish `/book` to match. Keep it mobile-first, dark, sleek, premium, minimal, black-and-white, and stop before Cloudflare deployment unless explicitly asked.

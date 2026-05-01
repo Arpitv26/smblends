@@ -141,3 +141,68 @@ a {
     @apply font-sans;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.home-hero-rise {
+  animation: home-hero-rise 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.haircut-marquee-track {
+  animation: haircut-marquee 34s linear infinite;
+  width: max-content;
+}
+
+@keyframes home-hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes haircut-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .home-hero-rise,
+  .haircut-marquee-track {
+    animation: none;
+  }
+
+  .home-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
