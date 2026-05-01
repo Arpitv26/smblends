@@ -4,10 +4,19 @@ import { createBooking } from "@/lib/bookings/create-booking";
 import { sendBookingNotifications } from "@/lib/notifications/send-booking-notifications";
 import { bookingDraftSchema } from "@/lib/validators/booking";
 
+const GENERIC_INVALID_BOOKING_MESSAGE =
+  "Please fill in your name, phone number, date, time, and service.";
+
 function getInvalidBookingMessage(
   issues: Array<{ message: string }>
 ): string {
-  return issues[0]?.message ?? "Invalid booking details.";
+  const firstMessage = issues[0]?.message;
+
+  if (!firstMessage || firstMessage.startsWith("Invalid input:")) {
+    return GENERIC_INVALID_BOOKING_MESSAGE;
+  }
+
+  return firstMessage;
 }
 
 async function readJson(request: Request): Promise<unknown> {

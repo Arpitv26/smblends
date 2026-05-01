@@ -11,14 +11,20 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 ## Fixed Project Decisions
 - This is a **web app**, not a mobile app
 - Hosting should be **Cloudflare Pages**
+- A free `*.pages.dev` URL is acceptable for first testing before buying a custom domain
 - Backend should be **Supabase**
 - Notifications should be **email first with Resend**
+- Production barber notifications should use `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
+- Resend production delivery to the barber email requires a verified sending domain
 - Online payments are **not** part of MVP
 - Payment is in person by cash or e-transfer
 - SMS is **not** part of MVP
 - The design should feel **dark, sleek, premium, minimal, modern**
 - The site must be **mobile-first**
 - User-facing scheduling must use **America/Vancouver**
+- Past bookings should be retained in Supabase for history/debugging; do not auto-delete them in MVP
+- No-show bookings should remain stored with `status = no_show` and visible in `/admin/no-shows`
+- Cancelled bookings should remain stored with `status = cancelled` and should not block public slots
 
 ## Client Information Source
 - The barber's current business details live in `agent_docs/clientInformation.md`.
@@ -99,17 +105,17 @@ npm test
 - Local Resend test email was received successfully at the Resend account email
 
 ### Completed this session
-- Added `/admin/blocked-dates`
-- Added blocked-date query helpers with confirmed-booking counts
-- Added protected blocked-date create/delete APIs
-- Added full-day block creation with optional reason
-- Added blocked-date removal with confirmation
-- Added warnings when a blocked date already has confirmed bookings
-- Added **Blocked dates** to admin navigation
+- Ran a Phase 2 QA pass
 - Verified with `npm run lint` and `npm run build`
-- Verified logged-out `/admin/blocked-dates` redirects to `/admin/login`
-- Verified logged-out blocked-date create requests return `401`
-- Verified logged-out blocked-date delete requests return `401`
+- Verified `/`, `/book`, and `/book/confirmed` return `200`
+- Verified `/api/availability` returns `400` for a bad date
+- Verified `/api/availability` returns Saturday standard and after-hours slots for `2026-05-02`
+- Verified malformed booking submissions return `400`
+- Fixed malformed booking submissions so they return a friendly message instead of raw validation text
+- Verified logged-out admin pages redirect to `/admin/login`
+- Verified logged-out admin write APIs return `401`
+- Added a protected admin cancel-booking action
+- Verified logged-out cancel-booking requests return `401`
 
 ### Currently working
 - Home page renders correctly
@@ -134,6 +140,7 @@ npm test
 - `/admin/login` renders and posts to the admin login API
 - `/admin/dashboard` is protected from logged-out visitors
 - `/admin/dashboard` shows confirmed bookings from today forward after admin login
+- Admin dashboard can cancel confirmed bookings while keeping the record
 - Admin logout clears the app's admin cookies
 - Admin dashboard can mark confirmed bookings as no-show
 - No-showed bookings disappear from the confirmed upcoming-bookings list after refresh
@@ -145,10 +152,12 @@ npm test
 - `/admin/blocked-dates` can add and remove full-day blocks
 - `/admin/blocked-dates` shows confirmed-booking warnings for blocked dates
 - Public `/book` already returns no slots for dates in `blocked_dates`
+- Malformed booking API payloads return a friendly validation message
+- Cancelled bookings are retained with `status = cancelled` and no longer block the public slot
 
 ### Unfinished work
 - Finish Resend domain verification so production emails can send to the barber email from a real sender
-- Manually verify adding one blocked date removes `/book` slots for that date, then remove the test block
+- Run the remaining logged-in browser admin QA checks with the Supabase auth password, including cancel-booking behavior
 - Configure Cloudflare Pages
 - Final landing page polish with logo and haircut portfolio photos
 - Add a real test suite beyond lint/build
@@ -161,8 +170,9 @@ npm test
 - Logo and haircut portfolio images are intentionally deferred until the landing page polish pass near the end
 
 ### Manual setup still needed
-- Test adding/removing one blocked date from `/admin/blocked-dates`
+- Run the logged-in admin QA checks: cancel one test booking and confirm the slot reopens, add/remove a blocked date, toggle availability and turn it back, mark no-show, verify no-show tracking, and sign out
 - Verify a sending domain in Resend before production emails are sent to the barber email
+- Change production `BARBER_NOTIFICATION_EMAIL` to `sanchitmehta51@gmail.com`
 - Set up Cloudflare Pages project and production env vars
 - Provide final logo and haircut portfolio photos for the landing page polish pass
 
@@ -193,7 +203,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-01
-**Last Finished:** Added `/admin/blocked-dates`, protected full-day blocked-date create/delete, confirmed-booking warnings, and Blocked dates admin navigation. Verified lint, build, logged-out page redirect, logged-out create `401`, and logged-out delete `401`.
-**In Progress:** Phase 2 admin MVP is functionally complete. Admin login, upcoming bookings, logout, no-show marking, no-show tracking, weekly availability toggles, and blocked-date management are now implemented.
-**Needs User Action Next:** Test adding/removing one blocked date and confirm `/book` shows no slots for that date while blocked. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. Phase 2 admin MVP now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, upcoming bookings, protected mark-no-show action, `/admin/no-shows` tracking, `/admin/availability` toggles, and `/admin/blocked-dates` full-day blocking. First manually test adding/removing one blocked date and confirm `/book` shows no slots for that date while blocked. Then run a full Phase 2 admin QA pass before moving to Phase 3 launch preparation. Stop before Cloudflare deployment or landing page logo/photos unless explicitly asked.
+**Last Finished:** Added protected admin cancellation for confirmed bookings. Cancelled bookings are retained with `status = cancelled` and no longer block the public slot. Verified lint, build, and logged-out cancel API protection with `401`.
+**In Progress:** Phase 2 admin MVP is functionally complete. Admin login, upcoming bookings, cancellation, logout, no-show marking, no-show tracking, weekly availability toggles, and blocked-date management are now implemented. The user plans to do visual/landing page work before launch prep, likely in a new Codex session.
+**Needs User Action Next:** Run the remaining logged-in admin QA checks with the Supabase auth password, especially cancelling one test booking and confirming the slot reopens. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and now includes separate admin actions for cancelling future appointments and marking no-shows. Cancelled bookings stay in Supabase with `status = cancelled` and reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. Before launch prep, start the visual/landing page polish pass for the actual public site. Use the real SMBLENDS business details from `clientInformation.md`, keep it mobile-first, dark, sleek, premium, minimal, and stop before Cloudflare deployment unless explicitly asked.

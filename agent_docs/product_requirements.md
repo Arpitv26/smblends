@@ -58,8 +58,12 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
 - Success criteria:
   - Barber can authenticate securely
   - Upcoming bookings display correctly
+  - Future bookings can be cancelled without deleting the record
   - Hours and blocked dates can be updated
   - No-shows can be marked with one click
+  - No-shows remain stored and visible for follow-up
+  - Cancelled bookings remain stored for history and do not block public slots
+  - Past bookings remain stored for history and are not auto-deleted in MVP
 
 ### 6. Policy Display and After-Hours Handling
 - The booking flow clearly shows policies for lateness, no-shows, same-day cancellations, and after-hours cuts.
@@ -205,7 +209,7 @@ The barber / business owner managing the schedule.
 
 ### Launch ready
 - mobile responsive
-- custom domain connected or free subdomain live
+- custom domain connected or free Cloudflare Pages subdomain live
 - basic monitoring configured
 - Instagram link in bio updated to booking site
 

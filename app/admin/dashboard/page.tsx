@@ -1,5 +1,6 @@
 import { AdminBookingCard } from "@/components/admin/AdminBookingCard";
 import { AdminNavigation } from "@/components/admin/AdminNavigation";
+import { CancelBookingButton } from "@/components/admin/CancelBookingButton";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { MarkNoShowButton } from "@/components/admin/MarkNoShowButton";
 import { requireAdminSession } from "@/lib/admin/auth";
@@ -22,7 +23,8 @@ export default async function AdminDashboardPage(): Promise<JSX.Element> {
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
               Signed in as {adminSession.email}. This view shows confirmed
-              bookings from today forward and lets you mark no-shows.
+              bookings from today forward. Cancel future appointments or mark
+              missed appointments as no-show.
             </p>
           </div>
 
@@ -50,10 +52,16 @@ export default async function AdminDashboardPage(): Promise<JSX.Element> {
               {bookings.map((booking) => (
                 <AdminBookingCard
                   action={
-                    <MarkNoShowButton
-                      bookingId={booking.id}
-                      clientName={booking.clientName}
-                    />
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+                      <CancelBookingButton
+                        bookingId={booking.id}
+                        clientName={booking.clientName}
+                      />
+                      <MarkNoShowButton
+                        bookingId={booking.id}
+                        clientName={booking.clientName}
+                      />
+                    </div>
                   }
                   booking={booking}
                   key={booking.id}

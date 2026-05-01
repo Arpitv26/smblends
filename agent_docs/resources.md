@@ -15,6 +15,9 @@
 - Supabase Row Level Security
 - Cloudflare Pages environment variables
 - Resend domain verification
+- Resend verified sending domain setup with SPF/DKIM before production barber notifications
+- Cloudflare Pages free `*.pages.dev` launch URL before deciding on a custom domain
+- Custom domain purchase after landing page polish; Cloudflare Registrar is preferred for at-cost pricing
 - date-fns-tz for Vancouver time handling
 - minimal pre-commit setup
 - future Stripe Checkout integration
@@ -44,6 +47,7 @@ You can keep the GitHub repo during build and transfer later if needed.
 - untested mobile UX
 - deployment env var mistakes
 - email provider setup issues
+- accidentally leaving production `BARBER_NOTIFICATION_EMAIL` pointed at the developer instead of `sanchitmehta51@gmail.com`
 
 ## Barber Info Checklist
 Use this when you need to collect the real business info before launch.
