@@ -98,7 +98,7 @@ export function BlockedDateForm({
           Date
         </span>
         <input
-          className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSubmitting}
           onChange={(event) => setDate(event.target.value)}
           type="date"
@@ -111,7 +111,7 @@ export function BlockedDateForm({
           Reason
         </span>
         <input
-          className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSubmitting}
           maxLength={120}
           onChange={(event) => setReason(event.target.value)}

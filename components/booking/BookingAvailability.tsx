@@ -452,7 +452,7 @@ export function BookingAvailability({
       <div className="rounded-[2rem] border border-white/10 bg-black/30 p-5 shadow-2xl shadow-black/30 backdrop-blur sm:p-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-amber-300/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-zinc-500">
               Booking Preview
             </p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">
@@ -468,7 +468,7 @@ export function BookingAvailability({
               Appointment date
             </span>
             <input
-              className="h-12 w-full min-w-[15rem] rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20"
+              className="h-12 w-full min-w-[15rem] rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10"
               min={initialDate}
               onChange={(event) => setSelectedDate(event.target.value)}
               type="date"
@@ -489,7 +489,7 @@ export function BookingAvailability({
                   : `${availability.slots.length} slot${availability.slots.length === 1 ? "" : "s"} available`}
               </p>
             </div>
-            <div className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-amber-200">
+            <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs uppercase tracking-[0.2em] text-zinc-300">
               After-hours start at 9 PM
             </div>
           </div>
@@ -512,7 +512,7 @@ export function BookingAvailability({
                         <button
                           className={`w-full rounded-2xl border px-4 py-3 text-left transition ${
                             isSelected
-                              ? "border-amber-300/70 bg-amber-300/12 shadow-[0_0_0_1px_rgba(252,211,77,0.12)]"
+                              ? "border-white/40 bg-white/[0.08] shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
                               : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]"
                           }`}
                           onBlur={() => markFieldTouched("timeSlot")}
@@ -530,7 +530,7 @@ export function BookingAvailability({
                               {slot.isAfterHours ? "After-hours" : "Standard"}
                             </p>
                             {isSelected ? (
-                              <span className="text-xs font-medium uppercase tracking-[0.18em] text-amber-200">
+                              <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-200">
                                 Selected
                               </span>
                             ) : null}
@@ -557,8 +557,8 @@ export function BookingAvailability({
       </div>
 
       <div className="rounded-[2rem] border border-white/10 bg-black/30 p-5 shadow-2xl shadow-black/30 backdrop-blur sm:p-6">
-        <div className="rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(245,158,11,0.10),rgba(9,9,11,0.3))] p-4">
-          <p className="text-xs uppercase tracking-[0.32em] text-amber-300/80">
+        <div className="rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(9,9,11,0.3))] p-4">
+          <p className="text-xs uppercase tracking-[0.32em] text-zinc-500">
             Booking Details
           </p>
           <h3 className="mt-2 text-xl font-semibold text-white">
@@ -587,7 +587,7 @@ export function BookingAvailability({
                   {selectedSlot.label}
                 </span>
                 {selectedSlot.isAfterHours ? (
-                  <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs uppercase tracking-[0.18em] text-amber-200">
+                  <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs uppercase tracking-[0.18em] text-zinc-300">
                     After-hours
                   </span>
                 ) : null}
@@ -607,7 +607,7 @@ export function BookingAvailability({
             </span>
             <input
               aria-invalid={touchedFields.clientName && fieldErrors.clientName ? true : undefined}
-              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isFormDisabled}
               onBlur={() => markFieldTouched("clientName")}
               onChange={(event) => updateField("clientName", event.target.value)}
@@ -628,7 +628,7 @@ export function BookingAvailability({
             </span>
             <input
               aria-invalid={touchedFields.clientPhone && fieldErrors.clientPhone ? true : undefined}
-              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isFormDisabled}
               onBlur={() => markFieldTouched("clientPhone")}
               onChange={(event) => updateField("clientPhone", event.target.value)}
@@ -655,7 +655,7 @@ export function BookingAvailability({
                   <button
                     className={`rounded-2xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
                       isSelected
-                        ? "border-amber-300/70 bg-amber-300/12 text-white"
+                        ? "border-white/40 bg-white/[0.08] text-white"
                         : "border-white/10 bg-white/5 text-zinc-200 hover:border-white/20"
                     }`}
                     disabled={isFormDisabled}
@@ -706,7 +706,7 @@ export function BookingAvailability({
                     </span>
                     <input
                       checked={isSelected}
-                      className="size-5 accent-amber-300"
+                      className="size-5 accent-white"
                       disabled={isFormDisabled}
                       onChange={() => toggleAddOn(addOn)}
                       type="checkbox"
@@ -724,7 +724,7 @@ export function BookingAvailability({
             </span>
             <input
               aria-invalid={touchedFields.clientEmail && fieldErrors.clientEmail ? true : undefined}
-              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isFormDisabled}
               onBlur={() => markFieldTouched("clientEmail")}
               onChange={(event) => updateField("clientEmail", event.target.value)}
@@ -746,7 +746,7 @@ export function BookingAvailability({
             </span>
             <textarea
               aria-invalid={touchedFields.notes && fieldErrors.notes ? true : undefined}
-              className="min-h-28 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
+              className="min-h-28 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isFormDisabled}
               onBlur={() => markFieldTouched("notes")}
               onChange={(event) => updateField("notes", event.target.value)}
@@ -758,10 +758,10 @@ export function BookingAvailability({
             ) : null}
           </label>
 
-          <div className="rounded-[1.5rem] border border-amber-300/20 bg-amber-300/10 p-4">
+          <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-4">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-medium text-amber-100">
+                <p className="text-sm font-medium text-zinc-100">
                   Estimated total
                 </p>
                 <p className="mt-1 text-sm leading-6 text-zinc-300">
@@ -774,7 +774,7 @@ export function BookingAvailability({
               </p>
             </div>
             {selectedSlot?.isAfterHours ? (
-              <p className="mt-3 text-sm text-amber-100">
+              <p className="mt-3 text-sm text-zinc-300">
                 Includes the +{formatPrice(AFTER_HOURS_SURCHARGE)} after-hours
                 fee.
               </p>

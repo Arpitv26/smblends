@@ -116,8 +116,8 @@ export default function BookingConfirmedPage(): JSX.Element {
             </div>
 
             {confirmation ? (
-              <div className="rounded-2xl border border-amber-300/20 bg-amber-300/10 px-4 py-3 text-right">
-                <p className="text-xs uppercase tracking-[0.22em] text-amber-200/80">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-right">
+                <p className="text-xs uppercase tracking-[0.22em] text-zinc-400">
                   Total
                 </p>
                 <p className="mt-1 text-3xl font-semibold text-white">
@@ -158,7 +158,7 @@ export default function BookingConfirmedPage(): JSX.Element {
                       {formatTimeSlot(confirmation.timeSlot)}
                     </p>
                     {confirmation.isAfterHours ? (
-                      <span className="mt-3 inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs uppercase tracking-[0.16em] text-amber-200">
+                      <span className="mt-3 inline-flex rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs uppercase tracking-[0.16em] text-zinc-300">
                         After-hours
                       </span>
                     ) : null}

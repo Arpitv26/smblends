@@ -64,7 +64,7 @@ export function AdminBookingCard({
             {formatBookingTime(booking.timeSlot)}
           </span>
           {booking.isAfterHours ? (
-            <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs uppercase tracking-[0.18em] text-amber-200">
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs uppercase tracking-[0.18em] text-zinc-300">
               After-hours
             </span>
           ) : null}

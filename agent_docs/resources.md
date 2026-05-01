@@ -103,7 +103,7 @@ Use this when you need to collect the real business info before launch.
 - What email should appear on the site, if any?
 - What booking confirmation email address should be used later?
 - What colors do you want the site to use?
-- Do you want the current black and gold style to stay?
+- Should the current black-and-white direction be softer, sharper, or more luxury?
 - Do you have brand colors with exact hex codes?
 - Do you have a logo?
 - If yes, can you send the best quality version?

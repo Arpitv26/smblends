@@ -120,7 +120,7 @@
 ### Theme
 
 - **Primary Colors:** Black & White
-- **Alternate Style (optional):** Black & Gold
+- **Accent Rule:** Do not use gold/amber accents. Keep the site premium black-and-white with neutral gray/zinc states, plus semantic colors only when needed.
 
 ### Style Direction
 

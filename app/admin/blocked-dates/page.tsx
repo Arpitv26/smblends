@@ -57,7 +57,7 @@ function BlockedDateRow({
             {blockedDate.reason ?? "No reason added."}
           </p>
           {blockedDate.confirmedBookingCount > 0 ? (
-            <p className="mt-3 rounded-2xl border border-amber-300/25 bg-amber-300/10 px-4 py-3 text-sm leading-6 text-amber-100">
+            <p className="mt-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm leading-6 text-zinc-200">
               {blockedDate.confirmedBookingCount} confirmed booking
               {blockedDate.confirmedBookingCount === 1 ? "" : "s"} already on
               this date.
@@ -83,7 +83,7 @@ export default async function AdminBlockedDatesPage(): Promise<JSX.Element> {
       <section className="mx-auto flex w-full max-w-5xl flex-col gap-6">
         <div className="flex flex-col gap-4 rounded-[2rem] border border-white/10 bg-black/30 p-6 shadow-2xl shadow-black/30 backdrop-blur sm:flex-row sm:items-start sm:justify-between sm:p-8">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-amber-300/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-zinc-500">
               Admin Dashboard
             </p>
             <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">

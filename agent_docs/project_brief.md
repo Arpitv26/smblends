@@ -20,6 +20,7 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Payment is in person by cash or e-transfer
 - SMS is **not** part of MVP
 - The design should feel **dark, sleek, premium, minimal, modern**
+- The brand palette should stay **black-and-white / neutral zinc**; Sanchit does not want gold/amber accents
 - The site must be **mobile-first**
 - User-facing scheduling must use **America/Vancouver**
 - Past bookings should be retained in Supabase for history/debugging; do not auto-delete them in MVP
@@ -103,19 +104,14 @@ npm test
 - `/book/confirmed` now shows a clean animated confirmation summary after successful booking submission
 - Resend notification code is wired after booking creation, with barber notification and optional client confirmation
 - Local Resend test email was received successfully at the Resend account email
+- App-wide gold/amber accents were replaced with a premium black-and-white neutral palette across public booking, confirmation, and admin screens
 
 ### Completed this session
-- Ran a Phase 2 QA pass
+- Replaced gold/amber styling with neutral black-and-white accents across public and admin UI
+- Updated selected states, focus rings, after-hours badges, total cards, and blocked-date warning panels to use zinc/white styling
+- Updated design docs to record that SMBLENDS should not use gold/amber accents
+- Verified no gold/amber references remain in app/component code
 - Verified with `npm run lint` and `npm run build`
-- Verified `/`, `/book`, and `/book/confirmed` return `200`
-- Verified `/api/availability` returns `400` for a bad date
-- Verified `/api/availability` returns Saturday standard and after-hours slots for `2026-05-02`
-- Verified malformed booking submissions return `400`
-- Fixed malformed booking submissions so they return a friendly message instead of raw validation text
-- Verified logged-out admin pages redirect to `/admin/login`
-- Verified logged-out admin write APIs return `401`
-- Added a protected admin cancel-booking action
-- Verified logged-out cancel-booking requests return `401`
 
 ### Currently working
 - Home page renders correctly
@@ -154,12 +150,13 @@ npm test
 - Public `/book` already returns no slots for dates in `blocked_dates`
 - Malformed booking API payloads return a friendly validation message
 - Cancelled bookings are retained with `status = cancelled` and no longer block the public slot
+- Public booking, confirmation, and admin screens now follow the black-and-white neutral visual direction
 
 ### Unfinished work
 - Finish Resend domain verification so production emails can send to the barber email from a real sender
 - Run the remaining logged-in browser admin QA checks with the Supabase auth password, including cancel-booking behavior
 - Configure Cloudflare Pages
-- Final landing page polish with logo and haircut portfolio photos
+- Final landing page layout/content polish with logo and haircut portfolio photos
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
@@ -203,7 +200,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-01
-**Last Finished:** Added protected admin cancellation for confirmed bookings. Cancelled bookings are retained with `status = cancelled` and no longer block the public slot. Verified lint, build, and logged-out cancel API protection with `401`.
-**In Progress:** Phase 2 admin MVP is functionally complete. Admin login, upcoming bookings, cancellation, logout, no-show marking, no-show tracking, weekly availability toggles, and blocked-date management are now implemented. The user plans to do visual/landing page work before launch prep, likely in a new Codex session.
+**Last Finished:** Replaced gold/amber styling with neutral black-and-white accents across public and admin UI. Updated selected states, focus rings, after-hours badges, total cards, and warning panels. Verified no gold/amber remains in app/component code, then ran lint and build successfully.
+**In Progress:** Phase 2 admin MVP is functionally complete. Admin login, upcoming bookings, cancellation, logout, no-show marking, no-show tracking, weekly availability toggles, and blocked-date management are now implemented. Visual polish has started with the app-wide palette change; landing page layout/content polish is next.
 **Needs User Action Next:** Run the remaining logged-in admin QA checks with the Supabase auth password, especially cancelling one test booking and confirming the slot reopens. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and now includes separate admin actions for cancelling future appointments and marking no-shows. Cancelled bookings stay in Supabase with `status = cancelled` and reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. Before launch prep, start the visual/landing page polish pass for the actual public site. Use the real SMBLENDS business details from `clientInformation.md`, keep it mobile-first, dark, sleek, premium, minimal, and stop before Cloudflare deployment unless explicitly asked.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and the app-wide gold/amber accents have been replaced with a premium black-and-white neutral palette because Sanchit does not want gold styling. Cancelled bookings stay in Supabase with `status = cancelled` and reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. Before launch prep, continue the visual pass by polishing the public landing page layout and copy. Use the real SMBLENDS business details from `clientInformation.md`, keep it mobile-first, dark, sleek, premium, minimal, black-and-white, and stop before Cloudflare deployment unless explicitly asked.

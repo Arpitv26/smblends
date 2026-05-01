@@ -13,7 +13,7 @@ export default async function AdminLoginPage(): Promise<JSX.Element> {
   return (
     <main className="flex min-h-screen items-center px-4 py-8 sm:px-6">
       <section className="mx-auto w-full max-w-md rounded-[2rem] border border-white/10 bg-black/30 p-6 shadow-2xl shadow-black/30 backdrop-blur sm:p-8">
-        <p className="text-xs uppercase tracking-[0.32em] text-amber-300/70">
+        <p className="text-xs uppercase tracking-[0.32em] text-zinc-500">
           SMBLENDS Admin
         </p>
         <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white">

@@ -144,6 +144,7 @@ Always enforce these rules:
 - premium
 - minimal
 - modern
+- black-and-white neutral palette only; do not use gold/amber brand accents
 
 ### UX rules
 - mobile-first

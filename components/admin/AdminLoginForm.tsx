@@ -88,7 +88,7 @@ export function AdminLoginForm(): JSX.Element {
         </span>
         <input
           autoComplete="email"
-          className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSubmitting}
           onChange={(event) => setEmail(event.target.value)}
           type="email"
@@ -102,7 +102,7 @@ export function AdminLoginForm(): JSX.Element {
         </span>
         <input
           autoComplete="current-password"
-          className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSubmitting}
           onChange={(event) => setPassword(event.target.value)}
           type="password"
