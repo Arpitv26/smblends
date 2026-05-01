@@ -99,15 +99,17 @@ npm test
 - Local Resend test email was received successfully at the Resend account email
 
 ### Completed this session
-- Installed `resend`
-- Added `lib/notifications/send-booking-notifications.ts`
-- Booking API now sends a barber notification after each saved booking
-- Booking API now sends a client confirmation only when client email is provided
-- Email failures are logged but do not block booking creation
-- Improved Resend failure logging to show the exact setup issue
-- Verified with `npm run lint`, `npm run build`, and a temporary local booking smoke test that was cleaned up afterward
-- Smoke test confirmed bookings still return `201` even when Resend rejects the email
-- User temporarily set `BARBER_NOTIFICATION_EMAIL` to the Resend account email and confirmed the "New SMBLENDS booking" email was received
+- Guided the user through creating the barber admin user in Supabase Auth
+- Added admin login and logout API routes
+- Added HTTP-only admin auth cookies backed by Supabase Auth tokens
+- Added `/admin/login`
+- Added `/admin/dashboard` protection for logged-out users
+- Added a read-only upcoming-bookings dashboard for confirmed bookings from today forward
+- Verified with `npm run lint` and `npm run build`
+- Verified logged-out `/admin/dashboard` redirects to `/admin/login`
+- Verified `/admin/login` renders locally
+- Verified invalid login returns `400`
+- Verified wrong password returns a friendly `401`
 
 ### Currently working
 - Home page renders correctly
@@ -129,26 +131,34 @@ npm test
 - Notification code runs after successful booking creation
 - Booking creation still succeeds if notification sending fails
 - Resend local testing works when the recipient is the Resend account email
+- `/admin/login` renders and posts to the admin login API
+- `/admin/dashboard` is protected from logged-out visitors
+- `/admin/dashboard` shows confirmed bookings from today forward after admin login
+- Admin logout clears the app's admin cookies
 
 ### Unfinished work
 - Finish Resend domain verification so production emails can send to the barber email from a real sender
-- Build admin auth and dashboard
+- Manually test the real admin login in the browser with the password created in Supabase
+- Add the admin no-show action
+- Build the weekly availability editor
+- Build the blocked-date admin flow
 - Configure Cloudflare Pages
 - Final landing page polish with logo and haircut portfolio photos
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
 - Resend currently only sends from `onboarding@resend.dev` to the Resend account email; sending to `sanchitmehta51@gmail.com` requires domain verification and a real sender address
+- Admin sessions currently use the Supabase access token lifetime, so the barber may need to log in again after the token expires
 - `npm test` is not set up yet
 - Supabase free-tier inactivity pause is still a later risk during development
 - Logo and haircut portfolio images are intentionally deferred until the landing page polish pass near the end
 
 ### Manual setup still needed
+- Test logging into `/admin/login` with the Supabase auth password created this session
 - Add real blocked dates in Supabase later
 - Verify a sending domain in Resend before production emails are sent to the barber email
 - Set up Cloudflare Pages project and production env vars
 - Provide final logo and haircut portfolio photos for the landing page polish pass
-- Create the barber’s admin auth user in Supabase when admin work starts
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -177,7 +187,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-01
-**Last Finished:** Installed and wired Resend notifications after booking creation. Booking saves remain successful if email fails. Local Resend test email was received successfully at the Resend account email; production delivery to the barber email still requires domain verification.
-**In Progress:** Phase 1 public booking flow is functionally complete for public MVP foundation, with production Resend domain verification deferred until deployment/domain setup.
-**Needs User Action Next:** Create the barber admin auth user in Supabase when admin work starts. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. The public booking flow now saves real Supabase bookings, redirects to `/book/confirmed`, and sends Resend notification emails in local testing to the Resend account email. Start Phase 2 admin MVP foundation: guide me through creating the barber admin auth user in Supabase, then build admin login protection and the first upcoming-bookings dashboard view. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.
+**Last Finished:** Created the Phase 2 admin foundation: barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, and read-only upcoming bookings. Verified lint, build, logged-out redirect, login page render, invalid-login `400`, and wrong-password `401`.
+**In Progress:** Phase 2 admin MVP foundation is underway. The next dashboard behavior is the no-show action.
+**Needs User Action Next:** Test the real admin login in the browser with the password created in Supabase. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. Phase 2 admin foundation now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, and a read-only upcoming bookings view. First manually test admin login with the password created in Supabase. Then add the next smallest admin feature: mark a confirmed booking as no-show. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.
