@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   ADD_ON_PRICES,
@@ -13,6 +14,10 @@ import {
   type AddOnType,
   type ServiceType
 } from "@/lib/bookings/config";
+import {
+  BOOKING_CONFIRMATION_STORAGE_KEY,
+  type BookingConfirmationSummary
+} from "@/lib/bookings/types";
 import type { AvailableSlot } from "@/lib/slots/types";
 import {
   bookingDraftSchema,
@@ -30,11 +35,35 @@ type AvailabilityResponse = {
   slots?: unknown;
 };
 
+type BookingResponse = {
+  booking?: unknown;
+  error?: string;
+};
+
 type AvailabilityState = {
   errorMessage: string | null;
   isLoading: boolean;
   slots: AvailableSlot[];
 };
+
+type BookingSubmissionState =
+  | {
+      errorMessage: string | null;
+      status: "idle";
+    }
+  | {
+      errorMessage: string | null;
+      status: "submitting";
+    }
+  | {
+      booking: BookingConfirmationSummary;
+      errorMessage: null;
+      status: "success";
+    }
+  | {
+      errorMessage: string;
+      status: "error";
+    };
 
 type BookingFieldName = keyof BookingFormValues | "timeSlot";
 
@@ -99,6 +128,41 @@ function readSlots(payload: unknown): AvailableSlot[] | null {
   return candidate.slots.filter(isAvailableSlot);
 }
 
+function isConfirmedBooking(
+  value: unknown
+): value is BookingConfirmationSummary {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Partial<BookingConfirmationSummary>;
+
+  return (
+    Array.isArray(candidate.addOns) &&
+    candidate.addOns.every((addOn) =>
+      ADD_ON_TYPES.includes(addOn as AddOnType)
+    ) &&
+    typeof candidate.bookingDate === "string" &&
+    typeof candidate.clientName === "string" &&
+    typeof candidate.isAfterHours === "boolean" &&
+    typeof candidate.priceCharged === "number" &&
+    SERVICE_TYPES.includes(candidate.serviceType as ServiceType) &&
+    typeof candidate.timeSlot === "string"
+  );
+}
+
+function readConfirmedBooking(
+  payload: unknown
+): BookingConfirmationSummary | null {
+  if (!payload || typeof payload !== "object") {
+    return null;
+  }
+
+  const candidate = payload as BookingResponse;
+
+  return isConfirmedBooking(candidate.booking) ? candidate.booking : null;
+}
+
 function formatSelectedDate(date: string): string {
   const baseDate = new Date(`${date}T12:00:00.000Z`);
 
@@ -148,6 +212,7 @@ function getSelectedSlot(
 export function BookingAvailability({
   initialDate
 }: BookingAvailabilityProps): JSX.Element {
+  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);
   const [selectedSlotValue, setSelectedSlotValue] = useState<string | null>(
     null
@@ -160,6 +225,10 @@ export function BookingAvailability({
     errorMessage: null,
     isLoading: true,
     slots: []
+  });
+  const [submission, setSubmission] = useState<BookingSubmissionState>({
+    errorMessage: null,
+    status: "idle"
   });
 
   const selectedSlot = getSelectedSlot(availability.slots, selectedSlotValue);
@@ -177,12 +246,19 @@ export function BookingAvailability({
         serviceType: formValues.serviceType
       })
     : null;
+  const isSubmitting = submission.status === "submitting";
+  const isBookingConfirmed = submission.status === "success";
+  const isFormDisabled = !selectedSlot || isSubmitting || isBookingConfirmed;
 
   useEffect(() => {
     const controller = new AbortController();
 
     async function loadAvailability(): Promise<void> {
       setSelectedSlotValue(null);
+      setSubmission({
+        errorMessage: null,
+        status: "idle"
+      });
       setTouchedFields((currentState) => ({
         ...currentState,
         timeSlot: false
@@ -280,6 +356,95 @@ export function BookingAvailability({
       };
     });
     markFieldTouched("addOns");
+  }
+
+  async function submitBooking(event: FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+
+    const validationResult = bookingDraftSchema.safeParse(bookingDraft);
+
+    if (!validationResult.success) {
+      setTouchedFields({
+        addOns: true,
+        clientEmail: true,
+        clientName: true,
+        clientPhone: true,
+        notes: true,
+        serviceType: true,
+        timeSlot: true
+      });
+      setSubmission({
+        errorMessage: "Please fix the highlighted details before booking.",
+        status: "error"
+      });
+      return;
+    }
+
+    setSubmission({
+      errorMessage: null,
+      status: "submitting"
+    });
+
+    try {
+      const response = await fetch("/api/bookings", {
+        body: JSON.stringify(validationResult.data),
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: "POST"
+      });
+      const payload: unknown = await response.json();
+
+      if (!response.ok) {
+        const errorMessage =
+          readErrorMessage(payload) ??
+          "Unable to save the booking right now. Please try again.";
+
+        if (response.status === 409 && selectedSlotValue) {
+          setAvailability((currentAvailability) => ({
+            ...currentAvailability,
+            slots: currentAvailability.slots.filter(
+              (slot) => slot.value !== selectedSlotValue
+            )
+          }));
+          setSelectedSlotValue(null);
+        }
+
+        setSubmission({
+          errorMessage,
+          status: "error"
+        });
+        return;
+      }
+
+      const confirmedBooking = readConfirmedBooking(payload);
+
+      if (!confirmedBooking) {
+        throw new Error("Booking response was in an unexpected format.");
+      }
+
+      setSubmission({
+        booking: confirmedBooking,
+        errorMessage: null,
+        status: "success"
+      });
+      window.sessionStorage.setItem(
+        BOOKING_CONFIRMATION_STORAGE_KEY,
+        JSON.stringify(confirmedBooking)
+      );
+      router.push("/book/confirmed");
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Unable to save the booking right now. Please try again.";
+
+      setSubmission({
+        errorMessage,
+        status: "error"
+      });
+    }
   }
 
   return (
@@ -435,7 +600,7 @@ export function BookingAvailability({
           )}
         </div>
 
-        <form className="mt-4 space-y-4">
+        <form className="mt-4 space-y-4" onSubmit={submitBooking}>
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
               Client name
@@ -443,7 +608,7 @@ export function BookingAvailability({
             <input
               aria-invalid={touchedFields.clientName && fieldErrors.clientName ? true : undefined}
               className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={!selectedSlot}
+              disabled={isFormDisabled}
               onBlur={() => markFieldTouched("clientName")}
               onChange={(event) => updateField("clientName", event.target.value)}
               placeholder="Your full name"
@@ -464,7 +629,7 @@ export function BookingAvailability({
             <input
               aria-invalid={touchedFields.clientPhone && fieldErrors.clientPhone ? true : undefined}
               className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={!selectedSlot}
+              disabled={isFormDisabled}
               onBlur={() => markFieldTouched("clientPhone")}
               onChange={(event) => updateField("clientPhone", event.target.value)}
               placeholder="604 555 0123"
@@ -493,7 +658,7 @@ export function BookingAvailability({
                         ? "border-amber-300/70 bg-amber-300/12 text-white"
                         : "border-white/10 bg-white/5 text-zinc-200 hover:border-white/20"
                     }`}
-                    disabled={!selectedSlot}
+                    disabled={isFormDisabled}
                     key={serviceType}
                     onClick={() => selectService(serviceType)}
                     type="button"
@@ -527,7 +692,7 @@ export function BookingAvailability({
                 return (
                   <label
                     className={`flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 transition ${
-                      selectedSlot
+                      selectedSlot && !isFormDisabled
                         ? "border-white/10 bg-white/5 text-zinc-100"
                         : "border-white/10 bg-white/5 text-zinc-100 opacity-50"
                     }`}
@@ -542,7 +707,7 @@ export function BookingAvailability({
                     <input
                       checked={isSelected}
                       className="size-5 accent-amber-300"
-                      disabled={!selectedSlot}
+                      disabled={isFormDisabled}
                       onChange={() => toggleAddOn(addOn)}
                       type="checkbox"
                     />
@@ -560,7 +725,7 @@ export function BookingAvailability({
             <input
               aria-invalid={touchedFields.clientEmail && fieldErrors.clientEmail ? true : undefined}
               className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={!selectedSlot}
+              disabled={isFormDisabled}
               onBlur={() => markFieldTouched("clientEmail")}
               onChange={(event) => updateField("clientEmail", event.target.value)}
               placeholder="name@example.com"
@@ -582,7 +747,7 @@ export function BookingAvailability({
             <textarea
               aria-invalid={touchedFields.notes && fieldErrors.notes ? true : undefined}
               className="min-h-28 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-200/20 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={!selectedSlot}
+              disabled={isFormDisabled}
               onBlur={() => markFieldTouched("notes")}
               onChange={(event) => updateField("notes", event.target.value)}
               placeholder="Anything the barber should know?"
@@ -615,17 +780,53 @@ export function BookingAvailability({
               </p>
             ) : null}
           </div>
+
+          {submission.status === "error" ? (
+            <div className="rounded-2xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+              {submission.errorMessage}
+            </div>
+          ) : null}
+
+          {submission.status === "success" ? (
+            <div className="rounded-2xl border border-emerald-300/30 bg-emerald-400/10 px-4 py-3 text-sm leading-6 text-emerald-50">
+              <p className="font-medium">
+                Booking saved for {submission.booking.clientName}.
+              </p>
+              <p className="mt-1">
+                Total: {formatPrice(submission.booking.priceCharged)}. Bring
+                cash or e-transfer to sanchitmehta51@gmail.com.
+              </p>
+            </div>
+          ) : null}
+
+          <button
+            className="h-12 w-full rounded-2xl bg-white px-4 text-sm font-semibold text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={
+              !selectedSlot || !isDraftReady || isSubmitting || isBookingConfirmed
+            }
+            type="submit"
+          >
+            {isSubmitting
+              ? "Saving booking..."
+              : isBookingConfirmed
+                ? "Booking Saved"
+                : "Book Appointment"}
+          </button>
         </form>
 
         <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4">
           <p className="text-sm font-medium text-white">
-            {selectedSlot && isDraftReady
-              ? "This booking draft is valid and ready for submission wiring."
+            {isBookingConfirmed
+              ? "Your booking has been saved."
+              : selectedSlot && isDraftReady
+                ? "This booking is ready to submit."
               : "Select a slot and fill the required fields to continue."}
           </p>
           <p className="mt-2 text-sm leading-6 text-zinc-400">
-            {selectedSlot
-              ? "The next change will save this booking and handle double-booking safely."
+            {isBookingConfirmed
+              ? "Email notifications are not connected yet, so save these details for now."
+              : selectedSlot
+                ? "The site will recheck availability before saving to prevent double-booking."
               : "Select a slot first, then fill the form to preview the complete booking flow."}
           </p>
           <div className="mt-4 border-t border-white/10 pt-4 text-sm leading-6 text-zinc-400">

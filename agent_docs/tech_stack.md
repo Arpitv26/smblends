@@ -173,7 +173,7 @@ Whenever setup leaves the terminal and goes into a dashboard or website:
 - `created_at`
 - unique constraint on `(booking_date, time_slot)`
 
-Current schema note: the first migration still has `client_email text not null` and no add-on storage. Before the real booking submission is finalized, add a small migration so the database matches the barber's required fields and service menu.
+Current schema note: migration `20260430090000_real_smblends_booking_rules.sql` makes `client_email` optional, adds `add_ons`, applies the real SMBLENDS service menu, and replaces placeholder availability with 60-minute rows.
 
 ## Suggested Supabase Modules
 - `lib/supabase/client.ts` — browser-safe client
@@ -186,7 +186,7 @@ Current schema note: the first migration still has `client_email text not null` 
 ```ts
 export type AvailableSlot = {
   value: string;           // e.g. "20:00:00"
-  label: string;           // e.g. "8:00 PM"
+  label: string;           // e.g. "9:00 PM"
   isAfterHours: boolean;   // true if 9 PM or later
 };
 
@@ -194,7 +194,7 @@ export async function getAvailableSlots(date: string): Promise<AvailableSlot[]> 
   // 1. Read weekly availability for this weekday
   // 2. Stop if the date is blocked
   // 3. Read confirmed bookings for that date
-  // 4. Generate 30-minute slots
+  // 4. Generate 60-minute slots
   // 5. Remove already-booked slots
   // 6. Mark 9 PM+ as after-hours
   return [];

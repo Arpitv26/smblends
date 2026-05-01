@@ -89,7 +89,7 @@ Use the default Cloudflare Pages URL: `smblends.pages.dev`. This is free, HTTPS,
 - [ ] Build `/book` page — step 1: show available dates (read from `availability` table)
 - [ ] Build `/book` page — step 2: show available time slots for selected date
   - Query `bookings` table to exclude already-booked slots
-  - Highlight any slot after 8pm as "After Hours (+$25)"
+  - Highlight any slot at or after 9 PM as "After Hours (+$10)"
 - [ ] Build `/book` page — step 3: client info form (name, phone, service type)
 - [ ] On submit: insert row into `bookings` table
 - [ ] Block double-booking: use Supabase unique constraint on `(date, time_slot)`
@@ -122,8 +122,8 @@ Use the default Cloudflare Pages URL: `smblends.pages.dev`. This is free, HTTPS,
 - [ ] Add policy banner to booking page:
   - "20+ min late: $5 fee"
   - "No-show / same-day cancel: $10 surcharge on next booking"
-  - "Bookings after 8pm: $25 flat rate (automatically shown in pricing)"
-- [ ] Auto-detect after-hours slots and show "$25 After Hours" label
+  - "Bookings after 9 PM: +$10 after-hours fee (automatically shown in pricing)"
+- [ ] Auto-detect after-hours slots and show an "After Hours (+$10)" label
 - [ ] Add booking confirmation page `/book/confirmed`
 - [ ] Mobile responsive check — test on iPhone Safari (barber's clients book on mobile)
 - [ ] Add favicon, meta title, Instagram link
@@ -433,27 +433,27 @@ For a barber doing 5–15 bookings per day from his personal Instagram following
 const policies = [
   { icon: '⏰', text: 'Arriving 20+ minutes late: $5 fee charged at appointment' },
   { icon: '🚫', text: 'No-shows or same-day cancellations: $10 added to your next booking' },
-  { icon: '🌙', text: 'Bookings after 8:00 PM: $25 flat rate (selected automatically below)' },
+  { icon: '🌙', text: 'Bookings after 9:00 PM: +$10 after-hours fee' },
 ]
 ```
 
 The barber enforces the $5 late fee and $10 no-show surcharge in person — he knows his clients. The system flags no-shows in the admin panel. He tracks the $10 surcharge by checking the flag before the client's next appointment.
 
-**The $25 after-hours rate** is the one you can actually enforce in the UI:
+**The $10 after-hours surcharge** is the one you can actually enforce in the UI:
 
 ```typescript
 // In your slot generation logic
 const isAfterHours = (timeSlot: string): boolean => {
   const [h] = timeSlot.split(':').map(Number)
-  return h >= 20 // 8:00 PM = hour 20 in 24h
+  return h >= 21 // 9:00 PM = hour 21 in 24h
 }
 
 // Display in UI
-const price = isAfterHours(slot) ? 25 : 0  // or your base rate
-const label = isAfterHours(slot) ? '$25 After Hours' : 'Regular Booking'
+const afterHoursFee = isAfterHours(slot) ? 10 : 0
+const label = isAfterHours(slot) ? 'After Hours (+$10)' : 'Regular Booking'
 ```
 
-When the client selects an 8pm+ slot, show the $25 price clearly. They confirm before submitting. That's enforceable without Stripe.
+When the client selects a 9 PM or later slot, show the selected service price plus the $10 after-hours fee clearly. They confirm before submitting. That's enforceable without Stripe.
 
 ---
 

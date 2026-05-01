@@ -312,7 +312,7 @@ A client can:
 - Read available time slots for a selected date
 - Exclude blocked dates
 - Exclude booked slots
-- Mark after-hours when slot is 8 PM or later
+- Mark after-hours when slot is 9 PM or later
 - Submit booking through POST endpoint
 
 ### Codex prompt example
@@ -324,7 +324,7 @@ Requirements:
 - User selects date first
 - Show only available slots for selected date
 - Exclude blocked dates and existing bookings
-- Label any slot at or after 8:00 PM as After Hours (+$25)
+- Label any slot at or after 9:00 PM as After Hours (+$10)
 - Collect client name, phone, and service type
 - Submit to Supabase through a route handler
 - Show confirmation page after success
@@ -349,7 +349,7 @@ The system should calculate available slots from the barber’s weekly hours and
 ### Logic rules
 - Read weekly hours from `availability`
 - Read blocked dates from `blocked_dates`
-- Generate time slots in 30-minute increments
+- Generate time slots in 60-minute increments
 - Remove already-booked slots from `bookings`
 - Mark after-hours automatically
 
@@ -363,9 +363,9 @@ Create a reusable slot-generation utility for a barber booking app.
 Rules:
 - Use weekly availability from Supabase
 - Support blocked dates
-- Generate 30-minute slots
+- Generate 60-minute slots
 - Exclude existing confirmed bookings
-- Mark slots at or after 8 PM as after-hours
+- Mark slots at or after 9 PM as after-hours
 Return a typed result suitable for a booking UI.
 Also explain how to test edge cases.
 ```
@@ -513,7 +513,7 @@ This reduces confusion and helps the barber enforce rules manually.
 Create a policy banner and after-hours slot label system for a barber booking site.
 Requirements:
 - Show late fee, no-show, and after-hours policy clearly
-- Display after-hours badge on slots at or after 8 PM
+- Display after-hours badge on slots at or after 9 PM
 - Keep the design dark, sleek, premium, and mobile-friendly
 ```
 
@@ -933,4 +933,3 @@ Proceed to **Part 4** to generate:
 **Primary Tooling:** VS Code + Codex CLI  
 **Estimated Time to MVP:** 10–14 days  
 **Estimated Monthly Cost:** Near $0 for MVP
-

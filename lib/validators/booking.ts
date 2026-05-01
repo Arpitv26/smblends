@@ -6,7 +6,13 @@ const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const PHONE_PATTERN = /^[0-9+()\-\s]{7,30}$/;
 
 export const bookingDraftSchema = z.object({
-  addOns: z.array(z.enum(ADD_ON_TYPES)).default([]),
+  addOns: z
+    .array(z.enum(ADD_ON_TYPES))
+    .default([])
+    .refine(
+      (addOns) => new Set(addOns).size === addOns.length,
+      "Choose each add-on only once."
+    ),
   bookingDate: z.string().regex(ISO_DATE_PATTERN, "Choose a valid date."),
   clientEmail: z
     .string()

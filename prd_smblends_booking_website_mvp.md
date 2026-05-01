@@ -105,8 +105,8 @@ A client visits Smblends’ Instagram profile, taps the booking link in bio, lan
 - **User Story:** As a client, I want to see the rules before booking so that there are no surprises later.
 - **Success Criteria:**
   - Policies are visible on booking pages
-  - 8 PM+ slots are labeled as after-hours
-  - After-hours bookings show the $25 rate clearly
+  - 9 PM-12 AM slots are labeled as after-hours
+  - After-hours bookings show the selected service price plus the $10 surcharge clearly
 - **Priority:** Critical
 
 ### Future Features (Not in MVP)

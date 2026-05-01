@@ -92,18 +92,22 @@ npm test
 - New barber configuration was captured in `agent_docs/clientInformation.md`
 - `/book` now supports the real service menu, add-ons, optional email, payment copy, policy copy, and estimated pricing
 - Supabase migration `20260430090000_real_smblends_booking_rules.sql` was applied manually in Supabase
+- `POST /api/bookings` now saves real bookings with server-side validation, server-side pricing, availability recheck, optional email support, add-on storage, and friendly unavailable/duplicate slot responses
+- `/book` now submits to the booking API and shows loading, success, and error states
+- `/book/confirmed` now shows a clean animated confirmation summary after successful booking submission
+- Resend notification code is wired after booking creation, with barber notification and optional client confirmation
+- Local Resend test email was received successfully at the Resend account email
 
 ### Completed this session
-- Confirmed appointments should be 60 minutes
-- Added shared Smblends booking config for services, add-ons, slot length, after-hours threshold, and pricing
-- Updated booking validation for `Haircut`, `Haircut & Beard`, optional email, and selected add-ons
-- Updated slot logic so 9 PM and later is after-hours and overnight windows can end at midnight
-- Updated `/book` with service selection, add-on checkboxes, estimated total, payment copy, and policy copy
-- Updated homepage and booking page copy to use the real SMBLENDS content
-- Added `supabase/migrations/20260430090000_real_smblends_booking_rules.sql` for optional email, add-on storage, midnight availability, and real 60-minute availability rows
-- User applied the Supabase migration manually and checked that the website looks good
-- Changed the display/business name from `SMBLENDS._` to `SMBLENDS` while keeping Instagram as `@smblends._`
-- Verified with `npm run lint`, `npm run build`, and local smoke checks
+- Installed `resend`
+- Added `lib/notifications/send-booking-notifications.ts`
+- Booking API now sends a barber notification after each saved booking
+- Booking API now sends a client confirmation only when client email is provided
+- Email failures are logged but do not block booking creation
+- Improved Resend failure logging to show the exact setup issue
+- Verified with `npm run lint`, `npm run build`, and a temporary local booking smoke test that was cleaned up afterward
+- Smoke test confirmed bookings still return `201` even when Resend rejects the email
+- User temporarily set `BARBER_NOTIFICATION_EMAIL` to the Resend account email and confirmed the "New SMBLENDS booking" email was received
 
 ### Currently working
 - Home page renders correctly
@@ -117,26 +121,31 @@ npm test
 - `/book` lets clients choose `Haircut` or `Haircut & Beard`
 - `/book` lets clients select optional add-ons
 - `/book` previews the estimated total from local shared pricing config
+- `/book` saves valid bookings to Supabase
+- Successful `/book` submissions redirect to `/book/confirmed`
+- `/book/confirmed` displays the just-created booking summary from session storage
+- Server stores `price_charged` from trusted server-side pricing logic
+- Server returns a friendly error when a selected slot is unavailable
+- Notification code runs after successful booking creation
+- Booking creation still succeeds if notification sending fails
+- Resend local testing works when the recipient is the Resend account email
 
 ### Unfinished work
-- Add booking submission API
-- Handle double-booking responses in the API
-- Build confirmation page
+- Finish Resend domain verification so production emails can send to the barber email from a real sender
 - Build admin auth and dashboard
-- Configure Resend
 - Configure Cloudflare Pages
 - Final landing page polish with logo and haircut portfolio photos
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
-- No hard blocker right now
+- Resend currently only sends from `onboarding@resend.dev` to the Resend account email; sending to `sanchitmehta51@gmail.com` requires domain verification and a real sender address
 - `npm test` is not set up yet
 - Supabase free-tier inactivity pause is still a later risk during development
 - Logo and haircut portfolio images are intentionally deferred until the landing page polish pass near the end
 
 ### Manual setup still needed
 - Add real blocked dates in Supabase later
-- Set up Resend API key and sender configuration
+- Verify a sending domain in Resend before production emails are sent to the barber email
 - Set up Cloudflare Pages project and production env vars
 - Provide final logo and haircut portfolio photos for the landing page polish pass
 - Create the barber’s admin auth user in Supabase when admin work starts
@@ -167,8 +176,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-04-30
-**Last Finished:** Updated the current build for 60-minute appointments, real services/add-ons, optional email, 9 PM after-hours handling, estimated pricing, payment/policy copy, applied the Supabase migration for matching database changes, and changed display name to `SMBLENDS`.
-**In Progress:** Phase 1 public booking flow foundation before booking submission.
-**Needs User Action Next:** None before the next code step. Later, provide the final logo and haircut portfolio photos for landing page polish.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. The Supabase migration has been applied and the current website looks good. Build `POST /api/bookings` with server-side validation, server-side price calculation, optional email support, add-on storage, availability recheck, and friendly duplicate-slot handling. Wire the current `/book` form to submit, verify it, and stop before adding email notifications or landing page logo/photos.
+**Last Updated:** 2026-05-01
+**Last Finished:** Installed and wired Resend notifications after booking creation. Booking saves remain successful if email fails. Local Resend test email was received successfully at the Resend account email; production delivery to the barber email still requires domain verification.
+**In Progress:** Phase 1 public booking flow is functionally complete for public MVP foundation, with production Resend domain verification deferred until deployment/domain setup.
+**Needs User Action Next:** Create the barber admin auth user in Supabase when admin work starts. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. The public booking flow now saves real Supabase bookings, redirects to `/book/confirmed`, and sends Resend notification emails in local testing to the Resend account email. Start Phase 2 admin MVP foundation: guide me through creating the barber admin auth user in Supabase, then build admin login protection and the first upcoming-bookings dashboard view. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.
