@@ -131,8 +131,8 @@ Load only what is needed for the current task:
 - [x] Admin login
 - [x] Upcoming bookings table
 - [x] Mark no-show action
-- [ ] Weekly availability editor
-- [ ] Blocked dates manager
+- [x] Weekly availability editor
+- [x] Blocked dates manager
 
 ### Phase 3: Testing and Launch
 - [ ] Real booking tests
@@ -178,13 +178,13 @@ Load only what is needed for the current task:
 
 ## Current State (Update This Every Session)
 **Last Updated:** 2026-05-01
-**Completed This Session:** Added `/admin/no-shows`, added a reusable admin booking card, added admin navigation between Upcoming and No-shows, added a no-show bookings query, and verified with `npm run lint`, `npm run build`, and logged-out redirects for both `/admin/dashboard` and `/admin/no-shows`.
-**Currently Working:** Phase 1 public booking flow foundation remains working, and Phase 2 admin foundation now has Supabase Auth login protection, upcoming bookings, logout, no-show marking, and no-show tracking.
-**Currently Working Well:** `npm run lint` passes, `npm run build` passes, `/admin/dashboard` and `/admin/no-shows` redirect logged-out users to `/admin/login`, `/admin/login` renders, invalid admin login requests return friendly errors, the no-show API blocks logged-out requests with `401`, `/book` still renders, valid booking submissions save to Supabase, successful bookings redirect to `/book/confirmed`, notification failures do not break booking creation, unavailable/duplicate slots return a friendly `409`, and Supabase env wiring works.
-**Unfinished Work:** Resend still needs a verified sending domain before emails can be delivered to the barber email from a production sender, no blocked-date admin flow yet, no weekly availability editor yet, no Cloudflare setup yet, no final landing page/logo/photo pass yet, and no automated test suite beyond lint/build/manual smoke checks.
+**Completed This Session:** Added `/admin/blocked-dates`, added protected create/delete blocked-date APIs, added admin blocked-date helpers, added full-day block creation with optional reason, added blocked-date removal with confirmation, added warnings for confirmed bookings already on a blocked date, added Blocked dates to admin navigation, and verified with `npm run lint`, `npm run build`, logged-out `/admin/blocked-dates` redirect, logged-out blocked-date create `401`, and logged-out blocked-date delete `401`.
+**Currently Working:** Phase 1 public booking flow foundation remains working, and Phase 2 admin foundation now has Supabase Auth login protection, upcoming bookings, logout, no-show marking, no-show tracking, weekly availability toggles, and full-day blocked-date management.
+**Currently Working Well:** `npm run lint` passes, `npm run build` passes, `/admin/dashboard`, `/admin/no-shows`, `/admin/availability`, and `/admin/blocked-dates` redirect logged-out users to `/admin/login`, `/admin/login` renders, invalid admin login requests return friendly errors, protected admin write APIs block logged-out requests with `401`, `/book` still renders, public availability reads active availability rows and blocked dates, valid booking submissions save to Supabase, successful bookings redirect to `/book/confirmed`, notification failures do not break booking creation, unavailable/duplicate slots return a friendly `409`, and Supabase env wiring works.
+**Unfinished Work:** Manually verify adding a blocked date removes public `/book` slots for that date and then remove the test block, Resend still needs a verified sending domain before emails can be delivered to the barber email from a production sender, no Cloudflare setup yet, no final landing page/logo/photo pass yet, and no automated test suite beyond lint/build/manual smoke checks.
 **Blockers Or Risks:** Resend currently only sends from `onboarding@resend.dev` to the Resend account email; sending to `sanchitmehta51@gmail.com` requires domain verification and a real sender address. Admin sessions currently use the Supabase access token lifetime, so the barber may need to log in again after the token expires. `npm test` is still not configured. Free-tier Supabase inactivity pause remains a future operational risk.
-**Manual Setup Still Needed:** Manually confirm `/admin/no-shows` shows the booking that was marked no-show, verify a sending domain in Resend before production email delivery to the barber email, set up a blocked-date workflow in Supabase later, configure Cloudflare Pages, and provide final logo and haircut portfolio photos near landing page polish.
-**Next Recommended Task:** Manually confirm the no-show tracking page, then build the weekly availability editor.
+**Manual Setup Still Needed:** Manually test adding/removing one blocked date from `/admin/blocked-dates`, verify a sending domain in Resend before production email delivery to the barber email, configure Cloudflare Pages, and provide final logo and haircut portfolio photos near landing page polish.
+**Next Recommended Task:** Run a full manual Phase 2 admin QA pass, then start Phase 3 launch preparation.
 
 ## Next session prompt
- Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin foundation now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, upcoming bookings, protected mark-no-show action, and `/admin/no-shows` tracking. First manually confirm `/admin/no-shows` shows the booking marked no-show. Then build the next smallest admin feature: weekly availability editor. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.
+ Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, upcoming bookings, protected mark-no-show action, `/admin/no-shows` tracking, `/admin/availability` toggles, and `/admin/blocked-dates` full-day blocking. First manually test adding/removing one blocked date and confirm `/book` shows no slots for that date while blocked. Then run a full Phase 2 admin QA pass before moving to Phase 3 launch preparation. Stop before Cloudflare deployment or landing page logo/photos unless explicitly asked.

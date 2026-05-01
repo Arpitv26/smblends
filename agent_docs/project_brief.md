@@ -99,13 +99,17 @@ npm test
 - Local Resend test email was received successfully at the Resend account email
 
 ### Completed this session
-- Added `/admin/no-shows`
-- Added a no-show bookings query for `status = no_show`
-- Added shared admin booking card UI for Upcoming and No-shows
-- Added admin navigation links for **Upcoming** and **No-shows**
+- Added `/admin/blocked-dates`
+- Added blocked-date query helpers with confirmed-booking counts
+- Added protected blocked-date create/delete APIs
+- Added full-day block creation with optional reason
+- Added blocked-date removal with confirmation
+- Added warnings when a blocked date already has confirmed bookings
+- Added **Blocked dates** to admin navigation
 - Verified with `npm run lint` and `npm run build`
-- Verified logged-out `/admin/dashboard` redirects to `/admin/login`
-- Verified logged-out `/admin/no-shows` redirects to `/admin/login`
+- Verified logged-out `/admin/blocked-dates` redirects to `/admin/login`
+- Verified logged-out blocked-date create requests return `401`
+- Verified logged-out blocked-date delete requests return `401`
 
 ### Currently working
 - Home page renders correctly
@@ -134,13 +138,17 @@ npm test
 - Admin dashboard can mark confirmed bookings as no-show
 - No-showed bookings disappear from the confirmed upcoming-bookings list after refresh
 - `/admin/no-shows` shows bookings marked `no_show`
-- Admin navigation links between Upcoming and No-shows
+- Admin navigation links between Upcoming, No-shows, and Availability
+- `/admin/availability` shows standard and after-hours rows for each weekday
+- Admin can toggle existing availability rows active/off
+- Public `/book` availability already reads the active availability rows
+- `/admin/blocked-dates` can add and remove full-day blocks
+- `/admin/blocked-dates` shows confirmed-booking warnings for blocked dates
+- Public `/book` already returns no slots for dates in `blocked_dates`
 
 ### Unfinished work
 - Finish Resend domain verification so production emails can send to the barber email from a real sender
-- Manually confirm `/admin/no-shows` shows the booking marked no-show
-- Build the weekly availability editor
-- Build the blocked-date admin flow
+- Manually verify adding one blocked date removes `/book` slots for that date, then remove the test block
 - Configure Cloudflare Pages
 - Final landing page polish with logo and haircut portfolio photos
 - Add a real test suite beyond lint/build
@@ -153,8 +161,7 @@ npm test
 - Logo and haircut portfolio images are intentionally deferred until the landing page polish pass near the end
 
 ### Manual setup still needed
-- Confirm `/admin/no-shows` shows the booking marked no-show
-- Add real blocked dates in Supabase later
+- Test adding/removing one blocked date from `/admin/blocked-dates`
 - Verify a sending domain in Resend before production emails are sent to the barber email
 - Set up Cloudflare Pages project and production env vars
 - Provide final logo and haircut portfolio photos for the landing page polish pass
@@ -186,7 +193,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-01
-**Last Finished:** Added `/admin/no-shows` tracking for bookings marked `no_show`, shared admin booking cards, and admin navigation. Verified lint, build, and logged-out redirects for dashboard and no-shows pages.
-**In Progress:** Phase 2 admin MVP foundation is underway. Admin login, upcoming bookings, logout, no-show marking, and no-show tracking are now implemented.
-**Needs User Action Next:** Confirm `/admin/no-shows` shows the booking marked no-show. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. Phase 2 admin foundation now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, upcoming bookings, protected mark-no-show action, and `/admin/no-shows` tracking. First manually confirm `/admin/no-shows` shows the booking marked no-show. Then build the next smallest admin feature: weekly availability editor. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.
+**Last Finished:** Added `/admin/blocked-dates`, protected full-day blocked-date create/delete, confirmed-booking warnings, and Blocked dates admin navigation. Verified lint, build, logged-out page redirect, logged-out create `401`, and logged-out delete `401`.
+**In Progress:** Phase 2 admin MVP is functionally complete. Admin login, upcoming bookings, logout, no-show marking, no-show tracking, weekly availability toggles, and blocked-date management are now implemented.
+**Needs User Action Next:** Test adding/removing one blocked date and confirm `/book` shows no slots for that date while blocked. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. Phase 2 admin MVP now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, upcoming bookings, protected mark-no-show action, `/admin/no-shows` tracking, `/admin/availability` toggles, and `/admin/blocked-dates` full-day blocking. First manually test adding/removing one blocked date and confirm `/book` shows no slots for that date while blocked. Then run a full Phase 2 admin QA pass before moving to Phase 3 launch preparation. Stop before Cloudflare deployment or landing page logo/photos unless explicitly asked.
