@@ -289,23 +289,25 @@ export function LandingPage(): JSX.Element {
       <section className="relative flex min-h-svh flex-col items-center justify-center px-5 pb-12 pt-20 text-center">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_62%)]" />
         <div className="home-hero-rise relative flex w-full max-w-4xl flex-col items-center">
-          <Image
-            alt="SMBLENDS logo"
-            className="h-auto w-[min(86vw,34rem)] select-none"
-            priority
-            src={logoImage}
-          />
-          <h1 className="mt-[-1.75rem] text-5xl font-semibold tracking-tight text-white sm:mt-[-2.5rem] sm:text-7xl">
+          <div className="brand-logo-blend relative z-0 w-[min(112vw,44rem)] sm:w-[min(92vw,46rem)]">
+            <Image
+              alt="SMBLENDS logo"
+              className="h-auto w-full select-none"
+              priority
+              src={logoImage}
+            />
+          </div>
+          <h1 className="relative z-10 mt-[-4rem] text-5xl font-semibold tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.85)] sm:mt-[-5rem] sm:text-7xl">
             Get Blessed
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg sm:leading-8">
+          <p className="relative z-10 mt-5 max-w-2xl text-base leading-7 text-zinc-300 drop-shadow-[0_3px_14px_rgba(0,0,0,0.85)] sm:text-lg sm:leading-8">
             My barber business is built on skill and strong customer
             connections. I take pride in delivering a sharp, clean, and fresh
             cut. It ain&apos;t about selling a cut - it&apos;s selling
             confidence.
           </p>
           <Link
-            className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-semibold uppercase tracking-[0.18em] text-black transition hover:bg-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+            className="relative z-10 mt-8 inline-flex h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-semibold uppercase tracking-[0.18em] text-black transition hover:bg-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
             href="/book"
           >
             Book Now
