@@ -130,7 +130,7 @@ Load only what is needed for the current task:
 ### Phase 2: Admin MVP
 - [x] Admin login
 - [x] Upcoming bookings table
-- [ ] Mark no-show action
+- [x] Mark no-show action
 - [ ] Weekly availability editor
 - [ ] Blocked dates manager
 
@@ -178,13 +178,13 @@ Load only what is needed for the current task:
 
 ## Current State (Update This Every Session)
 **Last Updated:** 2026-05-01
-**Completed This Session:** Guided the user through creating the barber admin user in Supabase Auth, added admin login/logout API routes, added secure HTTP-only admin auth cookies, protected `/admin/dashboard`, created `/admin/login`, added a read-only upcoming-bookings dashboard, and verified with `npm run lint`, `npm run build`, logged-out dashboard redirect, rendered login page, invalid-login `400`, and wrong-password `401`.
-**Currently Working:** Phase 1 public booking flow foundation remains working, and Phase 2 admin foundation now has Supabase Auth login protection plus a mobile-first upcoming bookings view for confirmed bookings from today forward.
-**Currently Working Well:** `npm run lint` passes, `npm run build` passes, `/admin/dashboard` redirects logged-out users to `/admin/login`, `/admin/login` renders, invalid admin login requests return friendly errors, `/book` still renders, valid booking submissions save to Supabase, successful bookings redirect to `/book/confirmed`, notification failures do not break booking creation, unavailable/duplicate slots return a friendly `409`, and Supabase env wiring works.
-**Unfinished Work:** The real admin login needs one manual browser test with the password the user created, Resend still needs a verified sending domain before emails can be delivered to the barber email from a production sender, no no-show admin action yet, no blocked-date admin flow yet, no weekly availability editor yet, no Cloudflare setup yet, no final landing page/logo/photo pass yet, and no automated test suite beyond lint/build/manual smoke checks.
+**Completed This Session:** Added a protected admin no-show action: server-side booking status update to `no_show`, `/api/admin/bookings/[bookingId]/no-show`, a dashboard `Mark no-show` button with confirmation and refresh behavior, and verification with `npm run lint`, `npm run build`, and a logged-out no-show API check returning `401`.
+**Currently Working:** Phase 1 public booking flow foundation remains working, and Phase 2 admin foundation now has Supabase Auth login protection, a mobile-first upcoming bookings view for confirmed bookings from today forward, logout, and no-show marking.
+**Currently Working Well:** `npm run lint` passes, `npm run build` passes, `/admin/dashboard` redirects logged-out users to `/admin/login`, `/admin/login` renders, invalid admin login requests return friendly errors, the no-show API blocks logged-out requests with `401`, `/book` still renders, valid booking submissions save to Supabase, successful bookings redirect to `/book/confirmed`, notification failures do not break booking creation, unavailable/duplicate slots return a friendly `409`, and Supabase env wiring works.
+**Unfinished Work:** Resend still needs a verified sending domain before emails can be delivered to the barber email from a production sender, no blocked-date admin flow yet, no weekly availability editor yet, no Cloudflare setup yet, no final landing page/logo/photo pass yet, and no automated test suite beyond lint/build/manual smoke checks.
 **Blockers Or Risks:** Resend currently only sends from `onboarding@resend.dev` to the Resend account email; sending to `sanchitmehta51@gmail.com` requires domain verification and a real sender address. Admin sessions currently use the Supabase access token lifetime, so the barber may need to log in again after the token expires. `npm test` is still not configured. Free-tier Supabase inactivity pause remains a future operational risk.
-**Manual Setup Still Needed:** Manually test logging into `/admin/login` with the Supabase auth password created this session, verify a sending domain in Resend before production email delivery to the barber email, set up a blocked-date workflow in Supabase later, configure Cloudflare Pages, and provide final logo and haircut portfolio photos near landing page polish.
-**Next Recommended Task:** Manually test the admin login in the browser, then add the next small admin dashboard action: mark a confirmed booking as no-show.
+**Manual Setup Still Needed:** Manually test marking one test booking as no-show from `/admin/dashboard`, verify a sending domain in Resend before production email delivery to the barber email, set up a blocked-date workflow in Supabase later, configure Cloudflare Pages, and provide final logo and haircut portfolio photos near landing page polish.
+**Next Recommended Task:** Manually test the no-show button on a test booking, then build the weekly availability editor.
 
 ## Next session prompt
- Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin foundation now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, and a read-only upcoming bookings view. First manually test admin login with the password created in Supabase. Then add the next smallest admin feature: mark a confirmed booking as no-show. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.
+ Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin foundation now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, upcoming bookings, and a protected mark-no-show action. First manually test marking one test booking as no-show from `/admin/dashboard`. Then build the next smallest admin feature: weekly availability editor. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.

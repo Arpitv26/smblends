@@ -1,4 +1,5 @@
 import { LogoutButton } from "@/components/admin/LogoutButton";
+import { MarkNoShowButton } from "@/components/admin/MarkNoShowButton";
 import { formatPrice } from "@/lib/bookings/config";
 import { requireAdminSession } from "@/lib/admin/auth";
 import {
@@ -92,6 +93,13 @@ function BookingRow({ booking }: { booking: UpcomingBooking }): JSX.Element {
           {booking.notes}
         </div>
       ) : null}
+
+      <div className="mt-4 border-t border-white/10 pt-4">
+        <MarkNoShowButton
+          bookingId={booking.id}
+          clientName={booking.clientName}
+        />
+      </div>
     </li>
   );
 }
@@ -112,8 +120,8 @@ export default async function AdminDashboardPage(): Promise<JSX.Element> {
               Upcoming bookings
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
-              Signed in as {adminSession.email}. This first admin view is
-              read-only and shows confirmed bookings from today forward.
+              Signed in as {adminSession.email}. This view shows confirmed
+              bookings from today forward and lets you mark no-shows.
             </p>
           </div>
 
