@@ -99,12 +99,13 @@ npm test
 - Local Resend test email was received successfully at the Resend account email
 
 ### Completed this session
-- Added a protected admin no-show action
-- Added `/api/admin/bookings/[bookingId]/no-show`
-- Added server-side `no_show` booking status updates for confirmed bookings only
-- Added a dashboard `Mark no-show` button with confirmation and refresh behavior
+- Added `/admin/no-shows`
+- Added a no-show bookings query for `status = no_show`
+- Added shared admin booking card UI for Upcoming and No-shows
+- Added admin navigation links for **Upcoming** and **No-shows**
 - Verified with `npm run lint` and `npm run build`
-- Verified logged-out no-show API requests return `401`
+- Verified logged-out `/admin/dashboard` redirects to `/admin/login`
+- Verified logged-out `/admin/no-shows` redirects to `/admin/login`
 
 ### Currently working
 - Home page renders correctly
@@ -132,10 +133,12 @@ npm test
 - Admin logout clears the app's admin cookies
 - Admin dashboard can mark confirmed bookings as no-show
 - No-showed bookings disappear from the confirmed upcoming-bookings list after refresh
+- `/admin/no-shows` shows bookings marked `no_show`
+- Admin navigation links between Upcoming and No-shows
 
 ### Unfinished work
 - Finish Resend domain verification so production emails can send to the barber email from a real sender
-- Manually test the no-show button on one test booking in the browser
+- Manually confirm `/admin/no-shows` shows the booking marked no-show
 - Build the weekly availability editor
 - Build the blocked-date admin flow
 - Configure Cloudflare Pages
@@ -150,7 +153,7 @@ npm test
 - Logo and haircut portfolio images are intentionally deferred until the landing page polish pass near the end
 
 ### Manual setup still needed
-- Test marking one test booking as no-show from `/admin/dashboard`
+- Confirm `/admin/no-shows` shows the booking marked no-show
 - Add real blocked dates in Supabase later
 - Verify a sending domain in Resend before production emails are sent to the barber email
 - Set up Cloudflare Pages project and production env vars
@@ -183,7 +186,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-01
-**Last Finished:** Added protected no-show marking for admin bookings. Verified lint, build, and logged-out no-show API protection with `401`.
-**In Progress:** Phase 2 admin MVP foundation is underway. Admin login, upcoming bookings, logout, and no-show marking are now implemented.
-**Needs User Action Next:** Test the no-show button on one test booking from `/admin/dashboard`. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. Phase 2 admin foundation now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, upcoming bookings, and a protected mark-no-show action. First manually test marking one test booking as no-show from `/admin/dashboard`. Then build the next smallest admin feature: weekly availability editor. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.
+**Last Finished:** Added `/admin/no-shows` tracking for bookings marked `no_show`, shared admin booking cards, and admin navigation. Verified lint, build, and logged-out redirects for dashboard and no-shows pages.
+**In Progress:** Phase 2 admin MVP foundation is underway. Admin login, upcoming bookings, logout, no-show marking, and no-show tracking are now implemented.
+**Needs User Action Next:** Confirm `/admin/no-shows` shows the booking marked no-show. Later, verify a sending domain in Resend, configure Cloudflare Pages, and provide the final logo/haircut portfolio photos for landing page polish.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md`. Phase 2 admin foundation now has the barber Supabase Auth user, `/admin/login`, protected `/admin/dashboard`, logout, upcoming bookings, protected mark-no-show action, and `/admin/no-shows` tracking. First manually confirm `/admin/no-shows` shows the booking marked no-show. Then build the next smallest admin feature: weekly availability editor. Stop before blocked-date editing, Cloudflare deployment, or landing page logo/photos.

@@ -24,6 +24,14 @@ export type UpcomingBooking = {
   timeSlot: string;
 };
 
+export type AdminBooking = UpcomingBooking | NoShowBooking;
+
+export type NoShowBooking = Omit<UpcomingBooking, "status"> & {
+  status: "no_show";
+};
+
+export type BookingStatus = AdminBooking["status"];
+
 type BookingRow = {
   add_ons: string[] | null;
   booking_date: string;
@@ -39,6 +47,9 @@ type BookingRow = {
   status: string;
   time_slot: string;
 };
+
+const BOOKING_SELECT_COLUMNS =
+  "id, booking_date, time_slot, client_name, client_email, client_phone, service_type, add_ons, is_after_hours, price_charged, status, notes, created_at";
 
 function getTodayInVancouver(): string {
   const parts = new Intl.DateTimeFormat("en-CA", {
@@ -77,11 +88,15 @@ function toServiceType(value: string): ServiceType {
   throw new Error(`Unexpected service type in booking row: ${value}`);
 }
 
-function toUpcomingBooking(row: BookingRow): UpcomingBooking {
-  if (row.status !== "confirmed") {
-    throw new Error(`Unexpected upcoming booking status: ${row.status}`);
+function toBookingStatus(value: string): BookingStatus {
+  if (value === "confirmed" || value === "no_show") {
+    return value;
   }
 
+  throw new Error(`Unexpected admin booking status: ${value}`);
+}
+
+function toAdminBooking(row: BookingRow): AdminBooking {
   return {
     addOns: toAddOns(row.add_ons),
     bookingDate: row.booking_date,
@@ -94,18 +109,36 @@ function toUpcomingBooking(row: BookingRow): UpcomingBooking {
     notes: row.notes,
     priceCharged: row.price_charged,
     serviceType: toServiceType(row.service_type),
-    status: "confirmed",
+    status: toBookingStatus(row.status),
     timeSlot: row.time_slot
   };
+}
+
+function toUpcomingBooking(row: BookingRow): UpcomingBooking {
+  const booking = toAdminBooking(row);
+
+  if (booking.status !== "confirmed") {
+    throw new Error(`Unexpected upcoming booking status: ${booking.status}`);
+  }
+
+  return booking;
+}
+
+export function toNoShowBooking(row: BookingRow): NoShowBooking {
+  const booking = toAdminBooking(row);
+
+  if (booking.status !== "no_show") {
+    throw new Error(`Unexpected no-show booking status: ${booking.status}`);
+  }
+
+  return booking;
 }
 
 export async function getUpcomingBookings(): Promise<UpcomingBooking[]> {
   const supabase = createServiceRoleSupabaseClient();
   const { data, error } = await supabase
     .from("bookings")
-    .select(
-      "id, booking_date, time_slot, client_name, client_email, client_phone, service_type, add_ons, is_after_hours, price_charged, status, notes, created_at"
-    )
+    .select(BOOKING_SELECT_COLUMNS)
     .eq("status", "confirmed")
     .gte("booking_date", getTodayInVancouver())
     .order("booking_date", { ascending: true })
@@ -121,3 +154,5 @@ export async function getUpcomingBookings(): Promise<UpcomingBooking[]> {
 
   return rows.map(toUpcomingBooking);
 }
+
+export { BOOKING_SELECT_COLUMNS };
