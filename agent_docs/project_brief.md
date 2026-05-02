@@ -111,6 +111,24 @@ npm test
 - Public landing page was rebuilt with the provided SMBLENDS logo, real haircut photos, hero slogan, booking CTAs, hamburger admin menu, contact panel, and infinite image marquee
 
 ### Completed this session
+- Re-read the repo docs and verified the current launch state without code changes
+- Confirmed the worktree was clean before verification
+- Confirmed Cloudflare/OpenNext config still targets worker `booking`
+- Verified `npm run lint` passes
+- Verified `npm run build` passes
+- Verified `npx opennextjs-cloudflare build` generates `.open-next/worker.js`
+- Verified live `/`, `/book`, and `/admin/login` return `200` from `https://booking.smblends.workers.dev`
+- Verified live `/api/availability?date=2026-05-04` returns real Monday slots from Supabase
+- Verified live `/api/availability?date=2026-05-01` returns an empty past-date slot list
+- Verified live `/admin/dashboard` redirects logged-out users to `/admin/login`
+- Verified an empty live booking POST returns the expected friendly `400` without creating a booking
+- Debugged missing live Resend emails after the user created a booking that did not appear in Resend
+- Confirmed Cloudflare logs showed Resend rejecting the send because the live `BARBER_NOTIFICATION_EMAIL` secret value was not Sanchit's address, even though the secret name existed
+- Updated the Cloudflare Worker secret `BARBER_NOTIFICATION_EMAIL` to `sanchitmehta51@gmail.com`
+- Verified a controlled live booking returned `201` with no Resend error in Worker logs after the secret fix
+- Cancelled both controlled debug bookings in Supabase so the `2026-05-18 16:00:00` test slot reopened
+
+### Previous session
 - Added `lib/validators/time.ts` for strict `HH:MM:SS` booking slot validation
 - Reused strict time validation in booking submissions and slot generation
 - Rejected past booking dates with a friendly booking API `400`
@@ -146,6 +164,7 @@ npm test
 - Notification code runs after successful booking creation
 - Booking creation still succeeds if notification sending fails
 - Notification code currently sends only the barber email for free launch without a verified domain
+- Live Cloudflare `BARBER_NOTIFICATION_EMAIL` now points to `sanchitmehta51@gmail.com`
 - Resend local testing works when the recipient is the Resend account email
 - Resend local testing now works for Sanchit's barber notification email using Sanchit's Resend account
 - `/admin/login` renders and posts to the admin login API
@@ -227,7 +246,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-02
-**Last Finished:** Tightened booking input handling by adding strict time-slot validation, rejecting past booking dates, hiding past same-day slots, and verifying lint/build plus focused API smoke checks. Then adjusted free-launch email behavior so the site keeps optional email collection, stops promising client confirmation emails, and only sends barber notifications until a verified domain exists. Disabled the Design add-on at the shared config level so it is hidden and rejected by the API until Sanchit offers it. Fixed mobile date input overflow on iPhone. Added Cloudflare Workers/OpenNext deployment config, deployed to `https://booking.smblends.workers.dev`, verified live homepage/availability checks return `200`, and fixed the production admin timezone display bugs for booking cards and availability rows. User reported applying the Supabase partial unique index query for cancelled-slot rebooking and confirmed Sanchit receives barber notification emails locally.
+**Last Finished:** Re-read the repo docs and verified the current launch state without code changes. Confirmed `npm run lint`, `npm run build`, and `npx opennextjs-cloudflare build` pass. Live checks confirmed `https://booking.smblends.workers.dev`, `/book`, and `/admin/login` return `200`; live availability returns real future slots from Supabase; past availability returns no slots; logged-out admin dashboard redirects to login; and an empty booking POST returns the expected friendly `400`. Then fixed the production email issue by updating Cloudflare `BARBER_NOTIFICATION_EMAIL` to `sanchitmehta51@gmail.com`; a controlled live booking no longer logged a Resend error, and both debug bookings were cancelled.
 **In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is final live smoke testing and handoff.
 **Needs User Action Next:** Create one live test booking, verify Sanchit receives the email, verify live admin login, cancel the test booking, then hand off the public/admin links.
 **Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter date/time validation, rejects past booking dates, hides past same-day slots, disables the Design add-on until Sanchit offers it, fixes the mobile date input overflow, and `/admin/login` no longer pre-fills Sanchit's email. User reported applying the Supabase partial unique index query so cancelled bookings with `status = cancelled` should reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. For free launch without a domain, client confirmation emails are disabled and the app sends only barber notifications via Sanchit's Resend account; user confirmed Sanchit receives the booking email locally. Cloudflare Workers/OpenNext deployment is live at `https://booking.smblends.workers.dev`, and live homepage/availability checks return `200`. Next focus: run a final live smoke test, cancel the test booking, then hand off the public/admin links to Sanchit.
