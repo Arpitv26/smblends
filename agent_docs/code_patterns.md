@@ -102,11 +102,12 @@ Always enforce these rules:
 1. Only valid slots appear.
 2. Blocked dates show no slots.
 3. Confirmed bookings remove matching slots.
-4. A DB unique constraint prevents duplicates.
+4. A DB partial unique index prevents duplicate active bookings for the same date/time.
 5. API errors remain user-friendly.
 6. Any slot at or after 9 PM is marked after-hours.
 7. Same-day bookings are allowed with no cutoff, as long as the slot is still available.
 8. Store the price charged from server-side pricing logic, not from a client-submitted price.
+9. Cancelled and no-show bookings stay stored for history, but only `confirmed` bookings should block public slots or database inserts.
 
 ## Smblends Business Rules
 - Standard hours:

@@ -171,9 +171,9 @@ Whenever setup leaves the terminal and goes into a dashboard or website:
 - `status`
 - `notes`
 - `created_at`
-- unique constraint on `(booking_date, time_slot)`
+- partial unique index on `(booking_date, time_slot)` where `status = 'confirmed'`
 
-Current schema note: migration `20260430090000_real_smblends_booking_rules.sql` makes `client_email` optional, adds `add_ons`, applies the real SMBLENDS service menu, and replaces placeholder availability with 60-minute rows.
+Current schema note: migration `20260430090000_real_smblends_booking_rules.sql` makes `client_email` optional, adds `add_ons`, applies the real SMBLENDS service menu, and replaces placeholder availability with 60-minute rows. Migration `20260501170000_confirmed_booking_unique_slots.sql` changes double-booking protection to only block active `confirmed` bookings so cancelled/no-show history does not keep a slot closed.
 
 ## Suggested Supabase Modules
 - `lib/supabase/client.ts` — browser-safe client
