@@ -19,15 +19,24 @@ const WEEKDAY_LABELS: Record<number, string> = {
 
 function formatAvailabilityTime(time: string): string {
   const [hourValue = "0", minuteValue = "0"] = time.split(":");
-  const baseDate = new Date();
+  const hours = Number(hourValue);
+  const minutes = Number(minuteValue);
 
-  baseDate.setHours(Number(hourValue), Number(minuteValue), 0, 0);
+  if (
+    Number.isNaN(hours) ||
+    Number.isNaN(minutes) ||
+    hours < 0 ||
+    hours > 23 ||
+    minutes < 0 ||
+    minutes > 59
+  ) {
+    return time;
+  }
 
-  return new Intl.DateTimeFormat("en-CA", {
-    hour: "numeric",
-    minute: "2-digit",
-    timeZone: "America/Vancouver"
-  }).format(baseDate);
+  const meridiem = hours >= 12 ? "p.m." : "a.m.";
+  const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+
+  return `${hour12}:${String(minutes).padStart(2, "0")} ${meridiem}`;
 }
 
 function getWindowLabel(window: WeeklyAvailabilityWindow): string {
