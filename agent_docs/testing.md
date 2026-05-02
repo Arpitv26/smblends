@@ -32,7 +32,8 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - after-hours slots from 9:00 PM-12:00 AM are labeled
 - same-day booking is available when slots remain
 - service selection shows Haircut and Haircut & Beard
-- add-ons show Beard Fade / Line-up and Design
+- add-ons show Beard Fade / Line-up only
+- Design add-on is not visible and is rejected by the booking API while Sanchit does not offer it
 - price preview matches service + add-ons + after-hours surcharge
 - form validation works
 - submit button behavior is clear

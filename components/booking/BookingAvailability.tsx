@@ -463,17 +463,19 @@ export function BookingAvailability({
               booking details section.
             </p>
           </div>
-          <label className="block">
+          <label className="block w-full sm:w-auto sm:min-w-[15rem]">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
               Appointment date
             </span>
-            <input
-              className="h-12 w-full min-w-[15rem] rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10"
-              min={initialDate}
-              onChange={(event) => setSelectedDate(event.target.value)}
-              type="date"
-              value={selectedDate}
-            />
+            <span className="block w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 focus-within:border-white/30 focus-within:ring-2 focus-within:ring-white/10">
+              <input
+                className="h-12 w-full min-w-0 max-w-full appearance-none bg-transparent px-4 text-center text-base text-white outline-none"
+                min={initialDate}
+                onChange={(event) => setSelectedDate(event.target.value)}
+                type="date"
+                value={selectedDate}
+              />
+            </span>
           </label>
         </div>
 

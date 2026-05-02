@@ -57,7 +57,7 @@
 ### Add-ons
 
 - **Beard Fade / Line-up:** +$10
-- **Design:** +$5
+- **Design:** Not currently offered. Keep disabled until Sanchit is ready to offer it.
 
 ### After-Hours Pricing (Auto Calculated)
 

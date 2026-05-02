@@ -43,7 +43,8 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Appointment slot length: 60 minutes
 - After-hours: every day from 9:00 PM-12:00 AM with a +$10 surcharge
 - Services: Haircut $20, Haircut & Beard $30
-- Add-ons: Beard Fade / Line-up +$10, Design +$5
+- Active add-ons: Beard Fade / Line-up +$10
+- Disabled future add-on: Design +$5
 - Same-day booking is enabled with no cutoff except real slot availability
 - Required booking fields: full name, phone number, date, time, service
 - Optional booking fields: email, notes
@@ -114,7 +115,9 @@ npm test
 - Updated public availability so past dates return no slots and same-day slots that have already started no longer appear
 - Kept the optional booking email field but removed copy that promises client confirmation emails
 - Temporarily disabled client confirmation email sending so free-launch Resend uses only the barber notification
+- Disabled the Design add-on at the shared booking config level so it is hidden from the UI and rejected by the API, while the database remains flexible for a future re-enable
 - Verified with `npm run lint`, `npm run build`, invalid booking time `400`, past booking date `400`, and past availability date returning an empty slot list
+- Verified direct Design add-on submission returns `400`
 - User reported applying the Supabase partial unique index query for cancelled-slot rebooking
 - User confirmed Sanchit receives barber notification emails with Sanchit's Resend API key and `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
 
@@ -129,6 +132,8 @@ npm test
 - `/book` now unlocks the booking-details form after slot selection
 - `/book` lets clients choose `Haircut` or `Haircut & Beard`
 - `/book` lets clients select optional add-ons
+- `/book` currently shows only Beard Fade / Line-up as an active add-on; Design is intentionally disabled until Sanchit offers it
+- `/api/bookings` rejects Design add-on submissions while Design is disabled
 - `/book` previews the estimated total from local shared pricing config
 - `/book` saves valid bookings to Supabase
 - Successful `/book` submissions redirect to `/book/confirmed`
@@ -216,7 +221,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-02
-**Last Finished:** Tightened booking input handling by adding strict time-slot validation, rejecting past booking dates, hiding past same-day slots, and verifying lint/build plus focused API smoke checks. Then adjusted free-launch email behavior so the site keeps optional email collection, stops promising client confirmation emails, and only sends barber notifications until a verified domain exists. User reported applying the Supabase partial unique index query for cancelled-slot rebooking and confirmed Sanchit receives barber notification emails locally.
+**Last Finished:** Tightened booking input handling by adding strict time-slot validation, rejecting past booking dates, hiding past same-day slots, and verifying lint/build plus focused API smoke checks. Then adjusted free-launch email behavior so the site keeps optional email collection, stops promising client confirmation emails, and only sends barber notifications until a verified domain exists. Disabled the Design add-on at the shared config level so it is hidden and rejected by the API until Sanchit offers it. User reported applying the Supabase partial unique index query for cancelled-slot rebooking and confirmed Sanchit receives barber notification emails locally.
 **In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is launch hardening, Resend barber notification setup, final logged-in admin QA, and Cloudflare deployment prep.
 **Needs User Action Next:** Run final logged-in admin QA with the Supabase auth password, then configure Cloudflare Pages and add production environment variables.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter date/time validation, rejects past booking dates, hides past same-day slots, and `/admin/login` no longer pre-fills Sanchit's email. User reported applying the Supabase partial unique index query so cancelled bookings with `status = cancelled` should reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. For free launch without a domain, client confirmation emails are disabled and the app sends only barber notifications via Sanchit's Resend account; user confirmed Sanchit receives the booking email locally. Next focus: run final logged-in admin QA, then configure Cloudflare Pages with production environment variables.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter date/time validation, rejects past booking dates, hides past same-day slots, disables the Design add-on until Sanchit offers it, and `/admin/login` no longer pre-fills Sanchit's email. User reported applying the Supabase partial unique index query so cancelled bookings with `status = cancelled` should reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. For free launch without a domain, client confirmation emails are disabled and the app sends only barber notifications via Sanchit's Resend account; user confirmed Sanchit receives the booking email locally. Next focus: configure Cloudflare Pages with production environment variables.

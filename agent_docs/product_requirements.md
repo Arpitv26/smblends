@@ -80,7 +80,8 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Haircut & Beard: $30
 - Add-ons:
   - Beard Fade / Line-up: +$10
-  - Design: +$5
+- Disabled for launch:
+  - Design: +$5, re-enable later when Sanchit offers it
 - Pricing rules:
   - After-hours surcharge: +$10
   - Taxes are not included in the displayed price

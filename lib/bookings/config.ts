@@ -1,6 +1,6 @@
 export const SERVICE_TYPES = ["Haircut", "Haircut & Beard"] as const;
 
-export const ADD_ON_TYPES = ["Beard Fade / Line-up", "Design"] as const;
+export const ADD_ON_TYPES = ["Beard Fade / Line-up"] as const;
 
 export type ServiceType = (typeof SERVICE_TYPES)[number];
 
@@ -18,8 +18,7 @@ export const SERVICE_PRICES: Record<ServiceType, number> = {
 };
 
 export const ADD_ON_PRICES: Record<AddOnType, number> = {
-  "Beard Fade / Line-up": 10,
-  "Design": 5
+  "Beard Fade / Line-up": 10
 };
 
 export const AFTER_HOURS_SURCHARGE = 10;
