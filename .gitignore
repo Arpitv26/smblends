@@ -3,6 +3,10 @@ node_modules/
 .env
 .env.local
 .env.*.local
+.dev.vars
+.dev.vars.*
+.open-next/
+.wrangler/
 coverage/
 dist/
 npm-debug.log*

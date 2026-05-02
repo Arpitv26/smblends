@@ -13,6 +13,7 @@ Do not move on with broken behavior.
 ```bash
 npm run lint
 npm run build
+npm run preview
 npm test
 ```
 
@@ -65,6 +66,7 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - booking flow works on live deployment
 - env vars are configured correctly
 - admin login works in production
+- `npm run deploy` completes with OpenNext/Cloudflare Workers
 
 ## Manual Test Checklist
 ### Real-device tests

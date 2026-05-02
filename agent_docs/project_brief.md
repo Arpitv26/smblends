@@ -10,8 +10,8 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 
 ## Fixed Project Decisions
 - This is a **web app**, not a mobile app
-- Hosting should be **Cloudflare Pages**
-- A free `*.pages.dev` URL is acceptable for first testing before buying a custom domain
+- Hosting should be **Cloudflare Workers with OpenNext** because the app uses full-stack Next.js route handlers
+- A free `*.workers.dev` URL is acceptable for first testing before buying a custom domain
 - Backend should be **Supabase**
 - Notifications should be **email first with Resend**
 - Production barber notifications should use `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
@@ -71,6 +71,8 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 npm run dev
 npm run build
 npm run lint
+npm run preview
+npm run deploy
 npm test
 ```
 
@@ -116,6 +118,7 @@ npm test
 - Kept the optional booking email field but removed copy that promises client confirmation emails
 - Temporarily disabled client confirmation email sending so free-launch Resend uses only the barber notification
 - Disabled the Design add-on at the shared booking config level so it is hidden from the UI and rejected by the API, while the database remains flexible for a future re-enable
+- Fixed mobile iPhone date input overflow by wrapping the native date input in a clipped full-width control
 - Verified with `npm run lint`, `npm run build`, invalid booking time `400`, past booking date `400`, and past availability date returning an empty slot list
 - Verified direct Design add-on submission returns `400`
 - User reported applying the Supabase partial unique index query for cancelled-slot rebooking
@@ -170,12 +173,15 @@ npm test
 - Cancelled bookings are retained with `status = cancelled` and no longer block the public slot
 - Public booking, confirmation, and admin screens now follow the black-and-white neutral visual direction
 - `/` now shows the new SMBLENDS landing page with logo hero, booking CTA, animated haircut-photo strip, hamburger menu, and contact panel
+- Cloudflare Workers/OpenNext deployment config is added with `wrangler.jsonc`, `open-next.config.ts`, static asset cache headers, and deploy scripts
+- `npx opennextjs-cloudflare build` generates the Cloudflare worker bundle successfully
+- Cloudflare Workers deployment is live at `https://booking.smblends.workers.dev`
+- Live homepage returns `200`
+- Live availability API returns slots from Supabase for valid future dates
 
 ### Unfinished work
-- Add Sanchit's Resend API key and `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com` to production env vars during Cloudflare setup
 - Buy and verify a sending domain later before enabling client confirmation emails
-- Run the remaining logged-in browser admin QA checks with the Supabase auth password, including cancel-booking behavior
-- Configure Cloudflare Pages
+- Run final live smoke test: create one booking, confirm Sanchit receives the email, confirm live admin login works, then cancel the test booking
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
@@ -188,11 +194,9 @@ npm test
 - Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
 
 ### Manual setup still needed
-- Run the logged-in admin QA checks: cancel one test booking and confirm the slot reopens, add/remove a blocked date, toggle availability and turn it back, mark no-show, verify no-show tracking, and sign out
-- Put Sanchit's `RESEND_API_KEY` and `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com` in Cloudflare production env vars during deployment
+- Run the live smoke test on `https://booking.smblends.workers.dev`
 - Verify a sending domain in Resend later before client confirmation emails are re-enabled
 - Set production `RESEND_FROM_EMAIL` to a sender address on the verified Resend domain later
-- Set up Cloudflare Pages project and production env vars
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -221,7 +225,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-02
-**Last Finished:** Tightened booking input handling by adding strict time-slot validation, rejecting past booking dates, hiding past same-day slots, and verifying lint/build plus focused API smoke checks. Then adjusted free-launch email behavior so the site keeps optional email collection, stops promising client confirmation emails, and only sends barber notifications until a verified domain exists. Disabled the Design add-on at the shared config level so it is hidden and rejected by the API until Sanchit offers it. User reported applying the Supabase partial unique index query for cancelled-slot rebooking and confirmed Sanchit receives barber notification emails locally.
-**In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is launch hardening, Resend barber notification setup, final logged-in admin QA, and Cloudflare deployment prep.
-**Needs User Action Next:** Run final logged-in admin QA with the Supabase auth password, then configure Cloudflare Pages and add production environment variables.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter date/time validation, rejects past booking dates, hides past same-day slots, disables the Design add-on until Sanchit offers it, and `/admin/login` no longer pre-fills Sanchit's email. User reported applying the Supabase partial unique index query so cancelled bookings with `status = cancelled` should reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. For free launch without a domain, client confirmation emails are disabled and the app sends only barber notifications via Sanchit's Resend account; user confirmed Sanchit receives the booking email locally. Next focus: configure Cloudflare Pages with production environment variables.
+**Last Finished:** Tightened booking input handling by adding strict time-slot validation, rejecting past booking dates, hiding past same-day slots, and verifying lint/build plus focused API smoke checks. Then adjusted free-launch email behavior so the site keeps optional email collection, stops promising client confirmation emails, and only sends barber notifications until a verified domain exists. Disabled the Design add-on at the shared config level so it is hidden and rejected by the API until Sanchit offers it. Fixed mobile date input overflow on iPhone. Added Cloudflare Workers/OpenNext deployment config, deployed to `https://booking.smblends.workers.dev`, and verified live homepage/availability checks return `200`. User reported applying the Supabase partial unique index query for cancelled-slot rebooking and confirmed Sanchit receives barber notification emails locally.
+**In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is final live smoke testing and handoff.
+**Needs User Action Next:** Create one live test booking, verify Sanchit receives the email, verify live admin login, cancel the test booking, then hand off the public/admin links.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter date/time validation, rejects past booking dates, hides past same-day slots, disables the Design add-on until Sanchit offers it, fixes the mobile date input overflow, and `/admin/login` no longer pre-fills Sanchit's email. User reported applying the Supabase partial unique index query so cancelled bookings with `status = cancelled` should reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. For free launch without a domain, client confirmation emails are disabled and the app sends only barber notifications via Sanchit's Resend account; user confirmed Sanchit receives the booking email locally. Cloudflare Workers/OpenNext deployment is live at `https://booking.smblends.workers.dev`, and live homepage/availability checks return `200`. Next focus: run a final live smoke test, cancel the test booking, then hand off the public/admin links to Sanchit.

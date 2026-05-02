@@ -12,7 +12,7 @@ This project is a **mobile-first web app** for Smblends. It is being built for a
 - **Database:** PostgreSQL via Supabase
 - **Validation:** Zod
 - **Email notifications:** Resend
-- **Deployment:** Cloudflare Pages
+- **Deployment:** Cloudflare Workers with OpenNext
 - **Repository host:** GitHub
 - **Timezone:** `America/Vancouver`
 
@@ -31,8 +31,8 @@ This project is a **mobile-first web app** for Smblends. It is being built for a
 - **Domain:** separate yearly cost, optional at first
 
 ## Deployment Notes
-- Use **Cloudflare Pages** because the site is commercial and needs a low-cost hosting option.
-- Use `smblends.pages.dev` first if the client is not ready to buy a domain.
+- Use **Cloudflare Workers with OpenNext** because the site has full-stack Next.js route handlers.
+- Use the free `*.workers.dev` URL first if the client is not ready to buy a domain.
 - Add a custom domain later when ready.
 
 ## Folder Layout
@@ -120,7 +120,6 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 RESEND_API_KEY=
 BARBER_NOTIFICATION_EMAIL=
-NEXT_PUBLIC_APP_URL=
 ```
 
 If Supabase shows the older key name instead, `NEXT_PUBLIC_SUPABASE_ANON_KEY` is also acceptable as a fallback.
@@ -225,12 +224,37 @@ export async function POST(request: Request) {
 ```
 
 ## Deployment Outline
-### Cloudflare Pages
+### Cloudflare Workers
+This app uses full-stack Next.js route handlers, so deploy it to Cloudflare Workers with OpenNext instead of a static Pages-only build.
+
 1. Push code to GitHub.
-2. Connect the repo in Cloudflare Pages.
-3. Add environment variables in Cloudflare Pages settings.
-4. Deploy to `smblends.pages.dev`.
-5. Add the custom domain later if needed.
+2. Create or log into a Cloudflare account.
+3. Add production environment variables with Wrangler secrets or the Cloudflare dashboard.
+4. Run `npm run deploy` to build with OpenNext and deploy to Workers, or run `npx opennextjs-cloudflare build` then `npx wrangler deploy` if the OpenNext deploy wrapper cannot open its local callback listener.
+5. Use the free `*.workers.dev` URL first: `https://booking.smblends.workers.dev`.
+6. Add the custom domain later if needed.
+
+Cloudflare deployment packages:
+- `@opennextjs/cloudflare@1.15.0`
+- `wrangler@4.59.2`
+
+The adapter is pinned because the latest `@opennextjs/cloudflare` release requires a newer Next.js than this project currently uses.
+
+Required production env vars:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+RESEND_API_KEY=
+BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com
+```
+
+Useful deployment commands:
+```bash
+npm run preview
+npm run deploy
+npm run upload
+```
 
 ## Tooling Behavior for Codex
 - Read `AGENTS.md` first.
