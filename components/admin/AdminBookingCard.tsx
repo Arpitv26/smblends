@@ -22,15 +22,24 @@ function formatBookingDate(date: string): string {
 
 function formatBookingTime(timeSlot: string): string {
   const [hourValue = "0", minuteValue = "0"] = timeSlot.split(":");
-  const baseDate = new Date();
+  const hours = Number(hourValue);
+  const minutes = Number(minuteValue);
 
-  baseDate.setHours(Number(hourValue), Number(minuteValue), 0, 0);
+  if (
+    Number.isNaN(hours) ||
+    Number.isNaN(minutes) ||
+    hours < 0 ||
+    hours > 23 ||
+    minutes < 0 ||
+    minutes > 59
+  ) {
+    return timeSlot;
+  }
 
-  return new Intl.DateTimeFormat("en-CA", {
-    hour: "numeric",
-    minute: "2-digit",
-    timeZone: "America/Vancouver"
-  }).format(baseDate);
+  const meridiem = hours >= 12 ? "p.m." : "a.m.";
+  const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+
+  return `${hour12}:${String(minutes).padStart(2, "0")} ${meridiem}`;
 }
 
 export function AdminBookingCard({
