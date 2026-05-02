@@ -1,16 +1,13 @@
 import { NextResponse } from "next/server";
 
 import { getAvailableSlots } from "@/lib/slots/get-available-slots";
-
-function isIsoDate(value: string): boolean {
-  return /^\d{4}-\d{2}-\d{2}$/.test(value);
-}
+import { isIsoCalendarDate } from "@/lib/validators/date";
 
 export async function GET(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
-  const date = searchParams.get("date");
+  const date = searchParams.get("date")?.trim();
 
-  if (!date || !isIsoDate(date)) {
+  if (!date || !isIsoCalendarDate(date)) {
     return NextResponse.json(
       { error: "Provide a date in YYYY-MM-DD format." },
       { status: 400 }

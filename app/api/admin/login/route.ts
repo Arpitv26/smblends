@@ -9,7 +9,11 @@ import {
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 const adminLoginSchema = z.object({
-  email: z.string().email("Enter the admin email address."),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Enter the admin email address."),
   password: z.string().min(1, "Enter the admin password.")
 });
 

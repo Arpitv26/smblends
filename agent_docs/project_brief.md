@@ -108,14 +108,14 @@ npm test
 - Public landing page was rebuilt with the provided SMBLENDS logo, real haircut photos, hero slogan, booking CTAs, hamburger admin menu, contact panel, and infinite image marquee
 
 ### Completed this session
-- Replaced gold/amber styling with neutral black-and-white accents across public and admin UI
-- Updated selected states, focus rings, after-hours badges, total cards, and blocked-date warning panels to use zinc/white styling
-- Updated design docs to record that SMBLENDS should not use gold/amber accents
-- Verified no gold/amber references remain in app/component code
-- Rebuilt the public homepage into a seamless visual landing page using `images/2A64B001-CE84-4633-A4E4-E7BAC1535EB1.png` as the hero logo and the `IMG_*.jpeg` haircut photos in an infinite right-to-left marquee
-- Added a top-right hamburger menu with `Book Now` and `Admin Login`
-- Added a contact panel with phone, email, Instagram, address, parking, and entry instructions
-- Verified with `npm run lint`, `npm run build`, and `curl -I http://localhost:3000`
+- Removed the hardcoded Sanchit email prefill from `/admin/login`
+- Reduced admin login browser autofill by setting the login form and fields away from normal saved-login autocomplete
+- Added `lib/validators/date.ts` for strict real-calendar-date checks instead of regex-only date checks
+- Reused strict date validation in booking submissions, public availability, slot generation, and blocked-date creation
+- Normalized admin login email input with trim/lowercase while leaving the password exactly as typed
+- Tightened booking validation for trimmed dates, lowercase optional email, and `HH:MM:SS` time slots
+- Added matching client-side max lengths for booking name, phone, email, and notes inputs
+- Verified with `npm run lint`, `npm run build`, invalid availability date `400`, invalid booking date `400`, invalid admin login `400`, valid Saturday availability `200`, and no Sanchit email string rendered in the admin login HTML
 
 ### Currently working
 - Home page renders correctly
@@ -153,6 +153,9 @@ npm test
 - `/admin/blocked-dates` shows confirmed-booking warnings for blocked dates
 - Public `/book` already returns no slots for dates in `blocked_dates`
 - Malformed booking API payloads return a friendly validation message
+- Invalid calendar dates such as `2026-99-99` are rejected before slot lookup or booking creation
+- Admin login no longer pre-fills Sanchit's email from app state
+- Admin login email is trimmed/lowercased before Supabase auth
 - Cancelled bookings are retained with `status = cancelled` and no longer block the public slot
 - Public booking, confirmation, and admin screens now follow the black-and-white neutral visual direction
 - `/` now shows the new SMBLENDS landing page with logo hero, booking CTA, animated haircut-photo strip, hamburger menu, and contact panel
@@ -161,8 +164,6 @@ npm test
 - Finish Resend domain verification so production emails can send to the barber email from a real sender
 - Run the remaining logged-in browser admin QA checks with the Supabase auth password, including cancel-booking behavior
 - Configure Cloudflare Pages
-- Human visual review/tuning of the new landing page on desktop and mobile
-- Booking-page visual polish to match the new landing page direction
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
@@ -170,14 +171,14 @@ npm test
 - Admin sessions currently use the Supabase access token lifetime, so the barber may need to log in again after the token expires
 - `npm test` is not set up yet
 - Supabase free-tier inactivity pause is still a later risk during development
-- Logo and haircut portfolio images are intentionally deferred until the landing page polish pass near the end
+- Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
 
 ### Manual setup still needed
 - Run the logged-in admin QA checks: cancel one test booking and confirm the slot reopens, add/remove a blocked date, toggle availability and turn it back, mark no-show, verify no-show tracking, and sign out
 - Verify a sending domain in Resend before production emails are sent to the barber email
-- Change production `BARBER_NOTIFICATION_EMAIL` to `sanchitmehta51@gmail.com`
+- Set production `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
+- Set production `RESEND_FROM_EMAIL` to a sender address on the verified Resend domain
 - Set up Cloudflare Pages project and production env vars
-- Provide final logo and haircut portfolio photos for the landing page polish pass
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -206,7 +207,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-01
-**Last Finished:** Rebuilt the public landing page with the provided SMBLENDS logo, real haircut portfolio image marquee, hero slogan, minimal booking CTAs, hamburger side menu for booking/admin login, and contact panel. Verified lint, build, and local `/` response.
-**In Progress:** Phase 2 admin MVP is functionally complete. Admin login, upcoming bookings, cancellation, logout, no-show marking, no-show tracking, weekly availability toggles, and blocked-date management are now implemented. Visual polish is underway: app palette and landing page are updated; booking-page visual polish is next after visual review.
-**Needs User Action Next:** Review the new landing page at `http://localhost:3000` on desktop/mobile sizes and point out spacing/cropping/copy changes. Run the remaining logged-in admin QA checks with the Supabase auth password later, especially cancelling one test booking and confirming the slot reopens. Later, verify a sending domain in Resend and configure Cloudflare Pages.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete. The app-wide gold/amber accents have been replaced with a premium black-and-white neutral palette, and the public landing page now uses the provided SMBLENDS logo plus the haircut portfolio images in an infinite marquee. Cancelled bookings stay in Supabase with `status = cancelled` and reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. Before launch prep, visually review/tune the landing page on desktop and mobile, then polish `/book` to match. Keep it mobile-first, dark, sleek, premium, minimal, black-and-white, and stop before Cloudflare deployment unless explicitly asked.
+**Last Finished:** Removed the admin email prefill, reduced admin login autofill, tightened booking/admin input validation, added strict real-date validation, and verified lint/build plus focused API smoke checks.
+**In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is launch hardening, Resend production sending setup, final logged-in admin QA, and Cloudflare deployment prep.
+**Needs User Action Next:** Verify a sending domain in Resend and choose the production sender address, then run the remaining logged-in admin QA checks with the Supabase auth password, especially cancelling one test booking and confirming the slot reopens. Later, configure Cloudflare Pages.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter input/date validation and `/admin/login` no longer pre-fills Sanchit's email. Cancelled bookings stay in Supabase with `status = cancelled` and reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. Next focus: finish Resend domain verification and production sender env vars, run final logged-in admin QA, then configure Cloudflare Pages when explicitly asked.

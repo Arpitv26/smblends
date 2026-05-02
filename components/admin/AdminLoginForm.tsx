@@ -30,7 +30,7 @@ function readErrorMessage(payload: unknown): string | null {
 
 export function AdminLoginForm(): JSX.Element {
   const router = useRouter();
-  const [email, setEmail] = useState<string>("sanchitmehta51@gmail.com");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loginState, setLoginState] = useState<LoginState>({
     errorMessage: null,
@@ -81,13 +81,13 @@ export function AdminLoginForm(): JSX.Element {
   const isSubmitting = loginState.status === "submitting";
 
   return (
-    <form className="space-y-4" onSubmit={submitLogin}>
+    <form autoComplete="off" className="space-y-4" onSubmit={submitLogin}>
       <label className="block">
         <span className="mb-2 block text-sm font-medium text-zinc-200">
           Admin email
         </span>
         <input
-          autoComplete="email"
+          autoComplete="off"
           className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSubmitting}
           onChange={(event) => setEmail(event.target.value)}
@@ -101,7 +101,7 @@ export function AdminLoginForm(): JSX.Element {
           Password
         </span>
         <input
-          autoComplete="current-password"
+          autoComplete="new-password"
           className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSubmitting}
           onChange={(event) => setPassword(event.target.value)}

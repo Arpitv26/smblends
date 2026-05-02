@@ -3,6 +3,7 @@ import "server-only";
 import { AFTER_HOURS_START_MINUTES } from "@/lib/bookings/config";
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/server";
 import type { AvailableSlot } from "@/lib/slots/types";
+import { isIsoCalendarDate } from "@/lib/validators/date";
 
 type BlockedDateRow = {
   date: string;
@@ -20,10 +21,8 @@ type AvailabilityRow = {
   start_time: string;
 };
 
-const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-
 function assertIsoDate(date: string): void {
-  if (!DATE_PATTERN.test(date)) {
+  if (!isIsoCalendarDate(date)) {
     throw new Error("Expected date in YYYY-MM-DD format.");
   }
 }

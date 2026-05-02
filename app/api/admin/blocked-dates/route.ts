@@ -3,10 +3,17 @@ import { z } from "zod";
 
 import { getAdminSession } from "@/lib/admin/auth";
 import { createBlockedDate } from "@/lib/admin/create-blocked-date";
+import { isIsoCalendarDate } from "@/lib/validators/date";
 
 const blockedDateSchema = z.object({
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Choose a valid date."),
-  reason: z.string().trim().max(120, "Keep the reason under 120 characters.")
+  date: z
+    .string()
+    .trim()
+    .refine(isIsoCalendarDate, "Choose a valid date."),
+  reason: z
+    .string()
+    .trim()
+    .max(120, "Keep the reason under 120 characters.")
 });
 
 async function readJson(request: Request): Promise<unknown> {

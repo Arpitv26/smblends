@@ -609,6 +609,7 @@ export function BookingAvailability({
               aria-invalid={touchedFields.clientName && fieldErrors.clientName ? true : undefined}
               className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isFormDisabled}
+              maxLength={80}
               onBlur={() => markFieldTouched("clientName")}
               onChange={(event) => updateField("clientName", event.target.value)}
               placeholder="Your full name"
@@ -630,6 +631,7 @@ export function BookingAvailability({
               aria-invalid={touchedFields.clientPhone && fieldErrors.clientPhone ? true : undefined}
               className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isFormDisabled}
+              maxLength={30}
               onBlur={() => markFieldTouched("clientPhone")}
               onChange={(event) => updateField("clientPhone", event.target.value)}
               placeholder="604 555 0123"
@@ -726,6 +728,7 @@ export function BookingAvailability({
               aria-invalid={touchedFields.clientEmail && fieldErrors.clientEmail ? true : undefined}
               className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isFormDisabled}
+              maxLength={120}
               onBlur={() => markFieldTouched("clientEmail")}
               onChange={(event) => updateField("clientEmail", event.target.value)}
               placeholder="name@example.com"
@@ -748,6 +751,7 @@ export function BookingAvailability({
               aria-invalid={touchedFields.notes && fieldErrors.notes ? true : undefined}
               className="min-h-28 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white outline-none transition focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isFormDisabled}
+              maxLength={500}
               onBlur={() => markFieldTouched("notes")}
               onChange={(event) => updateField("notes", event.target.value)}
               placeholder="Anything the barber should know?"

@@ -1,9 +1,10 @@
 import { z } from "zod";
 
 import { ADD_ON_TYPES, SERVICE_TYPES } from "@/lib/bookings/config";
+import { isIsoCalendarDate } from "@/lib/validators/date";
 
-const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const PHONE_PATTERN = /^[0-9+()\-\s]{7,30}$/;
+const TIME_SLOT_PATTERN = /^\d{2}:\d{2}:\d{2}$/;
 
 export const bookingDraftSchema = z.object({
   addOns: z
@@ -13,10 +14,14 @@ export const bookingDraftSchema = z.object({
       (addOns) => new Set(addOns).size === addOns.length,
       "Choose each add-on only once."
     ),
-  bookingDate: z.string().regex(ISO_DATE_PATTERN, "Choose a valid date."),
+  bookingDate: z
+    .string()
+    .trim()
+    .refine(isIsoCalendarDate, "Choose a valid date."),
   clientEmail: z
     .string()
     .trim()
+    .toLowerCase()
     .max(120, "Email must be 120 characters or less.")
     .refine(
       (value) => value.length === 0 || z.email().safeParse(value).success,
@@ -38,7 +43,11 @@ export const bookingDraftSchema = z.object({
     .trim()
     .max(500, "Notes must be 500 characters or less."),
   serviceType: z.enum(SERVICE_TYPES, "Choose a service."),
-  timeSlot: z.string().min(1, "Choose a time slot.")
+  timeSlot: z
+    .string()
+    .trim()
+    .min(1, "Choose a time slot.")
+    .regex(TIME_SLOT_PATTERN, "Choose a valid time slot.")
 });
 
 export type BookingDraft = z.infer<typeof bookingDraftSchema>;
