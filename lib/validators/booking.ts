@@ -1,10 +1,13 @@
 import { z } from "zod";
 
 import { ADD_ON_TYPES, SERVICE_TYPES } from "@/lib/bookings/config";
-import { isIsoCalendarDate } from "@/lib/validators/date";
+import {
+  isBeforeTodayInVancouver,
+  isIsoCalendarDate
+} from "@/lib/validators/date";
+import { isIsoTimeSlot } from "@/lib/validators/time";
 
 const PHONE_PATTERN = /^[0-9+()\-\s]{7,30}$/;
-const TIME_SLOT_PATTERN = /^\d{2}:\d{2}:\d{2}$/;
 
 export const bookingDraftSchema = z.object({
   addOns: z
@@ -17,7 +20,11 @@ export const bookingDraftSchema = z.object({
   bookingDate: z
     .string()
     .trim()
-    .refine(isIsoCalendarDate, "Choose a valid date."),
+    .refine(isIsoCalendarDate, "Choose a valid date.")
+    .refine(
+      (date) => !isBeforeTodayInVancouver(date),
+      "Choose today or a future date."
+    ),
   clientEmail: z
     .string()
     .trim()
@@ -47,7 +54,7 @@ export const bookingDraftSchema = z.object({
     .string()
     .trim()
     .min(1, "Choose a time slot.")
-    .regex(TIME_SLOT_PATTERN, "Choose a valid time slot.")
+    .refine(isIsoTimeSlot, "Choose a valid time slot.")
 });
 
 export type BookingDraft = z.infer<typeof bookingDraftSchema>;

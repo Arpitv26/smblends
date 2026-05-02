@@ -110,8 +110,8 @@ export default function BookingConfirmedPage(): JSX.Element {
                 You&apos;re locked in.
               </h1>
               <p className="mt-4 max-w-xl text-base leading-7 text-zinc-300">
-                Your appointment has been saved. Email notifications are coming
-                in the next step, so keep this screen for your records.
+                Your appointment has been saved. Keep this screen for your
+                records.
               </p>
             </div>
 

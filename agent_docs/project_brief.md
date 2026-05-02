@@ -108,17 +108,15 @@ npm test
 - Public landing page was rebuilt with the provided SMBLENDS logo, real haircut photos, hero slogan, booking CTAs, hamburger admin menu, contact panel, and infinite image marquee
 
 ### Completed this session
-- Removed the hardcoded Sanchit email prefill from `/admin/login`
-- Reduced admin login browser autofill by setting the login form and fields away from normal saved-login autocomplete
-- Added `lib/validators/date.ts` for strict real-calendar-date checks instead of regex-only date checks
-- Reused strict date validation in booking submissions, public availability, slot generation, and blocked-date creation
-- Normalized admin login email input with trim/lowercase while leaving the password exactly as typed
-- Tightened booking validation for trimmed dates, lowercase optional email, and `HH:MM:SS` time slots
-- Added matching client-side max lengths for booking name, phone, email, and notes inputs
-- Verified with `npm run lint`, `npm run build`, invalid availability date `400`, invalid booking date `400`, invalid admin login `400`, valid Saturday availability `200`, and no Sanchit email string rendered in the admin login HTML
-- Diagnosed the cancelled-slot rebooking bug: the UI only blocked `confirmed` bookings, but the database unique index still blocked cancelled historical rows
-- Added migration `20260501170000_confirmed_booking_unique_slots.sql` to replace the full `(booking_date, time_slot)` unique index with a partial unique index for `status = 'confirmed'`
-- Updated schema docs to clarify that only confirmed bookings should block duplicate inserts
+- Added `lib/validators/time.ts` for strict `HH:MM:SS` booking slot validation
+- Reused strict time validation in booking submissions and slot generation
+- Rejected past booking dates with a friendly booking API `400`
+- Updated public availability so past dates return no slots and same-day slots that have already started no longer appear
+- Kept the optional booking email field but removed copy that promises client confirmation emails
+- Temporarily disabled client confirmation email sending so free-launch Resend uses only the barber notification
+- Verified with `npm run lint`, `npm run build`, invalid booking time `400`, past booking date `400`, and past availability date returning an empty slot list
+- User reported applying the Supabase partial unique index query for cancelled-slot rebooking
+- User confirmed Sanchit receives barber notification emails with Sanchit's Resend API key and `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
 
 ### Currently working
 - Home page renders correctly
@@ -139,7 +137,9 @@ npm test
 - Server returns a friendly error when a selected slot is unavailable
 - Notification code runs after successful booking creation
 - Booking creation still succeeds if notification sending fails
+- Notification code currently sends only the barber email for free launch without a verified domain
 - Resend local testing works when the recipient is the Resend account email
+- Resend local testing now works for Sanchit's barber notification email using Sanchit's Resend account
 - `/admin/login` renders and posts to the admin login API
 - `/admin/dashboard` is protected from logged-out visitors
 - `/admin/dashboard` shows confirmed bookings from today forward after admin login
@@ -157,6 +157,9 @@ npm test
 - Public `/book` already returns no slots for dates in `blocked_dates`
 - Malformed booking API payloads return a friendly validation message
 - Invalid calendar dates such as `2026-99-99` are rejected before slot lookup or booking creation
+- Invalid time slots such as `99:99:99` are rejected before availability lookup or booking creation
+- Past booking dates are rejected with a friendly validation message
+- Public availability no longer returns slots for past dates or already-started same-day times
 - Admin login no longer pre-fills Sanchit's email from app state
 - Admin login email is trimmed/lowercased before Supabase auth
 - Cancelled bookings are retained with `status = cancelled` and no longer block the public slot
@@ -164,26 +167,26 @@ npm test
 - `/` now shows the new SMBLENDS landing page with logo hero, booking CTA, animated haircut-photo strip, hamburger menu, and contact panel
 
 ### Unfinished work
-- Apply `supabase/migrations/20260501170000_confirmed_booking_unique_slots.sql` in Supabase and retest cancelling/rebooking the same slot
-- Finish Resend domain verification so production emails can send to the barber email from a real sender
+- Add Sanchit's Resend API key and `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com` to production env vars during Cloudflare setup
+- Buy and verify a sending domain later before enabling client confirmation emails
 - Run the remaining logged-in browser admin QA checks with the Supabase auth password, including cancel-booking behavior
 - Configure Cloudflare Pages
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
-- Resend currently only sends from `onboarding@resend.dev` to the Resend account email; sending to `sanchitmehta51@gmail.com` requires domain verification and a real sender address
+- Without a purchased domain, Resend can only send from `onboarding@resend.dev` to the email address that owns the Resend account
+- Sanchit barber notifications can work for free if Sanchit owns the Resend account and the app uses his API key
+- Client confirmation emails are disabled until a verified sending domain exists
 - Admin sessions currently use the Supabase access token lifetime, so the barber may need to log in again after the token expires
 - `npm test` is not set up yet
 - Supabase free-tier inactivity pause is still a later risk during development
 - Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
-- Until the new Supabase migration is applied, cancelled booking rows can still block rebooking at the database index level
 
 ### Manual setup still needed
-- Apply the confirmed-bookings-only unique index migration in the Supabase SQL Editor
 - Run the logged-in admin QA checks: cancel one test booking and confirm the slot reopens, add/remove a blocked date, toggle availability and turn it back, mark no-show, verify no-show tracking, and sign out
-- Verify a sending domain in Resend before production emails are sent to the barber email
-- Set production `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
-- Set production `RESEND_FROM_EMAIL` to a sender address on the verified Resend domain
+- Put Sanchit's `RESEND_API_KEY` and `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com` in Cloudflare production env vars during deployment
+- Verify a sending domain in Resend later before client confirmation emails are re-enabled
+- Set production `RESEND_FROM_EMAIL` to a sender address on the verified Resend domain later
 - Set up Cloudflare Pages project and production env vars
 
 ## Likely First Build Order
@@ -212,8 +215,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-05-01
-**Last Finished:** Removed the admin email prefill, reduced admin login autofill, tightened booking/admin input validation, added strict real-date validation, diagnosed the cancelled-slot rebooking bug, added the Supabase migration to make the booking unique index apply only to `confirmed` bookings, and verified lint/build plus focused API smoke checks.
-**In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is launch hardening, applying the cancelled-slot database migration, Resend production sending setup, final logged-in admin QA, and Cloudflare deployment prep.
-**Needs User Action Next:** Apply `20260501170000_confirmed_booking_unique_slots.sql` in the Supabase SQL Editor and retest cancelling/rebooking the same slot. Then verify a sending domain in Resend and choose the production sender address, then run the remaining logged-in admin QA checks with the Supabase auth password.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter input/date validation and `/admin/login` no longer pre-fills Sanchit's email. A cancelled-slot rebooking bug was diagnosed and migration `20260501170000_confirmed_booking_unique_slots.sql` was added; apply it in Supabase if it has not been applied yet. Cancelled bookings should stay in Supabase with `status = cancelled` and reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. Next focus: confirm cancelled-slot rebooking, finish Resend domain verification and production sender env vars, run final logged-in admin QA, then configure Cloudflare Pages when explicitly asked.
+**Last Updated:** 2026-05-02
+**Last Finished:** Tightened booking input handling by adding strict time-slot validation, rejecting past booking dates, hiding past same-day slots, and verifying lint/build plus focused API smoke checks. Then adjusted free-launch email behavior so the site keeps optional email collection, stops promising client confirmation emails, and only sends barber notifications until a verified domain exists. User reported applying the Supabase partial unique index query for cancelled-slot rebooking and confirmed Sanchit receives barber notification emails locally.
+**In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is launch hardening, Resend barber notification setup, final logged-in admin QA, and Cloudflare deployment prep.
+**Needs User Action Next:** Run final logged-in admin QA with the Supabase auth password, then configure Cloudflare Pages and add production environment variables.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter date/time validation, rejects past booking dates, hides past same-day slots, and `/admin/login` no longer pre-fills Sanchit's email. User reported applying the Supabase partial unique index query so cancelled bookings with `status = cancelled` should reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. For free launch without a domain, client confirmation emails are disabled and the app sends only barber notifications via Sanchit's Resend account; user confirmed Sanchit receives the booking email locally. Next focus: run final logged-in admin QA, then configure Cloudflare Pages with production environment variables.

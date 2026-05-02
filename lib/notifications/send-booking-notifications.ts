@@ -152,34 +152,6 @@ function buildBarberEmail(booking: BookingNotificationDetails): EmailMessage {
   };
 }
 
-function buildClientEmail(booking: BookingNotificationDetails): EmailMessage | null {
-  if (!booking.clientEmail) {
-    return null;
-  }
-
-  const subject = `Your SMBLENDS booking is confirmed`;
-  const text = [
-    `Your SMBLENDS booking is confirmed.`,
-    "",
-    buildPlainTextSummary(booking),
-    "",
-    "Location: 6686 Imperial St, Burnaby, BC V5E 1M8",
-    "Entry: Do not knock on the front door. Go down the driveway and go up the stairs.",
-    "Payment: cash or e-transfer to sanchitmehta51@gmail.com."
-  ].join("\n");
-
-  return {
-    html: `
-      ${buildHtmlSummary(booking)}
-      <p style="font-family:Arial,sans-serif;color:#52525b;">Location: 6686 Imperial St, Burnaby, BC V5E 1M8</p>
-      <p style="font-family:Arial,sans-serif;color:#52525b;">Do not knock on the front door. Go down the driveway and go up the stairs.</p>
-    `,
-    subject,
-    text,
-    to: [booking.clientEmail]
-  };
-}
-
 async function sendEmail(message: EmailMessage): Promise<void> {
   const resend = getResendClient();
   const { error } = await resend.emails.send({
@@ -198,9 +170,7 @@ async function sendEmail(message: EmailMessage): Promise<void> {
 export async function sendBookingNotifications(
   booking: BookingNotificationDetails
 ): Promise<void> {
-  const messages = [buildBarberEmail(booking), buildClientEmail(booking)].filter(
-    (message): message is EmailMessage => message !== null
-  );
+  const messages = [buildBarberEmail(booking)];
 
   const results = await Promise.allSettled(messages.map(sendEmail));
   const failures = results.filter(

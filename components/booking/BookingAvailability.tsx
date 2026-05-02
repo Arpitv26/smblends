@@ -721,7 +721,7 @@ export function BookingAvailability({
 
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
-              Email for confirmation
+              Email
               <span className="ml-2 text-zinc-500">Optional</span>
             </span>
             <input
@@ -828,10 +828,10 @@ export function BookingAvailability({
           </p>
           <p className="mt-2 text-sm leading-6 text-zinc-400">
             {isBookingConfirmed
-              ? "Email notifications are not connected yet, so save these details for now."
+              ? "Keep this screen for your records after booking."
               : selectedSlot
                 ? "The site will recheck availability before saving to prevent double-booking."
-              : "Select a slot first, then fill the form to preview the complete booking flow."}
+                : "Select a slot first, then fill the form to preview the complete booking flow."}
           </p>
           <div className="mt-4 border-t border-white/10 pt-4 text-sm leading-6 text-zinc-400">
             <p>20 minutes late: $5 fee.</p>

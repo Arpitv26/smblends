@@ -3,7 +3,13 @@ import "server-only";
 import { AFTER_HOURS_START_MINUTES } from "@/lib/bookings/config";
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/server";
 import type { AvailableSlot } from "@/lib/slots/types";
-import { isIsoCalendarDate } from "@/lib/validators/date";
+import {
+  getCurrentMinutesInVancouver,
+  getTodayIsoDateInVancouver,
+  isBeforeTodayInVancouver,
+  isIsoCalendarDate
+} from "@/lib/validators/date";
+import { parseIsoTimeSlotToMinutes } from "@/lib/validators/time";
 
 type BlockedDateRow = {
   date: string;
@@ -54,22 +60,11 @@ function getDayOfWeekInVancouver(date: string): number {
 }
 
 function parseTimeToMinutes(value: string): number {
-  const [hoursPart, minutesPart] = value.split(":");
-  const hours = Number(hoursPart);
-  const minutes = Number(minutesPart);
-
-  if (
-    Number.isNaN(hours) ||
-    Number.isNaN(minutes) ||
-    hours < 0 ||
-    hours > 23 ||
-    minutes < 0 ||
-    minutes > 59
-  ) {
+  try {
+    return parseIsoTimeSlotToMinutes(value);
+  } catch {
     throw new Error(`Invalid time value: ${value}`);
   }
-
-  return hours * 60 + minutes;
 }
 
 function formatMinutesAsTime(minutes: number): string {
@@ -92,7 +87,8 @@ function buildSlotsForWindow(
   startTime: string,
   endTime: string,
   slotMinutes: number,
-  bookedTimes: Set<string>
+  bookedTimes: Set<string>,
+  minimumStartMinutes: number | null
 ): AvailableSlot[] {
   const startMinutes = parseTimeToMinutes(startTime);
   const rawEndMinutes = parseTimeToMinutes(endTime);
@@ -107,7 +103,10 @@ function buildSlotsForWindow(
   ) {
     const value = formatMinutesAsTime(currentMinutes);
 
-    if (bookedTimes.has(value)) {
+    if (
+      bookedTimes.has(value) ||
+      (minimumStartMinutes !== null && currentMinutes <= minimumStartMinutes)
+    ) {
       continue;
     }
 
@@ -124,8 +123,15 @@ function buildSlotsForWindow(
 export async function getAvailableSlots(date: string): Promise<AvailableSlot[]> {
   assertIsoDate(date);
 
+  if (isBeforeTodayInVancouver(date)) {
+    return [];
+  }
+
   const supabase = createServiceRoleSupabaseClient();
   const dayOfWeek = getDayOfWeekInVancouver(date);
+  const today = getTodayIsoDateInVancouver();
+  const minimumStartMinutes =
+    date === today ? getCurrentMinutesInVancouver() : null;
 
   const [{ data: blockedDates, error: blockedDatesError }, { data: availability, error: availabilityError }, { data: bookings, error: bookingsError }] =
     await Promise.all([
@@ -172,7 +178,8 @@ export async function getAvailableSlots(date: string): Promise<AvailableSlot[]> 
       window.start_time,
       window.end_time,
       window.slot_minutes,
-      bookedTimes
+      bookedTimes,
+      minimumStartMinutes
     )
   );
 }
