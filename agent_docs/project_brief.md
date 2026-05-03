@@ -131,6 +131,11 @@ npm test
 - Verified the copy change with `npm run lint` and `npm run build`
 - Deployed the copy change to Cloudflare Worker version `51644d0c-b247-4ea8-b9ac-aefd5142795a`
 - Confirmed the deployed `/book` and `/book/confirmed` JavaScript bundles contain the new cancellation/reschedule copy
+- Added dedicated `/policy` page with late arrival, cancellation, no-show, rescheduling, guests, payment, after-hours, and location policies
+- Updated landing burger menu to show Book Now and Policy at the top, with Admin Login pinned near the bottom
+- Verified the policy page and menu change with `npm run lint` and `npm run build`
+- Deployed the policy/menu change to Cloudflare Worker version `75a89aaf-727a-4f86-adc8-24c25d495edf`
+- Confirmed live `/policy` returns `200`
 
 ### Previous session
 - Added `lib/validators/time.ts` for strict `HH:MM:SS` booking slot validation
@@ -196,6 +201,7 @@ npm test
 - Cancelled bookings are retained with `status = cancelled` and no longer block the public slot
 - Public booking, confirmation, and admin screens now follow the black-and-white neutral visual direction
 - `/` now shows the new SMBLENDS landing page with logo hero, booking CTA, animated haircut-photo strip, hamburger menu, and contact panel
+- `/policy` is live and linked from the landing burger menu
 - Cloudflare Workers/OpenNext deployment config is added with `wrangler.jsonc`, `open-next.config.ts`, static asset cache headers, and deploy scripts
 - `npx opennextjs-cloudflare build` generates the Cloudflare worker bundle successfully
 - Cloudflare Workers deployment is live at `https://booking.smblends.workers.dev`
@@ -250,7 +256,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-05-02
-**Last Finished:** Re-read the repo docs and verified the current launch state without code changes. Confirmed `npm run lint`, `npm run build`, and `npx opennextjs-cloudflare build` pass. Live checks confirmed `https://booking.smblends.workers.dev`, `/book`, and `/admin/login` return `200`; live availability returns real future slots from Supabase; past availability returns no slots; logged-out admin dashboard redirects to login; and an empty booking POST returns the expected friendly `400`. Then fixed the production email issue by updating Cloudflare `BARBER_NOTIFICATION_EMAIL` to `sanchitmehta51@gmail.com`; a controlled live booking no longer logged a Resend error, and both debug bookings were cancelled. Added cancellation/rescheduling contact copy to the booking form policy block and confirmation page policy reminder, verified with lint/build, deployed to Cloudflare, and confirmed the deployed bundles contain the new copy.
+**Last Finished:** Re-read the repo docs and verified the current launch state without code changes. Confirmed `npm run lint`, `npm run build`, and `npx opennextjs-cloudflare build` pass. Live checks confirmed `https://booking.smblends.workers.dev`, `/book`, and `/admin/login` return `200`; live availability returns real future slots from Supabase; past availability returns no slots; logged-out admin dashboard redirects to login; and an empty booking POST returns the expected friendly `400`. Then fixed the production email issue by updating Cloudflare `BARBER_NOTIFICATION_EMAIL` to `sanchitmehta51@gmail.com`; a controlled live booking no longer logged a Resend error, and both debug bookings were cancelled. Added cancellation/rescheduling contact copy to the booking form policy block and confirmation page policy reminder, verified with lint/build, deployed to Cloudflare, and confirmed the deployed bundles contain the new copy. Added and deployed `/policy`, linked it from the landing burger menu, and pinned Admin Login near the bottom of the menu.
 **In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is final live smoke testing and handoff.
 **Needs User Action Next:** Create one live test booking, verify Sanchit receives the email, verify live admin login, cancel the test booking, then hand off the public/admin links.
 **Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter date/time validation, rejects past booking dates, hides past same-day slots, disables the Design add-on until Sanchit offers it, fixes the mobile date input overflow, and `/admin/login` no longer pre-fills Sanchit's email. User reported applying the Supabase partial unique index query so cancelled bookings with `status = cancelled` should reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. For free launch without a domain, client confirmation emails are disabled and the app sends only barber notifications via Sanchit's Resend account; user confirmed Sanchit receives the booking email locally. Cloudflare Workers/OpenNext deployment is live at `https://booking.smblends.workers.dev`, and live homepage/availability checks return `200`. Next focus: run a final live smoke test, cancel the test booking, then hand off the public/admin links to Sanchit.

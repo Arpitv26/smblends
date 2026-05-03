@@ -46,10 +46,15 @@ const MENU_LINKS = [
     label: "Book Now"
   },
   {
-    href: "/admin/login",
-    label: "Admin Login"
+    href: "/policy",
+    label: "Policy"
   }
 ] as const;
+
+const ADMIN_LINK = {
+  href: "/admin/login",
+  label: "Admin Login"
+} as const;
 
 function ContactPanel({
   isOpen,
@@ -183,9 +188,18 @@ function SideMenu({
           ))}
         </nav>
 
-        <p className="mt-auto max-w-xs text-sm leading-6 text-zinc-500">
-          Built for booking cuts without the back-and-forth.
-        </p>
+        <div className="mt-auto space-y-6">
+          <Link
+            className="block text-2xl font-semibold tracking-tight text-white transition hover:text-zinc-300"
+            href={ADMIN_LINK.href}
+            onClick={onClose}
+          >
+            {ADMIN_LINK.label}
+          </Link>
+          <p className="max-w-xs text-sm leading-6 text-zinc-500">
+            Built for booking cuts without the back-and-forth.
+          </p>
+        </div>
       </aside>
     </div>
   );
