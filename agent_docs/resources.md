@@ -16,6 +16,9 @@
 - Cloudflare Pages environment variables
 - Resend domain verification
 - Resend verified sending domain setup with SPF/DKIM before production barber notifications
+- Cloudflare Turnstile for booking-form bot protection
+- Cloudflare Worker metrics and free-plan request limits
+- Supabase usage dashboard, free-plan quota warnings, and service restrictions
 - Cloudflare Pages free `*.pages.dev` launch URL before deciding on a custom domain
 - Custom domain purchase after landing page polish; Cloudflare Registrar is preferred for at-cost pricing
 - date-fns-tz for Vancouver time handling
@@ -48,6 +51,42 @@ You can keep the GitHub repo during build and transfer later if needed.
 - deployment env var mistakes
 - email provider setup issues
 - accidentally leaving production `BARBER_NOTIFICATION_EMAIL` pointed at the developer instead of `sanchitmehta51@gmail.com`
+- bot spam or fake bookings filling real slots
+- Cloudflare Worker free request limit being reached during unusual traffic spikes
+- Supabase free quota warnings or service restrictions if traffic/storage grows
+- Resend sending limits or test-mode restrictions causing notification failures
+
+## Post-Launch Abuse And Quota Plan
+The handoff launch uses free Cloudflare, Supabase, and Resend accounts. The expected failure mode for abuse or unusually high traffic is service degradation, not surprise billing.
+
+### Current free-plan expectation
+- Cloudflare Workers Free has a daily Worker request limit; if exceeded, the Worker can return a Cloudflare error until the limit resets.
+- Supabase Free should notify the account owner when quotas are exceeded and may apply service restrictions if usage is not reduced or the project is not upgraded.
+- Resend can reject sends if the account hits limits or test-mode restrictions; booking creation currently still succeeds if email notification fails.
+
+### Current protections already in the app
+- Server-side booking validation with Zod.
+- Strict calendar date and `HH:MM:SS` time validation.
+- Past booking dates are rejected.
+- Public availability hides past dates and already-started same-day slots.
+- Double-booking is blocked with app logic and a database unique index for confirmed bookings.
+- Admin routes and write APIs are protected.
+- Disabled add-ons are rejected server-side.
+- Notification failures are logged without breaking booking creation.
+
+### Missing protections to add if spam appears
+- Add Cloudflare Turnstile to the booking form and verify the token in `POST /api/bookings`.
+- Add a simple server-side rate rule, such as no more than 2 bookings per phone number per day.
+- Consider Cloudflare dashboard rate limiting or WAF rules for `/api/bookings` if bot traffic is high.
+- Add an admin workflow for quickly cancelling obvious fake bookings.
+- Add lightweight monitoring: periodically check Cloudflare Worker requests/errors, Supabase usage, and Resend email activity.
+
+### Recommended first response if fake bookings appear
+1. Cancel fake bookings from `/admin/dashboard` so slots reopen.
+2. Check Cloudflare Worker metrics for a spike in requests.
+3. Check Supabase usage and Resend email activity.
+4. Add Cloudflare Turnstile before adding heavier custom anti-spam logic.
+5. If legitimate traffic is consistently high, upgrade Supabase first; keep Cloudflare Free unless the Worker request limit is being approached.
 
 ## Barber Info Checklist
 Use this when you need to collect the real business info before launch.

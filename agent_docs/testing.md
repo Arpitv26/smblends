@@ -46,6 +46,8 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - server calculates `price_charged`; it does not trust a client-submitted price
 - server marks 9:00 PM and later slots as after-hours
 - server returns useful JSON errors
+- future anti-spam checks reject missing or invalid Cloudflare Turnstile tokens if Turnstile is added later
+- future rate-limit checks reject excessive same-phone or same-client booking attempts if booking throttling is added later
 
 ### 4. Notifications
 - client confirmation email sends
@@ -93,6 +95,7 @@ These are good next additions after the MVP starts working:
 - API tests for booking route
 - smoke test for admin auth
 - end-to-end booking test
+- anti-spam tests for Turnstile verification and phone-based booking limits if those features are added
 
 ## Pre-Commit Hooks
 When hooks are added, they should at minimum run:
