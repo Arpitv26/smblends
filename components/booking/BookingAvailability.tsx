@@ -840,6 +840,10 @@ export function BookingAvailability({
             <p>30 minutes late: marked as no-show.</p>
             <p>Same-day cancellation or no-show: $10 fee on next cut.</p>
             <p>Maximum 2 extra people per client.</p>
+            <p>
+              Need to cancel or reschedule? Message @smblends._ or text
+              778-681-7694.
+            </p>
           </div>
         </div>
       </div>
