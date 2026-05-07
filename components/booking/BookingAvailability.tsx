@@ -458,10 +458,6 @@ export function BookingAvailability({
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">
               Pick a date and choose a 1-hour slot.
             </h2>
-            <p className="mt-2 max-w-md text-sm leading-6 text-zinc-300">
-              Times are shown in Vancouver time. Select one slot to unlock the
-              booking details section.
-            </p>
           </div>
           <label className="block w-full sm:w-auto sm:min-w-[15rem]">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
@@ -568,11 +564,11 @@ export function BookingAvailability({
               ? "Your appointment draft is ready."
               : "Choose a time slot to continue."}
           </h3>
-          <p className="mt-2 text-sm leading-6 text-zinc-300">
-            {selectedSlot
-              ? "Fill in the client details below and review the estimated total."
-              : "The form unlocks after you pick a time on the left. This keeps the booking flow clear on mobile."}
-          </p>
+          {selectedSlot ? (
+            <p className="mt-2 text-sm leading-6 text-zinc-300">
+              Fill in the client details below and review the estimated total.
+            </p>
+          ) : null}
         </div>
 
         <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-zinc-950/70 p-4">

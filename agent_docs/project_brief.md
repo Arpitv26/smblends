@@ -112,6 +112,12 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Removed the redundant "Times are shown in Vancouver time..." helper paragraph from the public booking preview
+- Removed the locked-form helper sentence that said the form unlocks after choosing a time slot
+- Kept the shorter selected-slot helper copy that appears only after a slot is selected
+- Verified the UI copy change with `npm run lint` and `npm run build`
+- Deployed the UI copy change to Cloudflare Worker version `2f0d8b7d-d5a6-4a44-bcda-ba5c8e93b8f3`
+- Confirmed live `/book` returns `200` and the rendered HTML no longer includes the removed booking preview paragraph
 - Added Author and License sections to the root `README.md`
 - Credited Arpit as the author and marked the project as All Rights Reserved
 - Added README redistribution language stating the project is not licensed for public redistribution, resale, reuse, copying, modification, publishing, or distribution without written permission
