@@ -109,8 +109,13 @@ npm test
 - Local Resend test email was received successfully at the Resend account email
 - App-wide gold/amber accents were replaced with a premium black-and-white neutral palette across public booking, confirmation, and admin screens
 - Public landing page was rebuilt with the provided SMBLENDS logo, real haircut photos, hero slogan, booking CTAs, hamburger admin menu, contact panel, and infinite image marquee
+- Professional GitHub README added with setup, architecture, deployment, and status notes
 
 ### Completed this session
+- Re-read `AGENTS.md`, `agent_docs/project_brief.md`, `agent_docs/clientInformation.md`, stack docs, testing notes, code patterns, key app routes, booking logic, slot logic, notification logic, and Supabase migrations before writing new docs
+- Added a professional root `README.md` for the GitHub repo
+- Documented the live site, product purpose, feature set, SMBLENDS booking rules, tech stack, app structure, local setup, environment variables, Supabase migration order, scripts, Cloudflare Workers/OpenNext deployment notes, current launch status, and MVP guardrails
+- Verified the docs-only change with `npm run lint`
 - Documented post-handoff abuse/quota expectations for future sessions: free accounts should fail by service limits/restrictions rather than surprise billing, fake bookings are the main practical risk, and Cloudflare Turnstile is the recommended first anti-spam hardening step
 - Added future testing notes for Turnstile and simple booking throttling if those protections are implemented later
 - Re-read the repo docs and verified the current launch state without code changes
