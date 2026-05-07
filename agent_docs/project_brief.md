@@ -109,9 +109,13 @@ npm test
 - Local Resend test email was received successfully at the Resend account email
 - App-wide gold/amber accents were replaced with a premium black-and-white neutral palette across public booking, confirmation, and admin screens
 - Public landing page was rebuilt with the provided SMBLENDS logo, real haircut photos, hero slogan, booking CTAs, hamburger admin menu, contact panel, and infinite image marquee
-- Professional GitHub README added with setup, architecture, deployment, and status notes
+- Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Added Author and License sections to the root `README.md`
+- Credited Arpit as the author and marked the project as All Rights Reserved
+- Added README redistribution language stating the project is not licensed for public redistribution, resale, reuse, copying, modification, publishing, or distribution without written permission
+- Verified the docs-only change with `npm run lint`
 - Re-read `AGENTS.md`, `agent_docs/project_brief.md`, `agent_docs/clientInformation.md`, stack docs, testing notes, code patterns, key app routes, booking logic, slot logic, notification logic, and Supabase migrations before writing new docs
 - Added a professional root `README.md` for the GitHub repo
 - Documented the live site, product purpose, feature set, SMBLENDS booking rules, tech stack, app structure, local setup, environment variables, Supabase migration order, scripts, Cloudflare Workers/OpenNext deployment notes, current launch status, and MVP guardrails

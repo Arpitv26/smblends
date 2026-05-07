@@ -198,3 +198,13 @@ Remaining launch hardening:
 - Do not add payments, SMS, client accounts, or multi-staff scheduling in the MVP.
 - Keep booking rules out of React components; shared logic belongs in `lib/slots`, `lib/bookings`, and `lib/validators`.
 - Do not commit `.env.local` or any production secrets.
+
+## Author
+
+Made by Arpit.
+
+## License
+
+All rights reserved.
+
+This project was built for SMBLENDS and is not licensed for public redistribution, resale, or reuse without written permission from the author. You may view the source code for reference, but copying, modifying, publishing, or distributing this project as your own work is not permitted.
