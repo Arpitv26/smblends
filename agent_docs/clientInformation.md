@@ -177,12 +177,13 @@
 
 - Full Name
 - Phone Number
+- Email
 - Date
 - Time
 
 ### Additional Fields
 
-- None
+- Notes (optional)
 
 ---
 

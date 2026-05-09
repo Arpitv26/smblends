@@ -24,6 +24,7 @@ function isBookingConfirmationSummary(
       ADD_ON_TYPES.includes(addOn as (typeof ADD_ON_TYPES)[number])
     ) &&
     typeof candidate.bookingDate === "string" &&
+    typeof candidate.clientEmail === "string" &&
     typeof candidate.clientName === "string" &&
     typeof candidate.isAfterHours === "boolean" &&
     typeof candidate.priceCharged === "number" &&
@@ -110,8 +111,8 @@ export default function BookingConfirmedPage(): JSX.Element {
                 You&apos;re locked in.
               </h1>
               <p className="mt-4 max-w-xl text-base leading-7 text-zinc-300">
-                Your appointment has been saved. Keep this screen for your
-                records.
+                Your appointment has been saved, and a confirmation email was
+                sent to your inbox.
               </p>
             </div>
 
@@ -143,6 +144,9 @@ export default function BookingConfirmedPage(): JSX.Element {
                   <p className="text-sm text-zinc-400">Client</p>
                   <p className="mt-1 text-lg font-medium text-white">
                     {confirmation.clientName}
+                  </p>
+                  <p className="mt-2 break-all text-sm text-zinc-400">
+                    Confirmation sent to {confirmation.clientEmail}
                   </p>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">

@@ -152,6 +152,77 @@ function buildBarberEmail(booking: BookingNotificationDetails): EmailMessage {
   };
 }
 
+function buildClientEmail(booking: BookingNotificationDetails): EmailMessage | null {
+  if (!booking.clientEmail) {
+    return null;
+  }
+
+  const formattedDate = formatBookingDate(booking.bookingDate);
+  const formattedTime = formatTimeSlot(booking.timeSlot);
+  const subject = `Your SMBLENDS booking is confirmed for ${formattedDate}`;
+  const text = [
+    `Your SMBLENDS booking is confirmed.`,
+    "",
+    `Client: ${booking.clientName}`,
+    `Date: ${formattedDate}`,
+    `Time: ${formattedTime}${booking.isAfterHours ? " (after-hours)" : ""}`,
+    `Service: ${booking.serviceType}`,
+    `Add-ons: ${formatAddOns(booking.addOns)}`,
+    `Total: ${formatPrice(booking.priceCharged)}`,
+    "",
+    "Payment: pay cash or e-transfer. Payment is expected before or after the haircut.",
+    "E-transfer: sanchitmehta51@gmail.com",
+    "",
+    "Location: 6686 Imperial St, Burnaby, BC V5E 1M8",
+    "Do not knock on the front door. Go down the driveway and go up the stairs. Street parking is available.",
+    "",
+    "Policy reminder: 20 minutes late is a $5 fee. 30 minutes late is marked as no-show. Same-day cancellation or no-show is a $10 fee on the next cut.",
+    "Need to cancel or reschedule? Message @smblends._ or text 778-681-7694."
+  ].join("\n");
+  const rows = [
+    ["Client", booking.clientName],
+    ["Date", formattedDate],
+    [
+      "Time",
+      `${formattedTime}${booking.isAfterHours ? " (after-hours)" : ""}`
+    ],
+    ["Service", booking.serviceType],
+    ["Add-ons", formatAddOns(booking.addOns)],
+    ["Total", formatPrice(booking.priceCharged)]
+  ];
+  const rowMarkup = rows
+    .map(
+      ([label, value]) => `
+        <tr>
+          <td style="padding:8px 12px;color:#71717a;">${escapeHtml(label)}</td>
+          <td style="padding:8px 12px;color:#18181b;font-weight:600;">${escapeHtml(value)}</td>
+        </tr>
+      `
+    )
+    .join("");
+  const html = `
+    <div style="font-family:Arial,sans-serif;line-height:1.5;color:#18181b;">
+      <h1 style="margin:0 0 12px;font-size:24px;">Your SMBLENDS booking is confirmed</h1>
+      <table style="border-collapse:collapse;width:100%;max-width:560px;background:#fafafa;border:1px solid #e4e4e7;border-radius:12px;overflow:hidden;">
+        <tbody>${rowMarkup}</tbody>
+      </table>
+      <p style="margin-top:18px;color:#52525b;">Payment: pay cash or e-transfer. Payment is expected before or after the haircut.</p>
+      <p style="margin-top:8px;color:#52525b;">E-transfer: sanchitmehta51@gmail.com</p>
+      <p style="margin-top:18px;color:#52525b;">Location: 6686 Imperial St, Burnaby, BC V5E 1M8.</p>
+      <p style="margin-top:8px;color:#52525b;">Do not knock on the front door. Go down the driveway and go up the stairs. Street parking is available.</p>
+      <p style="margin-top:18px;color:#71717a;font-size:13px;">20 minutes late: $5 fee. 30 minutes late: marked as no-show. Same-day cancellation or no-show: $10 fee on the next cut.</p>
+      <p style="margin-top:8px;color:#71717a;font-size:13px;">Need to cancel or reschedule? Message @smblends._ or text 778-681-7694.</p>
+    </div>
+  `;
+
+  return {
+    html,
+    subject,
+    text,
+    to: [booking.clientEmail]
+  };
+}
+
 async function sendEmail(message: EmailMessage): Promise<void> {
   const resend = getResendClient();
   const { error } = await resend.emails.send({
@@ -170,7 +241,11 @@ async function sendEmail(message: EmailMessage): Promise<void> {
 export async function sendBookingNotifications(
   booking: BookingNotificationDetails
 ): Promise<void> {
-  const messages = [buildBarberEmail(booking)];
+  const clientEmail = buildClientEmail(booking);
+  const messages = [
+    buildBarberEmail(booking),
+    ...(clientEmail ? [clientEmail] : [])
+  ];
 
   const results = await Promise.allSettled(messages.map(sendEmail));
   const failures = results.filter(

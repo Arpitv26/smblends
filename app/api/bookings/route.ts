@@ -5,7 +5,7 @@ import { sendBookingNotifications } from "@/lib/notifications/send-booking-notif
 import { bookingDraftSchema } from "@/lib/validators/booking";
 
 const GENERIC_INVALID_BOOKING_MESSAGE =
-  "Please fill in your name, phone number, date, time, and service.";
+  "Please fill in your name, phone number, email, date, time, and service.";
 
 function getInvalidBookingMessage(
   issues: Array<{ message: string }>

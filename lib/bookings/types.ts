@@ -6,6 +6,7 @@ export const BOOKING_CONFIRMATION_STORAGE_KEY =
 export type BookingConfirmationSummary = {
   addOns: AddOnType[];
   bookingDate: string;
+  clientEmail: string;
   clientName: string;
   isAfterHours: boolean;
   priceCharged: number;

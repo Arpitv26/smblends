@@ -143,6 +143,7 @@ function isConfirmedBooking(
       ADD_ON_TYPES.includes(addOn as AddOnType)
     ) &&
     typeof candidate.bookingDate === "string" &&
+    typeof candidate.clientEmail === "string" &&
     typeof candidate.clientName === "string" &&
     typeof candidate.isAfterHours === "boolean" &&
     typeof candidate.priceCharged === "number" &&
@@ -720,7 +721,6 @@ export function BookingAvailability({
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
               Email
-              <span className="ml-2 text-zinc-500">Optional</span>
             </span>
             <input
               aria-invalid={touchedFields.clientEmail && fieldErrors.clientEmail ? true : undefined}
@@ -730,6 +730,7 @@ export function BookingAvailability({
               onBlur={() => markFieldTouched("clientEmail")}
               onChange={(event) => updateField("clientEmail", event.target.value)}
               placeholder="name@example.com"
+              required
               type="email"
               value={formValues.clientEmail}
             />

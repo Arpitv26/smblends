@@ -26,6 +26,7 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Past bookings should be retained in Supabase for history/debugging; do not auto-delete them in MVP
 - No-show bookings should remain stored with `status = no_show` and visible in `/admin/no-shows`
 - Cancelled bookings should remain stored with `status = cancelled` and should not block public slots
+- Public launch domain is `https://smblends.ca`
 
 ## Client Information Source
 - The barber's current business details live in `agent_docs/clientInformation.md`.
@@ -46,8 +47,8 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Active add-ons: Beard Fade / Line-up +$10
 - Disabled future add-on: Design +$5
 - Same-day booking is enabled with no cutoff except real slot availability
-- Required booking fields: full name, phone number, date, time, service
-- Optional booking fields: email, notes
+- Required booking fields: full name, phone number, email, date, time, service
+- Optional booking fields: notes
 
 ## Persistent Workflow Rules
 1. Stay within MVP.
@@ -100,9 +101,9 @@ npm test
 - `/book` has been updated from fixed `Haircut` to the real two-service menu
 - Current app passes lint, production build, and localhost dev smoke check
 - New barber configuration was captured in `agent_docs/clientInformation.md`
-- `/book` now supports the real service menu, add-ons, optional email, payment copy, policy copy, and estimated pricing
+- `/book` now supports the real service menu, add-ons, required email, payment copy, policy copy, and estimated pricing
 - Supabase migration `20260430090000_real_smblends_booking_rules.sql` was applied manually in Supabase
-- `POST /api/bookings` now saves real bookings with server-side validation, server-side pricing, availability recheck, optional email support, add-on storage, and friendly unavailable/duplicate slot responses
+- `POST /api/bookings` now saves real bookings with server-side validation, server-side pricing, availability recheck, required email support, add-on storage, and friendly unavailable/duplicate slot responses
 - `/book` now submits to the booking API and shows loading, success, and error states
 - `/book/confirmed` now shows a clean animated confirmation summary after successful booking submission
 - Resend notification code is wired after booking creation, with barber notification and optional client confirmation
@@ -112,6 +113,38 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Connected the custom domain `https://smblends.ca` to the Cloudflare Worker
+- User confirmed production barber and client confirmation emails work
+- Made the public booking email field required in the shared Zod schema and booking form UI
+- Removed the `Optional` label from the booking email field
+- Added confirmation-page copy saying a confirmation email was sent
+- Added `clientEmail` to the stored confirmation summary so the confirmation page can show the destination address
+- Verified the required-email change with `npm run lint`
+- Verified the required-email change with `npm run build`
+- Deployed the required-email final polish to Cloudflare Worker version `b8788e9c-edd9-4ee0-9e71-ec7c146ad0b9`
+- Confirmed `https://smblends.ca/`, `/book`, and `/admin/login` return `200`
+- Confirmed live `/api/availability?date=2026-05-11` still returns Supabase-backed slots
+- Confirmed live `POST /api/bookings` rejects an empty email with `400`
+- User bought `smblends.ca`
+- User added Resend DNS records in Cloudflare for `send.smblends.ca`
+- Resend verified `send.smblends.ca`
+- Re-enabled client confirmation emails in `lib/notifications/send-booking-notifications.ts`
+- Booking notifications now send the barber notification and, when the optional client email field is filled, a client confirmation email with appointment details, payment instructions, location, and policy reminder
+- Verified the email-code change with `npm run lint`
+- Verified the email-code change with `npm run build`
+- Added local `RESEND_FROM_EMAIL=SMBLENDS Bookings <bookings@send.smblends.ca>`
+- User added `RESEND_FROM_EMAIL` as a Cloudflare Worker secret
+- Deployed the client confirmation email update to Cloudflare Worker version `1cf543d1-ef38-44d8-9c8f-42d0b4abe4ea`
+- Confirmed live `/`, `/book`, and `/admin/login` return `200`
+- Confirmed live `/api/availability?date=2026-05-11` still returns Supabase-backed slots
+- Re-read `AGENTS.md`, this project brief, `clientInformation.md`, all remaining `agent_docs`, the README, key public/admin pages, booking and admin components, slot logic, booking creation, validators, Supabase helpers, notification logic, database migrations, and Cloudflare/OpenNext config to refresh project context
+- Confirmed the worktree was clean before the status audit
+- Verified `npm run lint` passes
+- Verified `npm run build` passes
+- Confirmed live `/`, `/book`, `/admin/login`, and `/policy` return `200` from `https://booking.smblends.workers.dev`
+- Confirmed live `/admin/dashboard` redirects logged-out users to `/admin/login`
+- Confirmed live `/api/availability?date=2026-05-11` returns real Supabase-backed slots
+- Confirmed live `/api/availability?date=2026-99-99` returns the expected friendly invalid-date error
 - Removed the redundant "Times are shown in Vancouver time..." helper paragraph from the public booking preview
 - Removed the locked-form helper sentence that said the form unlocks after choosing a time slot
 - Kept the shorter selected-slot helper copy that appears only after a slot is selected
@@ -228,14 +261,11 @@ npm test
 - Production admin availability display now also formats raw time strings directly, so weekly availability rows no longer shift by the Cloudflare runtime timezone
 
 ### Unfinished work
-- Buy and verify a sending domain later before enabling client confirmation emails
-- Run final live smoke test: create one booking, confirm Sanchit receives the email, confirm live admin login works, then cancel the test booking
 - Add a real test suite beyond lint/build
 
 ### Blockers or risks
-- Without a purchased domain, Resend can only send from `onboarding@resend.dev` to the email address that owns the Resend account
-- Sanchit barber notifications can work for free if Sanchit owns the Resend account and the app uses his API key
-- Client confirmation emails are disabled until a verified sending domain exists
+- `send.smblends.ca` is verified in Resend and the user confirmed barber and client emails work in production
+- Sanchit barber notifications can work if Sanchit owns the Resend account and the app uses his API key
 - The site has been handed off. On free Cloudflare/Supabase/Resend accounts, unusual traffic or bot spam is expected to cause service limits, warnings, or failed notifications rather than surprise billing.
 - Fake bookings are the main post-launch abuse risk because they can fill real slots until Sanchit cancels them in admin.
 - No bot protection is currently installed. If spam appears, add Cloudflare Turnstile to the booking form and verify the token in the booking API before custom anti-spam logic.
@@ -245,9 +275,7 @@ npm test
 - Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
 
 ### Manual setup still needed
-- Run the live smoke test on `https://booking.smblends.workers.dev`
-- Verify a sending domain in Resend later before client confirmation emails are re-enabled
-- Set production `RESEND_FROM_EMAIL` to a sender address on the verified Resend domain later
+- None for current launch
 
 ## Likely First Build Order
 1. Bootstrap Next.js app

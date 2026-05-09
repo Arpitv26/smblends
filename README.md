@@ -7,7 +7,7 @@
 
 SMBLENDS Booking Website is a mobile-first booking app for SMBLENDS, a barber business in Burnaby, BC. It replaces Instagram DM scheduling with a self-serve booking flow for clients and a simple admin dashboard for the barber.
 
-Live site: [https://booking.smblends.workers.dev](https://booking.smblends.workers.dev)
+Live site: [https://smblends.ca](https://smblends.ca)
 
 ## What It Does
 
@@ -17,7 +17,7 @@ Live site: [https://booking.smblends.workers.dev](https://booking.smblends.worke
 - Calculates prices on the server, including add-ons and after-hours surcharge.
 - Prevents double-booking with both server-side slot checks and a database unique index.
 - Saves bookings in Supabase with status history.
-- Sends barber notification emails through Resend.
+- Sends barber and client confirmation emails through Resend.
 - Gives the barber an authenticated admin dashboard for upcoming bookings, no-shows, availability, and blocked dates.
 - Keeps cancelled and no-show bookings stored for history while reopening cancelled slots.
 
@@ -181,15 +181,11 @@ RESEND_FROM_EMAIL
 
 ## Current Status
 
-The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, admin login, upcoming bookings, cancellations, no-shows, weekly availability edits, policy display, and barber notification emails.
+The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, admin login, upcoming bookings, cancellations, no-shows, weekly availability edits, policy display, barber notification emails, and required client confirmation emails. `send.smblends.ca` is verified in Resend.
 
 Remaining launch hardening:
 
-- Run one final live smoke test.
-- Confirm the barber receives the production email notification.
-- Log into the live admin dashboard.
-- Cancel the test booking from admin so the slot reopens.
-- Verify a custom sending domain later before enabling client confirmation emails.
+- Add a real automated test suite beyond lint/build/manual smoke checks.
 
 ## Project Notes
 

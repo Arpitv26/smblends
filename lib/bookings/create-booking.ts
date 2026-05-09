@@ -116,6 +116,7 @@ export async function createBooking(
     booking: {
       addOns: bookingDraft.addOns,
       bookingDate: bookingDraft.bookingDate,
+      clientEmail: insertPayload.client_email ?? bookingDraft.clientEmail,
       clientName: insertPayload.client_name,
       isAfterHours: requestedSlot.isAfterHours,
       priceCharged,

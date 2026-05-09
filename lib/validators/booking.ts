@@ -29,11 +29,9 @@ export const bookingDraftSchema = z.object({
     .string()
     .trim()
     .toLowerCase()
+    .min(1, "Enter your email address.")
     .max(120, "Email must be 120 characters or less.")
-    .refine(
-      (value) => value.length === 0 || z.email().safeParse(value).success,
-      "Enter a valid email address."
-    ),
+    .refine((value) => z.email().safeParse(value).success, "Enter a valid email address."),
   clientName: z
     .string()
     .trim()

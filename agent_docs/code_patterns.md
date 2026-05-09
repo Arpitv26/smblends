@@ -132,11 +132,11 @@ Always enforce these rules:
 - Required booking fields:
   - full name
   - phone number
+  - email
   - date
   - time
   - service
 - Optional fields:
-  - email
   - notes
 
 ## UI Rules

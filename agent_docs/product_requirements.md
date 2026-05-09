@@ -150,8 +150,8 @@ The barber / business owner managing the schedule.
 - Only the barber has admin authentication
 - Row Level Security enabled on booking-related tables
 - Collect only necessary client data
-- Required public booking fields are full name, phone number, date, time, and service
-- Email and notes are optional unless the barber asks to require them later
+- Required public booking fields are full name, phone number, email, date, time, and service
+- Notes are optional unless the barber asks to require them later
 - Test on iPhone Safari before launch
 - Support Chrome, Safari, Firefox, Edge
 - Use America/Vancouver for all user-facing scheduling
