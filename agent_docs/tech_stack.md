@@ -156,6 +156,19 @@ Whenever setup leaves the terminal and goes into a dashboard or website:
 - `reason`
 - `created_at`
 
+### `special_availability`
+- `id`
+- `date`
+- `start_time`
+- `end_time`
+- `slot_minutes`
+- `label`
+- `is_active`
+- `created_at`
+- Used for one-off date-specific schedule windows.
+- If a date has any special availability rows, public booking uses active special rows for that date instead of the recurring weekly `availability` rows.
+- Use `blocked_dates` instead when Sanchit is unavailable for the entire day.
+
 ### `bookings`
 - `id`
 - `booking_date`

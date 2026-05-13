@@ -27,6 +27,13 @@ type AvailabilityRow = {
   start_time: string;
 };
 
+type SpecialAvailabilityRow = {
+  end_time: string;
+  is_active: boolean;
+  slot_minutes: number;
+  start_time: string;
+};
+
 function assertIsoDate(date: string): void {
   if (!isIsoCalendarDate(date)) {
     throw new Error("Expected date in YYYY-MM-DD format.");
@@ -133,13 +140,24 @@ export async function getAvailableSlots(date: string): Promise<AvailableSlot[]> 
   const minimumStartMinutes =
     date === today ? getCurrentMinutesInVancouver() : null;
 
-  const [{ data: blockedDates, error: blockedDatesError }, { data: availability, error: availabilityError }, { data: bookings, error: bookingsError }] =
+  const [
+    { data: blockedDates, error: blockedDatesError },
+    { data: specialAvailability, error: specialAvailabilityError },
+    { data: availability, error: availabilityError },
+    { data: bookings, error: bookingsError }
+  ] =
     await Promise.all([
       supabase
         .from("blocked_dates")
         .select("date")
         .eq("date", date)
         .returns<BlockedDateRow[]>(),
+      supabase
+        .from("special_availability")
+        .select("start_time, end_time, slot_minutes, is_active")
+        .eq("date", date)
+        .order("start_time", { ascending: true })
+        .returns<SpecialAvailabilityRow[]>(),
       supabase
         .from("availability")
         .select("day_of_week, start_time, end_time, slot_minutes, is_active")
@@ -159,6 +177,12 @@ export async function getAvailableSlots(date: string): Promise<AvailableSlot[]> 
     throw new Error(`Failed to read blocked dates: ${blockedDatesError.message}`);
   }
 
+  if (specialAvailabilityError) {
+    throw new Error(
+      `Failed to read special availability: ${specialAvailabilityError.message}`
+    );
+  }
+
   if (availabilityError) {
     throw new Error(`Failed to read availability: ${availabilityError.message}`);
   }
@@ -172,8 +196,12 @@ export async function getAvailableSlots(date: string): Promise<AvailableSlot[]> 
   }
 
   const bookedTimes = new Set((bookings ?? []).map((booking) => booking.time_slot));
+  const hasSpecialAvailability = (specialAvailability ?? []).length > 0;
+  const scheduleWindows = hasSpecialAvailability
+    ? (specialAvailability ?? []).filter((window) => window.is_active)
+    : (availability ?? []);
 
-  return (availability ?? []).flatMap((window) =>
+  return scheduleWindows.flatMap((window) =>
     buildSlotsForWindow(
       window.start_time,
       window.end_time,

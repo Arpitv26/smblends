@@ -19,6 +19,7 @@ Live site: [https://smblends.ca](https://smblends.ca)
 - Saves bookings in Supabase with status history.
 - Sends barber and client confirmation emails through Resend.
 - Gives the barber an authenticated admin dashboard for upcoming bookings, no-shows, availability, and blocked dates.
+- Supports one-off special-date hours that override the normal weekly schedule for a single date.
 - Keeps cancelled and no-show bookings stored for history while reopening cancelled slots.
 
 ## Core Booking Rules
@@ -63,6 +64,7 @@ app/
     dashboard/                    Upcoming bookings
     no-shows/                     No-show history
     availability/                 Weekly availability editor
+    special-dates/                One-off date-specific availability
     blocked-dates/                Full-day blocked dates manager
   book/                           Public booking flow
   book/confirmed/                 Booking confirmation page
@@ -127,9 +129,11 @@ Apply the SQL migrations in `supabase/migrations` in chronological order:
 20260403063000_initial_schema.sql
 20260430090000_real_smblends_booking_rules.sql
 20260501170000_confirmed_booking_unique_slots.sql
+20260513090000_special_availability.sql
 ```
 
-The final migration creates a partial unique index for confirmed bookings only, so cancelled bookings do not keep slots blocked.
+The confirmed booking unique-slot migration creates a partial unique index for confirmed bookings only, so cancelled bookings do not keep slots blocked.
+The special availability migration adds one-off date-specific schedule windows. When a date has special availability rows, those rows override the normal weekly schedule for that date.
 
 ### Run Locally
 
@@ -181,7 +185,7 @@ RESEND_FROM_EMAIL
 
 ## Current Status
 
-The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, admin login, upcoming bookings, cancellations, no-shows, weekly availability edits, policy display, barber notification emails, and required client confirmation emails. `send.smblends.ca` is verified in Resend.
+The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, special-date availability, admin login, upcoming bookings, cancellations, no-shows, weekly availability edits, policy display, barber notification emails, and required client confirmation emails. `send.smblends.ca` is verified in Resend.
 
 Remaining launch hardening:
 

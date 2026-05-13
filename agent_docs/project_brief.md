@@ -113,6 +113,19 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Added Supabase migration `20260513090000_special_availability.sql` for one-off special availability windows
+- Added `special_availability` slot override logic so date-specific rows replace recurring weekly availability for that date
+- Added protected admin APIs for creating, toggling, and deleting special availability rows
+- Added `/admin/special-dates` with a form for one-off date windows and controls to toggle/remove existing windows
+- Added Special dates to the admin navigation
+- Documented special availability behavior in `README.md`, `agent_docs/tech_stack.md`, and `agent_docs/testing.md`
+- Verified the change with `npm run lint` and `npm run build`
+- User applied the `special_availability` migration in Supabase
+- Verified special-date override behavior with a controlled Supabase-backed test: inserted a temporary `2026-07-15` special window from 9 AM to 12 PM, confirmed `/api/availability` returned only `09:00:00`, `10:00:00`, and `11:00:00`, then deleted the temporary row
+- Deployed the special-date availability update to Cloudflare Worker version `6a45ae3a-b049-4924-8da4-33292e38d2dc`
+- Confirmed live `/book` returns `200`
+- Confirmed live `/admin/special-dates` redirects logged-out users to `/admin/login`
+- Confirmed live special-date override behavior with a controlled temporary row and deleted it after the test
 - Connected the custom domain `https://smblends.ca` to the Cloudflare Worker
 - User confirmed production barber and client confirmation emails work
 - Made the public booking email field required in the shared Zod schema and booking form UI
@@ -234,10 +247,12 @@ npm test
 - Admin dashboard can mark confirmed bookings as no-show
 - No-showed bookings disappear from the confirmed upcoming-bookings list after refresh
 - `/admin/no-shows` shows bookings marked `no_show`
-- Admin navigation links between Upcoming, No-shows, and Availability
+- Admin navigation links between Upcoming, No-shows, Availability, Special dates, and Blocked dates
 - `/admin/availability` shows standard and after-hours rows for each weekday
 - Admin can toggle existing availability rows active/off
 - Public `/book` availability already reads the active availability rows
+- `/admin/special-dates` lets the barber add, toggle, and remove one-off date-specific availability windows
+- Public `/book` uses active special-date windows instead of the weekly schedule when a date has special availability rows
 - `/admin/blocked-dates` can add and remove full-day blocks
 - `/admin/blocked-dates` shows confirmed-booking warnings for blocked dates
 - Public `/book` already returns no slots for dates in `blocked_dates`

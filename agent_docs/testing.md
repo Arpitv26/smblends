@@ -46,6 +46,8 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - server calculates `price_charged`; it does not trust a client-submitted price
 - server marks 9:00 PM and later slots as after-hours
 - server returns useful JSON errors
+- a date with special availability uses the special windows instead of weekly availability
+- a date without special availability still uses weekly availability
 - future anti-spam checks reject missing or invalid Cloudflare Turnstile tokens if Turnstile is added later
 - future rate-limit checks reject excessive same-phone or same-client booking attempts if booking throttling is added later
 
@@ -61,6 +63,7 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - upcoming bookings load
 - no-show action updates status
 - availability editor saves correctly
+- special-date availability can add, toggle, and remove one-off schedule windows
 - blocked dates save correctly
 
 ### 6. Deployment

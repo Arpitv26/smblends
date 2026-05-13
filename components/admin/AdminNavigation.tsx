@@ -1,7 +1,12 @@
 import Link from "next/link";
 
 type AdminNavigationProps = {
-  activePage: "availability" | "blocked-dates" | "no-shows" | "upcoming";
+  activePage:
+    | "availability"
+    | "blocked-dates"
+    | "no-shows"
+    | "special-dates"
+    | "upcoming";
 };
 
 const NAV_ITEMS = [
@@ -19,6 +24,11 @@ const NAV_ITEMS = [
     href: "/admin/availability",
     label: "Availability",
     value: "availability"
+  },
+  {
+    href: "/admin/special-dates",
+    label: "Special dates",
+    value: "special-dates"
   },
   {
     href: "/admin/blocked-dates",
