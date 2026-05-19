@@ -5,6 +5,7 @@ import {
   type AddOnType,
   type ServiceType
 } from "@/lib/bookings/config";
+import { generateCancelToken } from "@/lib/bookings/cancel-token";
 import type { BookingConfirmationSummary } from "@/lib/bookings/types";
 import type { BookingNotificationDetails } from "@/lib/notifications/send-booking-notifications";
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/server";
@@ -15,6 +16,7 @@ import type { BookingDraft } from "@/lib/validators/booking";
 type BookingInsertPayload = {
   add_ons: AddOnType[];
   booking_date: string;
+  cancel_token: string;
   client_email: string | null;
   client_name: string;
   client_phone: string;
@@ -24,6 +26,10 @@ type BookingInsertPayload = {
   service_type: ServiceType;
   status: "confirmed";
   time_slot: string;
+};
+
+type BookingInsertResult = {
+  cancel_token: string;
 };
 
 type CreateBookingSuccess = {
@@ -80,6 +86,7 @@ export async function createBooking(
   const insertPayload: BookingInsertPayload = {
     add_ons: bookingDraft.addOns,
     booking_date: bookingDraft.bookingDate,
+    cancel_token: generateCancelToken(),
     client_email: normalizeOptionalText(bookingDraft.clientEmail),
     client_name: bookingDraft.clientName.trim(),
     client_phone: bookingDraft.clientPhone.trim(),
@@ -92,7 +99,11 @@ export async function createBooking(
   };
 
   const supabase = createServiceRoleSupabaseClient();
-  const { error } = await supabase.from("bookings").insert(insertPayload);
+  const { data, error } = await supabase
+    .from("bookings")
+    .insert(insertPayload)
+    .select("cancel_token")
+    .single<BookingInsertResult>();
 
   if (error) {
     if (isDuplicateSlotError(error.code)) {
@@ -116,6 +127,7 @@ export async function createBooking(
     booking: {
       addOns: bookingDraft.addOns,
       bookingDate: bookingDraft.bookingDate,
+      cancelToken: data.cancel_token,
       clientEmail: insertPayload.client_email ?? bookingDraft.clientEmail,
       clientName: insertPayload.client_name,
       isAfterHours: requestedSlot.isAfterHours,
@@ -126,6 +138,7 @@ export async function createBooking(
     notification: {
       addOns: bookingDraft.addOns,
       bookingDate: bookingDraft.bookingDate,
+      cancelToken: data.cancel_token,
       clientEmail: insertPayload.client_email,
       clientName: insertPayload.client_name,
       clientPhone: insertPayload.client_phone,

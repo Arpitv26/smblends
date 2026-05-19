@@ -4,10 +4,12 @@ import { Resend } from "resend";
 
 import { formatPrice } from "@/lib/bookings/config";
 import type { AddOnType, ServiceType } from "@/lib/bookings/config";
+import type { BookingCancellationDetails } from "@/lib/bookings/types";
 
 export type BookingNotificationDetails = {
   addOns: AddOnType[];
   bookingDate: string;
+  cancelToken: string;
   clientEmail: string | null;
   clientName: string;
   clientPhone: string;
@@ -23,6 +25,19 @@ type EmailMessage = {
   subject: string;
   text: string;
   to: string[];
+};
+
+type BookingSummaryDetails = {
+  addOns: AddOnType[];
+  bookingDate: string;
+  clientEmail: string | null;
+  clientName: string;
+  clientPhone: string;
+  isAfterHours: boolean;
+  notes?: string | null;
+  priceCharged: number;
+  serviceType: ServiceType;
+  timeSlot: string;
 };
 
 function requireEnv(name: string, value: string | undefined): string {
@@ -88,7 +103,11 @@ function formatAddOns(addOns: AddOnType[]): string {
   return addOns.length > 0 ? addOns.join(", ") : "None";
 }
 
-function buildPlainTextSummary(booking: BookingNotificationDetails): string {
+function buildCancelUrl(siteOrigin: string, cancelToken: string): string {
+  return new URL(`/booking/cancel/${cancelToken}`, siteOrigin).toString();
+}
+
+function buildPlainTextSummary(booking: BookingSummaryDetails): string {
   return [
     `Client: ${booking.clientName}`,
     `Phone: ${booking.clientPhone}`,
@@ -102,7 +121,7 @@ function buildPlainTextSummary(booking: BookingNotificationDetails): string {
   ].join("\n");
 }
 
-function buildHtmlSummary(booking: BookingNotificationDetails): string {
+function buildHtmlSummary(booking: BookingSummaryDetails): string {
   const rows = [
     ["Client", booking.clientName],
     ["Phone", booking.clientPhone],
@@ -152,13 +171,17 @@ function buildBarberEmail(booking: BookingNotificationDetails): EmailMessage {
   };
 }
 
-function buildClientEmail(booking: BookingNotificationDetails): EmailMessage | null {
+function buildClientEmail(
+  booking: BookingNotificationDetails,
+  siteOrigin: string
+): EmailMessage | null {
   if (!booking.clientEmail) {
     return null;
   }
 
   const formattedDate = formatBookingDate(booking.bookingDate);
   const formattedTime = formatTimeSlot(booking.timeSlot);
+  const cancelUrl = buildCancelUrl(siteOrigin, booking.cancelToken);
   const subject = `Your SMBLENDS booking is confirmed for ${formattedDate}`;
   const text = [
     `Your SMBLENDS booking is confirmed.`,
@@ -177,7 +200,8 @@ function buildClientEmail(booking: BookingNotificationDetails): EmailMessage | n
     "Do not knock on the front door. Go down the driveway and go up the stairs. Street parking is available.",
     "",
     "Policy reminder: 20 minutes late is a $5 fee. 30 minutes late is marked as no-show. Same-day cancellation or no-show is a $10 fee on the next cut.",
-    "Need to cancel or reschedule? Message @smblends._ or text 778-681-7694."
+    `Need to cancel? Use this private cancellation link: ${cancelUrl}`,
+    "Need to reschedule? Message @smblends._ or text 778-681-7694."
   ].join("\n");
   const rows = [
     ["Client", booking.clientName],
@@ -210,8 +234,59 @@ function buildClientEmail(booking: BookingNotificationDetails): EmailMessage | n
       <p style="margin-top:8px;color:#52525b;">E-transfer: sanchitmehta51@gmail.com</p>
       <p style="margin-top:18px;color:#52525b;">Location: 6686 Imperial St, Burnaby, BC V5E 1M8.</p>
       <p style="margin-top:8px;color:#52525b;">Do not knock on the front door. Go down the driveway and go up the stairs. Street parking is available.</p>
+      <p style="margin-top:18px;"><a href="${escapeHtml(cancelUrl)}" style="display:inline-block;background:#18181b;color:#ffffff;text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:600;">Cancel appointment</a></p>
       <p style="margin-top:18px;color:#71717a;font-size:13px;">20 minutes late: $5 fee. 30 minutes late: marked as no-show. Same-day cancellation or no-show: $10 fee on the next cut.</p>
-      <p style="margin-top:8px;color:#71717a;font-size:13px;">Need to cancel or reschedule? Message @smblends._ or text 778-681-7694.</p>
+      <p style="margin-top:8px;color:#71717a;font-size:13px;">Use the private cancellation link above if you need to cancel. For rescheduling, message @smblends._ or text 778-681-7694.</p>
+    </div>
+  `;
+
+  return {
+    html,
+    subject,
+    text,
+    to: [booking.clientEmail]
+  };
+}
+
+function buildBarberCancellationEmail(
+  booking: BookingCancellationDetails
+): EmailMessage {
+  const subject = `SMBLENDS booking cancelled: ${booking.clientName} on ${formatBookingDate(booking.bookingDate)}`;
+  const text = `SMBLENDS booking cancelled\n\n${buildPlainTextSummary(booking)}`;
+
+  return {
+    html: buildHtmlSummary(booking),
+    subject,
+    text,
+    to: [getBarberNotificationEmail()]
+  };
+}
+
+function buildClientCancellationEmail(
+  booking: BookingCancellationDetails
+): EmailMessage | null {
+  if (!booking.clientEmail) {
+    return null;
+  }
+
+  const formattedDate = formatBookingDate(booking.bookingDate);
+  const formattedTime = formatTimeSlot(booking.timeSlot);
+  const subject = `Your SMBLENDS booking has been cancelled`;
+  const text = [
+    "Your SMBLENDS booking has been cancelled.",
+    "",
+    `Client: ${booking.clientName}`,
+    `Date: ${formattedDate}`,
+    `Time: ${formattedTime}${booking.isAfterHours ? " (after-hours)" : ""}`,
+    `Service: ${booking.serviceType}`,
+    "",
+    "If you need a new time, book again at https://smblends.ca/book or message @smblends._."
+  ].join("\n");
+  const html = `
+    <div style="font-family:Arial,sans-serif;line-height:1.5;color:#18181b;">
+      <h1 style="margin:0 0 12px;font-size:24px;">Your SMBLENDS booking has been cancelled</h1>
+      ${buildHtmlSummary(booking)}
+      <p style="margin-top:18px;color:#52525b;">If you need a new time, book again at <a href="https://smblends.ca/book" style="color:#18181b;">smblends.ca/book</a> or message @smblends._.</p>
     </div>
   `;
 
@@ -239,9 +314,10 @@ async function sendEmail(message: EmailMessage): Promise<void> {
 }
 
 export async function sendBookingNotifications(
-  booking: BookingNotificationDetails
+  booking: BookingNotificationDetails,
+  siteOrigin: string
 ): Promise<void> {
-  const clientEmail = buildClientEmail(booking);
+  const clientEmail = buildClientEmail(booking, siteOrigin);
   const messages = [
     buildBarberEmail(booking),
     ...(clientEmail ? [clientEmail] : [])
@@ -262,5 +338,34 @@ export async function sendBookingNotifications(
       .join("; ");
 
     throw new Error(`Failed to send ${failures.length} booking email(s): ${reasons}`);
+  }
+}
+
+export async function sendCancellationNotifications(
+  booking: BookingCancellationDetails
+): Promise<void> {
+  const clientEmail = buildClientCancellationEmail(booking);
+  const messages = [
+    buildBarberCancellationEmail(booking),
+    ...(clientEmail ? [clientEmail] : [])
+  ];
+
+  const results = await Promise.allSettled(messages.map(sendEmail));
+  const failures = results.filter(
+    (result): result is PromiseRejectedResult => result.status === "rejected"
+  );
+
+  if (failures.length > 0) {
+    const reasons = failures
+      .map((failure) =>
+        failure.reason instanceof Error
+          ? failure.reason.message
+          : "Unknown email failure"
+      )
+      .join("; ");
+
+    throw new Error(
+      `Failed to send ${failures.length} cancellation email(s): ${reasons}`
+    );
   }
 }

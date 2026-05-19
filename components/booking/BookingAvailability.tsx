@@ -143,6 +143,7 @@ function isConfirmedBooking(
       ADD_ON_TYPES.includes(addOn as AddOnType)
     ) &&
     typeof candidate.bookingDate === "string" &&
+    typeof candidate.cancelToken === "string" &&
     typeof candidate.clientEmail === "string" &&
     typeof candidate.clientName === "string" &&
     typeof candidate.isAfterHours === "boolean" &&
@@ -827,7 +828,7 @@ export function BookingAvailability({
           </p>
           <p className="mt-2 text-sm leading-6 text-zinc-400">
             {isBookingConfirmed
-              ? "Keep this screen for your records after booking."
+              ? "Keep this screen for your records. Your email includes a private cancellation link."
               : selectedSlot
                 ? "The site will recheck availability before saving to prevent double-booking."
                 : "Select a slot first, then fill the form to preview the complete booking flow."}
@@ -838,8 +839,8 @@ export function BookingAvailability({
             <p>Same-day cancellation or no-show: $10 fee on next cut.</p>
             <p>Maximum 2 extra people per client.</p>
             <p>
-              Need to cancel or reschedule? Message @smblends._ or text
-              778-681-7694.
+              Need to cancel? Use the private link in your confirmation email.
+              For rescheduling, message @smblends._ or text 778-681-7694.
             </p>
           </div>
         </div>

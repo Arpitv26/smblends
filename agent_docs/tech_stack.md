@@ -182,10 +182,12 @@ Whenever setup leaves the terminal and goes into a dashboard or website:
 - `price_charged`
 - `status`
 - `notes`
+- `cancel_token`
 - `created_at`
 - partial unique index on `(booking_date, time_slot)` where `status = 'confirmed'`
+- unique index on `cancel_token` for private client cancellation links
 
-Current schema note: migration `20260430090000_real_smblends_booking_rules.sql` makes `client_email` optional, adds `add_ons`, applies the real SMBLENDS service menu, and replaces placeholder availability with 60-minute rows. Migration `20260501170000_confirmed_booking_unique_slots.sql` changes double-booking protection to only block active `confirmed` bookings so cancelled/no-show history does not keep a slot closed.
+Current schema note: migration `20260430090000_real_smblends_booking_rules.sql` makes `client_email` optional, adds `add_ons`, applies the real SMBLENDS service menu, and replaces placeholder availability with 60-minute rows. Migration `20260501170000_confirmed_booking_unique_slots.sql` changes double-booking protection to only block active `confirmed` bookings so cancelled/no-show history does not keep a slot closed. Migration `20260519090000_booking_cancel_tokens.sql` adds private cancellation tokens for client self-cancellation links.
 
 ## Suggested Supabase Modules
 - `lib/supabase/client.ts` — browser-safe client

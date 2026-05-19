@@ -18,6 +18,7 @@ Live site: [https://smblends.ca](https://smblends.ca)
 - Prevents double-booking with both server-side slot checks and a database unique index.
 - Saves bookings in Supabase with status history.
 - Sends barber and client confirmation emails through Resend.
+- Gives clients a private cancellation link in their confirmation email.
 - Gives the barber an authenticated admin dashboard for upcoming bookings, no-shows, availability, and blocked dates.
 - Supports one-off special-date hours that override the normal weekly schedule for a single date.
 - Keeps cancelled and no-show bookings stored for history while reopening cancelled slots.
@@ -58,6 +59,7 @@ app/
   api/
     availability/                 Public slot lookup
     bookings/                     Public booking creation
+    bookings/cancel               Public private-link cancellation
     admin/                        Protected admin write routes
   admin/
     login/                        Barber login
@@ -68,6 +70,7 @@ app/
     blocked-dates/                Full-day blocked dates manager
   book/                           Public booking flow
   book/confirmed/                 Booking confirmation page
+  booking/cancel/[token]/         Private client cancellation page
   policy/                         Public policies page
 components/
   admin/                          Admin dashboard components
@@ -130,10 +133,12 @@ Apply the SQL migrations in `supabase/migrations` in chronological order:
 20260430090000_real_smblends_booking_rules.sql
 20260501170000_confirmed_booking_unique_slots.sql
 20260513090000_special_availability.sql
+20260519090000_booking_cancel_tokens.sql
 ```
 
 The confirmed booking unique-slot migration creates a partial unique index for confirmed bookings only, so cancelled bookings do not keep slots blocked.
 The special availability migration adds one-off date-specific schedule windows. When a date has special availability rows, those rows override the normal weekly schedule for that date.
+The booking cancel token migration adds private per-booking cancellation tokens used by client cancellation links.
 
 ### Run Locally
 
@@ -185,7 +190,7 @@ RESEND_FROM_EMAIL
 
 ## Current Status
 
-The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, special-date availability, admin login, upcoming bookings, cancellations, no-shows, weekly availability edits, policy display, barber notification emails, and required client confirmation emails. `send.smblends.ca` is verified in Resend.
+The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, special-date availability, admin login, upcoming bookings, admin cancellations, no-shows, weekly availability edits, policy display, barber notification emails, and required client confirmation emails. The codebase also includes client self-cancellation, pending the cancellation-token migration and deployment. `send.smblends.ca` is verified in Resend.
 
 Remaining launch hardening:
 

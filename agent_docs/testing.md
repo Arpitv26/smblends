@@ -48,12 +48,16 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - server returns useful JSON errors
 - a date with special availability uses the special windows instead of weekly availability
 - a date without special availability still uses weekly availability
+- private cancellation links cancel only confirmed future appointments and reopen the slot
+- invalid, already-used, or past-appointment cancellation links return friendly errors
 - future anti-spam checks reject missing or invalid Cloudflare Turnstile tokens if Turnstile is added later
 - future rate-limit checks reject excessive same-phone or same-client booking attempts if booking throttling is added later
 
 ### 4. Notifications
 - client confirmation email sends
 - barber notification email sends
+- client confirmation email includes the private cancellation link
+- client cancellation emails send to the client and barber after a successful self-cancel
 - booking still exists if email fails after insert
 - failure is logged safely
 
@@ -88,6 +92,7 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - test one blocked date
 - test one duplicate booking attempt
 - test one admin login session
+- test one client cancellation link from the confirmation email
 - test one no-show update
 - test one weekly hours change
 - test one blocked date add/remove action

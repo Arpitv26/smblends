@@ -13,7 +13,8 @@ const POLICY_SECTIONS = [
     items: [
       "Same-day cancellation: $10 fee on the next cut.",
       "No-show: $10 fee on the next cut.",
-      "Need to cancel or reschedule? Message @smblends._ or text 778-681-7694."
+      "Use the private cancellation link in your confirmation email if you need to cancel.",
+      "Need to reschedule? Message @smblends._ or text 778-681-7694."
     ]
   },
   {

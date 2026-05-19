@@ -24,6 +24,7 @@ function isBookingConfirmationSummary(
       ADD_ON_TYPES.includes(addOn as (typeof ADD_ON_TYPES)[number])
     ) &&
     typeof candidate.bookingDate === "string" &&
+    typeof candidate.cancelToken === "string" &&
     typeof candidate.clientEmail === "string" &&
     typeof candidate.clientName === "string" &&
     typeof candidate.isAfterHours === "boolean" &&
@@ -198,6 +199,22 @@ export default function BookingConfirmedPage(): JSX.Element {
 
               <div className="rounded-[2rem] border border-white/10 bg-black/30 p-5 backdrop-blur sm:p-6">
                 <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">
+                  Need To Cancel?
+                </p>
+                <p className="mt-3 text-sm leading-6 text-zinc-400">
+                  Use your private cancellation link below or in your
+                  confirmation email.
+                </p>
+                <Link
+                  className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] px-5 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.07]"
+                  href={`/booking/cancel/${confirmation.cancelToken}`}
+                >
+                  Cancel Appointment
+                </Link>
+              </div>
+
+              <div className="rounded-[2rem] border border-white/10 bg-black/30 p-5 backdrop-blur sm:p-6">
+                <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">
                   Location
                 </p>
                 <p className="mt-3 text-base leading-7 text-zinc-200">
@@ -230,8 +247,8 @@ export default function BookingConfirmedPage(): JSX.Element {
             <p>Same-day cancellation or no-show: $10 fee on next cut.</p>
             <p>Maximum 2 extra people per client.</p>
             <p className="sm:col-span-2">
-              Need to cancel or reschedule? Message @smblends._ or text
-              778-681-7694.
+              Need to cancel? Use your private cancellation link. For
+              rescheduling, message @smblends._ or text 778-681-7694.
             </p>
           </div>
         </section>

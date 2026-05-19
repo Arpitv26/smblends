@@ -30,6 +30,7 @@ async function readJson(request: Request): Promise<unknown> {
 export async function POST(request: Request): Promise<NextResponse> {
   const payload = await readJson(request);
   const parsedBooking = bookingDraftSchema.safeParse(payload);
+  const siteOrigin = new URL(request.url).origin;
 
   if (!parsedBooking.success) {
     return NextResponse.json(
@@ -48,7 +49,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
 
     try {
-      await sendBookingNotifications(result.notification);
+      await sendBookingNotifications(result.notification, siteOrigin);
     } catch (emailError: unknown) {
       console.error("Booking saved, but notification email failed.", emailError);
     }

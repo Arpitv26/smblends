@@ -113,6 +113,15 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Added Supabase migration `20260519090000_booking_cancel_tokens.sql` for private per-booking cancellation tokens.
+- Added client self-cancellation through `/booking/cancel/[token]` and `POST /api/bookings/cancel`.
+- Updated booking creation to generate/store cancellation tokens and return them to the confirmation page.
+- Updated client confirmation emails with a private cancellation link and button.
+- Added cancellation emails for both the client and Sanchit after a successful self-cancel.
+- Reused the existing `cancelled` status behavior so client-cancelled bookings stay stored and reopen the public slot.
+- Updated policy and confirmation copy so cancellation uses the private link while rescheduling still points to @smblends._ / text.
+- Documented the cancellation-token migration and client cancellation test coverage in README and agent docs.
+- Verified the change with `npm run lint` and `npm run build`.
 - Added Supabase migration `20260513090000_special_availability.sql` for one-off special availability windows
 - Added `special_availability` slot override logic so date-specific rows replace recurring weekly availability for that date
 - Added protected admin APIs for creating, toggling, and deleting special availability rows
@@ -231,6 +240,11 @@ npm test
 - `/book` saves valid bookings to Supabase
 - Successful `/book` submissions redirect to `/book/confirmed`
 - `/book/confirmed` displays the just-created booking summary from session storage
+- `/book/confirmed` now includes a private cancellation link for the just-created appointment
+- Client confirmation emails include a private cancellation link
+- `/booking/cancel/[token]` lets clients cancel confirmed future appointments without an account
+- `POST /api/bookings/cancel` validates private cancellation tokens and only cancels confirmed future appointments
+- Successful client cancellations notify the client and Sanchit by email
 - Server stores `price_charged` from trusted server-side pricing logic
 - Server returns a friendly error when a selected slot is unavailable
 - Notification code runs after successful booking creation
@@ -277,6 +291,7 @@ npm test
 
 ### Unfinished work
 - Add a real test suite beyond lint/build
+- Apply `20260519090000_booking_cancel_tokens.sql` in Supabase before deploying the client cancellation feature
 
 ### Blockers or risks
 - `send.smblends.ca` is verified in Resend and the user confirmed barber and client emails work in production
@@ -290,7 +305,7 @@ npm test
 - Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
 
 ### Manual setup still needed
-- None for current launch
+- Apply `supabase/migrations/20260519090000_booking_cancel_tokens.sql` in Supabase before deploying the client cancellation feature
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -318,8 +333,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-05-02
-**Last Finished:** Re-read the repo docs and verified the current launch state without code changes. Confirmed `npm run lint`, `npm run build`, and `npx opennextjs-cloudflare build` pass. Live checks confirmed `https://booking.smblends.workers.dev`, `/book`, and `/admin/login` return `200`; live availability returns real future slots from Supabase; past availability returns no slots; logged-out admin dashboard redirects to login; and an empty booking POST returns the expected friendly `400`. Then fixed the production email issue by updating Cloudflare `BARBER_NOTIFICATION_EMAIL` to `sanchitmehta51@gmail.com`; a controlled live booking no longer logged a Resend error, and both debug bookings were cancelled. Added cancellation/rescheduling contact copy to the booking form policy block and confirmation page policy reminder, verified with lint/build, deployed to Cloudflare, and confirmed the deployed bundles contain the new copy. Added and deployed `/policy`, linked it from the landing burger menu, and pinned Admin Login near the bottom of the menu. User handed off the site; documented post-launch free-plan abuse/quota expectations and future anti-spam steps.
-**In Progress:** Phase 2 admin MVP is functionally complete and visual checks are considered complete. Current work is final live smoke testing and handoff.
-**Needs User Action Next:** Create one live test booking, verify Sanchit receives the email, verify live admin login, cancel the test booking, then hand off the public/admin links.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Phase 2 admin MVP is functionally complete and visual checks are considered complete. The app now has stricter date/time validation, rejects past booking dates, hides past same-day slots, disables the Design add-on until Sanchit offers it, fixes the mobile date input overflow, and `/admin/login` no longer pre-fills Sanchit's email. User reported applying the Supabase partial unique index query so cancelled bookings with `status = cancelled` should reopen their slot; no-shows stay with `status = no_show` and appear in `/admin/no-shows`. For free launch without a domain, client confirmation emails are disabled and the app sends only barber notifications via Sanchit's Resend account; user confirmed Sanchit receives the booking email locally. Cloudflare Workers/OpenNext deployment is live at `https://booking.smblends.workers.dev`, and live homepage/availability checks return `200`. Next focus: run a final live smoke test, cancel the test booking, then hand off the public/admin links to Sanchit.
+**Last Updated:** 2026-05-19
+**Last Finished:** Added client self-cancellation with private per-booking tokens, a public `/booking/cancel/[token]` page, public `POST /api/bookings/cancel`, confirmation-page cancellation link, client confirmation email cancellation link/button, cancellation notification emails to both client and Sanchit, and docs/testing notes. User confirmed local testing worked. Verified with `npm run lint` and `npm run build`, deployed to Cloudflare Worker version `2fa04c09-446b-48d9-8681-904d3293df7d`, and confirmed live `/`, `/book`, `/policy`, and `/booking/cancel/not-a-real-token` return `200` on `https://smblends.ca`.
+**In Progress:** Client cancellation is deployed. No active blocker.
+**Needs User Action Next:** Optional live end-to-end smoke test: create a live test booking, use the email cancellation link, verify the slot reopens, and confirm cancellation emails arrive.
+**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Client self-cancellation is deployed with private cancel tokens and cancellation emails. Next focus: optional live end-to-end booking/cancel smoke test or commit the completed changes if requested.
