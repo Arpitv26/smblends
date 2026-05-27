@@ -126,9 +126,8 @@ function ContactPanel({
           <div className="flex items-start gap-3">
             <MapPin className="mt-1 size-4 text-zinc-500" aria-hidden="true" />
             <p>
-              6686 Imperial St, Burnaby, BC V5E 1M8. Street parking is
-              available. Do not knock on the front door. Go down the driveway
-              and go up the stairs.
+              Text Sanchit at 778-681-7694 for the appointment address before
+              heading over.
             </p>
           </div>
         </div>

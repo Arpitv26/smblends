@@ -215,14 +215,14 @@ export default function BookingConfirmedPage(): JSX.Element {
 
               <div className="rounded-[2rem] border border-white/10 bg-black/30 p-5 backdrop-blur sm:p-6">
                 <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">
-                  Location
+                  Appointment Address
                 </p>
                 <p className="mt-3 text-base leading-7 text-zinc-200">
-                  6686 Imperial St, Burnaby, BC V5E 1M8
+                  Text Sanchit at 778-681-7694 for the appointment address.
                 </p>
                 <p className="mt-3 text-sm leading-6 text-zinc-400">
-                  Do not knock on the front door. Go down the driveway and go up
-                  the stairs. Street parking is available.
+                  Message before heading over so he can send the correct access
+                  details.
                 </p>
               </div>
             </aside>

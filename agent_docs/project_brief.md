@@ -39,7 +39,7 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Instagram: @smblends._
 - Notification/payment email: sanchitmehta51@gmail.com
 - Phone: +1 778-681-7694
-- Address: 6686 Imperial St, Burnaby, BC V5E 1M8
+- Appointment address: do not display publicly; clients should text Sanchit at 778-681-7694 for the address
 - Standard hours: Monday-Friday 4:00 PM-9:00 PM, Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM
 - Appointment slot length: 60 minutes
 - After-hours: every day from 9:00 PM-12:00 AM with a +$10 surcharge
@@ -113,6 +113,10 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Removed public appointment-address display from the landing contact panel, `/book/confirmed`, `/policy`, and client confirmation email text/HTML.
+- Replaced public address/access instructions with copy telling clients to text Sanchit at 778-681-7694 for the appointment address before heading over.
+- Updated business docs so future sessions know not to display the address, parking, or access instructions publicly.
+- Deployed the address privacy copy to Cloudflare Worker version `f1e9adbc-a3e3-4c0c-bb50-9a1e52432def`.
 - Added Supabase migration `20260519090000_booking_cancel_tokens.sql` for private per-booking cancellation tokens.
 - Added client self-cancellation through `/booking/cancel/[token]` and `POST /api/bookings/cancel`.
 - Updated booking creation to generate/store cancellation tokens and return them to the confirmation page.
@@ -241,6 +245,7 @@ npm test
 - Successful `/book` submissions redirect to `/book/confirmed`
 - `/book/confirmed` displays the just-created booking summary from session storage
 - `/book/confirmed` now includes a private cancellation link for the just-created appointment
+- `/book/confirmed`, `/policy`, the landing contact panel, and client confirmation emails do not display the appointment address; they tell clients to text Sanchit for it
 - Client confirmation emails include a private cancellation link
 - `/booking/cancel/[token]` lets clients cancel confirmed future appointments without an account
 - `POST /api/bookings/cancel` validates private cancellation tokens and only cancels confirmed future appointments
@@ -333,8 +338,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-05-19
-**Last Finished:** Added client self-cancellation with private per-booking tokens, a public `/booking/cancel/[token]` page, public `POST /api/bookings/cancel`, confirmation-page cancellation link, client confirmation email cancellation link/button, cancellation notification emails to both client and Sanchit, and docs/testing notes. User confirmed local testing worked. Verified with `npm run lint` and `npm run build`, deployed to Cloudflare Worker version `2fa04c09-446b-48d9-8681-904d3293df7d`, and confirmed live `/`, `/book`, `/policy`, and `/booking/cancel/not-a-real-token` return `200` on `https://smblends.ca`.
-**In Progress:** Client cancellation is deployed. No active blocker.
-**Needs User Action Next:** Optional live end-to-end smoke test: create a live test booking, use the email cancellation link, verify the slot reopens, and confirm cancellation emails arrive.
-**Recommended Next Prompt:** Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Client self-cancellation is deployed with private cancel tokens and cancellation emails. Next focus: optional live end-to-end booking/cancel smoke test or commit the completed changes if requested.
+**Last Updated:** 2026-05-27
+**Last Finished:** Removed public appointment-address display from the landing contact panel, booking confirmation page, policy page, and client confirmation emails. The replacement copy tells clients to text Sanchit at 778-681-7694 for the appointment address before heading over. Verified with `npm run lint`, `npm run build`, address-string searches, and live page/bundle checks. Deployed to Cloudflare Worker version `f1e9adbc-a3e3-4c0c-bb50-9a1e52432def`.
+**In Progress:** Address privacy copy is deployed. No active blocker.
+**Needs User Action Next:** Optional live booking/email smoke test if the email copy should be checked in a real inbox.
+**Recommended Next Prompt:** Create one small live booking/email smoke test and cancel it after confirming the client email copy.

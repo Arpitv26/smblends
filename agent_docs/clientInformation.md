@@ -137,17 +137,16 @@
 
 ## 7. Location & Access
 
-- **Address:**
-  6686 Imperial St  
-  Burnaby, BC V5E 1M8  
+- **Address Display Rule:**
+  Do not show the appointment address publicly on the website or in emails.
 
 ### Entry Instructions
 
-> "Do not knock on the front door. Go down the driveway and go up the stairs."
+> "Text Sanchit at 778-681-7694 for the appointment address before heading over."
 
 ### Parking
 
-- Street parking available
+- Do not show parking/access details publicly. Sanchit can send access details by text.
 
 ---
 

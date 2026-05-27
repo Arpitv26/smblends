@@ -196,8 +196,8 @@ function buildClientEmail(
     "Payment: pay cash or e-transfer. Payment is expected before or after the haircut.",
     "E-transfer: sanchitmehta51@gmail.com",
     "",
-    "Location: 6686 Imperial St, Burnaby, BC V5E 1M8",
-    "Do not knock on the front door. Go down the driveway and go up the stairs. Street parking is available.",
+    "Appointment address: text Sanchit at 778-681-7694 for the address before heading over.",
+    "Message before heading over so he can send the correct access details.",
     "",
     "Policy reminder: 20 minutes late is a $5 fee. 30 minutes late is marked as no-show. Same-day cancellation or no-show is a $10 fee on the next cut.",
     `Need to cancel? Use this private cancellation link: ${cancelUrl}`,
@@ -232,8 +232,8 @@ function buildClientEmail(
       </table>
       <p style="margin-top:18px;color:#52525b;">Payment: pay cash or e-transfer. Payment is expected before or after the haircut.</p>
       <p style="margin-top:8px;color:#52525b;">E-transfer: sanchitmehta51@gmail.com</p>
-      <p style="margin-top:18px;color:#52525b;">Location: 6686 Imperial St, Burnaby, BC V5E 1M8.</p>
-      <p style="margin-top:8px;color:#52525b;">Do not knock on the front door. Go down the driveway and go up the stairs. Street parking is available.</p>
+      <p style="margin-top:18px;color:#52525b;">Appointment address: text Sanchit at 778-681-7694 for the address before heading over.</p>
+      <p style="margin-top:8px;color:#52525b;">Message before heading over so he can send the correct access details.</p>
       <p style="margin-top:18px;"><a href="${escapeHtml(cancelUrl)}" style="display:inline-block;background:#18181b;color:#ffffff;text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:600;">Cancel appointment</a></p>
       <p style="margin-top:18px;color:#71717a;font-size:13px;">20 minutes late: $5 fee. 30 minutes late: marked as no-show. Same-day cancellation or no-show: $10 fee on the next cut.</p>
       <p style="margin-top:8px;color:#71717a;font-size:13px;">Use the private cancellation link above if you need to cancel. For rescheduling, message @smblends._ or text 778-681-7694.</p>

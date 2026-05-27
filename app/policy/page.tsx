@@ -44,11 +44,10 @@ const POLICY_SECTIONS = [
     ]
   },
   {
-    title: "Location",
+    title: "Appointment Address",
     items: [
-      "6686 Imperial St, Burnaby, BC V5E 1M8.",
-      "Do not knock on the front door. Go down the driveway and go up the stairs.",
-      "Street parking is available."
+      "Text Sanchit at 778-681-7694 for the appointment address.",
+      "Message before heading over so he can send the correct access details."
     ]
   }
 ] as const;

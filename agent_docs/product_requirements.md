@@ -9,9 +9,9 @@ Smblends Booking Website
 - **Instagram:** @smblends._
 - **Phone:** +1 778-681-7694
 - **Email:** sanchitmehta51@gmail.com
-- **Location:** 6686 Imperial St, Burnaby, BC V5E 1M8
-- **Entry instructions:** Do not knock on the front door. Go down the driveway and go up the stairs.
-- **Parking:** Street parking available
+- **Appointment address:** Do not display publicly. Clients should text Sanchit at 778-681-7694 for the address.
+- **Entry instructions:** Do not display publicly. Sanchit can send access details by text.
+- **Parking:** Do not display publicly.
 
 ## One-Line Description
 A reliable, mobile-first self-serve booking website for Smblends that reduces Instagram DM scheduling and gives the barber a simple admin workflow.
