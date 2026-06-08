@@ -113,6 +113,20 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Added a one-time public policy popup inspired by the Setmore example.
+- The popup appears on public pages, skips `/admin/*`, and stores dismissal in `localStorage`.
+- Popup copy summarizes the key SMBLENDS rules: text Sanchit at 778-681-7694 for the address, pay by cash or e-transfer, 20-minute late fee, 30-minute no-show rule, and no-show/same-day cancellation fee.
+- Added a `/policy` link and a clear `I Understand` dismissal button inside the popup.
+- Mounted the popup in `app/layout.tsx` through `components/shared/PolicyNoticeModal.tsx`.
+- Verified with `npm run lint` and `npm run build`.
+- Verified local public/admin behavior with `curl` against `/` and `/admin/login`.
+- Verified mobile visual behavior with a headless Chrome screenshot of `/` at 390x844; the compact popup fits and wraps policy text correctly.
+- Verified `/admin/login` with a headless Chrome screenshot; the policy popup does not appear on admin.
+- Deployed the policy popup to Cloudflare Worker version `0e3e286c-47f2-4bb6-9d48-1fc988d758cc`.
+- Confirmed live `https://smblends.ca/` returns `200`.
+- Confirmed live `https://smblends.ca/admin/login` returns `200`.
+- Confirmed the live layout bundle contains the policy popup code and copy.
+- Verified the live policy popup with a fresh mobile headless Chrome screenshot of `https://smblends.ca/`.
 - Removed public appointment-address display from the landing contact panel, `/book/confirmed`, `/policy`, and client confirmation email text/HTML.
 - Replaced public address/access instructions with copy telling clients to text Sanchit at 778-681-7694 for the appointment address before heading over.
 - Updated business docs so future sessions know not to display the address, parking, or access instructions publicly.
@@ -284,6 +298,7 @@ npm test
 - Admin login email is trimmed/lowercased before Supabase auth
 - Cancelled bookings are retained with `status = cancelled` and no longer block the public slot
 - Public booking, confirmation, and admin screens now follow the black-and-white neutral visual direction
+- A one-time public policy popup is deployed on production and verified with a fresh mobile screenshot
 - `/` now shows the new SMBLENDS landing page with logo hero, booking CTA, animated haircut-photo strip, hamburger menu, and contact panel
 - `/policy` is live and linked from the landing burger menu
 - Cloudflare Workers/OpenNext deployment config is added with `wrangler.jsonc`, `open-next.config.ts`, static asset cache headers, and deploy scripts
@@ -296,7 +311,6 @@ npm test
 
 ### Unfinished work
 - Add a real test suite beyond lint/build
-- Apply `20260519090000_booking_cancel_tokens.sql` in Supabase before deploying the client cancellation feature
 
 ### Blockers or risks
 - `send.smblends.ca` is verified in Resend and the user confirmed barber and client emails work in production
@@ -310,7 +324,7 @@ npm test
 - Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
 
 ### Manual setup still needed
-- Apply `supabase/migrations/20260519090000_booking_cancel_tokens.sql` in Supabase before deploying the client cancellation feature
+- None for the policy popup change
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -338,8 +352,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-05-27
-**Last Finished:** Removed public appointment-address display from the landing contact panel, booking confirmation page, policy page, and client confirmation emails. The replacement copy tells clients to text Sanchit at 778-681-7694 for the appointment address before heading over. Verified with `npm run lint`, `npm run build`, address-string searches, and live page/bundle checks. Deployed to Cloudflare Worker version `f1e9adbc-a3e3-4c0c-bb50-9a1e52432def`.
-**In Progress:** Address privacy copy is deployed. No active blocker.
-**Needs User Action Next:** Optional live booking/email smoke test if the email copy should be checked in a real inbox.
-**Recommended Next Prompt:** Create one small live booking/email smoke test and cancel it after confirming the client email copy.
+**Last Updated:** 2026-06-08
+**Last Finished:** Added a one-time public policy popup inspired by the Setmore example. It appears on public pages, skips `/admin/*`, stores dismissal in `localStorage`, links to `/policy`, and summarizes the key SMBLENDS rules. Verified with `npm run lint`, `npm run build`, local homepage/admin HTTP checks, a mobile homepage screenshot confirming the popup fits and wraps, and an admin-login screenshot confirming no popup appears on admin. Deployed to Cloudflare Worker version `0e3e286c-47f2-4bb6-9d48-1fc988d758cc` and verified live on `https://smblends.ca/`.
+**In Progress:** Policy popup is deployed. No active blocker.
+**Needs User Action Next:** Optional real-phone check of the first-visit popup experience.
+**Recommended Next Prompt:** Check the popup on a real phone and tell Codex if the copy or spacing should be adjusted.

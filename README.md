@@ -190,7 +190,7 @@ RESEND_FROM_EMAIL
 
 ## Current Status
 
-The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, special-date availability, admin login, upcoming bookings, admin cancellations, no-shows, weekly availability edits, policy display, barber notification emails, and required client confirmation emails. The codebase also includes client self-cancellation, pending the cancellation-token migration and deployment. `send.smblends.ca` is verified in Resend.
+The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, special-date availability, admin login, upcoming bookings, admin cancellations, no-shows, weekly availability edits, policy display, a one-time public policy popup, client self-cancellation, barber notification emails, and required client confirmation emails. `send.smblends.ca` is verified in Resend.
 
 Remaining launch hardening:
 

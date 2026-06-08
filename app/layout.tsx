@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PolicyNoticeModal } from "@/components/shared/PolicyNoticeModal";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,7 +14,10 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
     <html lang="en" className="dark">
-      <body className="theme font-sans antialiased">{children}</body>
+      <body className="theme font-sans antialiased">
+        {children}
+        <PolicyNoticeModal />
+      </body>
     </html>
   );
 }
