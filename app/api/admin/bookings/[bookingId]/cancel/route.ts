@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { getAdminSession } from "@/lib/admin/auth";
 import { cancelBooking } from "@/lib/admin/cancel-booking";
+import { sendClientCancellationNotification } from "@/lib/notifications/send-booking-notifications";
 
 const routeParamsSchema = z.object({
   bookingId: z.string().uuid()
@@ -42,6 +43,15 @@ export async function POST(
     return NextResponse.json(
       { error: result.message },
       { status: result.reason === "not_found" ? 404 : 500 }
+    );
+  }
+
+  try {
+    await sendClientCancellationNotification(result.booking);
+  } catch (emailError: unknown) {
+    console.error(
+      "Booking cancelled by admin, but client cancellation email failed.",
+      emailError
     );
   }
 

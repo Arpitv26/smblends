@@ -65,6 +65,8 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - unauthenticated users cannot access admin pages
 - barber can log in
 - upcoming bookings load
+- admin cancellation changes the booking status and sends the client a cancellation email
+- admin cancellation still succeeds if the client email cannot be sent
 - no-show action updates status
 - availability editor saves correctly
 - special-date availability can add, toggle, and remove one-off schedule windows

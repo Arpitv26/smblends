@@ -30,8 +30,7 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
 ### 2. Availability and Slot Logic
 - The system reads weekly availability and blocked dates, then displays only valid time slots.
 - Success criteria:
-  - Monday-Friday standard hours are 4:00 PM-9:00 PM
-  - Saturday standard hours are 9:00 AM-9:00 PM
+  - Monday-Saturday standard hours are 9:00 AM-9:00 PM
   - Sunday standard hours are 3:00 PM-9:00 PM
   - After-hours slots are offered daily from 9:00 PM-12:00 AM
   - Appointment slots are 60 minutes
@@ -59,6 +58,7 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Barber can authenticate securely
   - Upcoming bookings display correctly
   - Future bookings can be cancelled without deleting the record
+  - Clients receive an email when the barber cancels their appointment
   - Hours and blocked dates can be updated
   - No-shows can be marked with one click
   - No-shows remain stored and visible for follow-up

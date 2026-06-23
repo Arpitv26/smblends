@@ -369,3 +369,15 @@ export async function sendCancellationNotifications(
     );
   }
 }
+
+export async function sendClientCancellationNotification(
+  booking: BookingCancellationDetails
+): Promise<void> {
+  const clientEmail = buildClientCancellationEmail(booking);
+
+  if (!clientEmail) {
+    return;
+  }
+
+  await sendEmail(clientEmail);
+}

@@ -40,7 +40,7 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Notification/payment email: sanchitmehta51@gmail.com
 - Phone: +1 778-681-7694
 - Appointment address: do not display publicly; clients should text Sanchit at 778-681-7694 for the address
-- Standard hours: Monday-Friday 4:00 PM-9:00 PM, Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM
+- Standard hours: Monday-Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM
 - Appointment slot length: 60 minutes
 - After-hours: every day from 9:00 PM-12:00 AM with a +$10 surcharge
 - Services: Haircut $20, Haircut & Beard $30
@@ -113,6 +113,24 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Confirmed admin-initiated cancellations previously changed the booking status without emailing the client.
+- Added `sendClientCancellationNotification` using the existing client cancellation email template.
+- Updated the protected admin cancellation route to email the client after a successful cancellation.
+- Kept cancellation durable when Resend fails: the error is logged, but the API still returns success because the booking is already cancelled.
+- Updated README, product requirements, and testing documentation for admin cancellation emails.
+- Verified the change with `npm run lint` and `npm run build`.
+- Deployed the change to Cloudflare Worker version `987cfd98-86e8-485b-8b62-ea2601bda842`.
+- Confirmed the deployed server bundle contains the new client cancellation email call.
+- Confirmed the live admin cancellation endpoint still rejects logged-out requests with `401`.
+- Added migration `20260622090000_expand_weekly_availability.sql` to expand regular hours to 9:00 AM-9:00 PM Monday-Saturday while keeping Sunday at 3:00 PM-9:00 PM.
+- Kept the existing daily 9:00 PM-midnight after-hours windows and +$10 surcharge unchanged.
+- The migration updates existing standard rows without changing their `is_active` values, so current dashboard on/off choices are preserved.
+- Updated the README and project business-rule documentation with the new schedule.
+- Verified the local change with `npm run lint` and `npm run build`.
+- The user applied the new migration manually in Supabase.
+- Verified the live API on `2026-06-27`, `2026-06-28`, `2026-06-29`, `2026-07-04`, `2026-07-05`, and `2026-07-06`.
+- Saturday and Monday returned standard slots beginning at 9:00 AM; Sunday returned standard slots beginning at 3:00 PM.
+- All checked dates returned 9:00 PM, 10:00 PM, and 11:00 PM as after-hours slots ending at midnight.
 - Added a one-time public policy popup inspired by the Setmore example.
 - The popup appears on public pages, skips `/admin/*`, and stores dismissal in `localStorage`.
 - Popup copy summarizes the key SMBLENDS rules: text Sanchit at 778-681-7694 for the address, pay by cash or e-transfer, 20-minute late fee, 30-minute no-show rule, and no-show/same-day cancellation fee.
@@ -352,8 +370,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-06-08
-**Last Finished:** Added a one-time public policy popup inspired by the Setmore example. It appears on public pages, skips `/admin/*`, stores dismissal in `localStorage`, links to `/policy`, and summarizes the key SMBLENDS rules. Verified with `npm run lint`, `npm run build`, local homepage/admin HTTP checks, a mobile homepage screenshot confirming the popup fits and wraps, and an admin-login screenshot confirming no popup appears on admin. Deployed to Cloudflare Worker version `0e3e286c-47f2-4bb6-9d48-1fc988d758cc` and verified live on `https://smblends.ca/`.
-**In Progress:** Policy popup is deployed. No active blocker.
-**Needs User Action Next:** Optional real-phone check of the first-visit popup experience.
-**Recommended Next Prompt:** Check the popup on a real phone and tell Codex if the copy or spacing should be adjusted.
+**Last Updated:** 2026-06-22
+**Last Finished:** Added client email notification for admin-initiated cancellations, verified lint/build, deployed Cloudflare Worker version `987cfd98-86e8-485b-8b62-ea2601bda842`, confirmed the deployed bundle contains the new email call, and confirmed the live route remains protected from logged-out requests.
+**In Progress:** The feature is deployed. One controlled end-to-end email delivery check remains.
+**Needs User Action Next:** Cancel a controlled future booking from `/admin/dashboard` and confirm the client inbox receives the cancellation email.
+**Recommended Next Prompt:** I cancelled the controlled booking from admin and the client received the cancellation email.

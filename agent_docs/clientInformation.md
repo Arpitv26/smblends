@@ -14,10 +14,7 @@
 
 ### Weekly Schedule
 
-- **Monday – Friday (School Days):**
-  - 4:00 PM – 9:00 PM
-
-- **Saturday:**
+- **Monday – Saturday:**
   - 9:00 AM – 9:00 PM
 
 - **Sunday:**
