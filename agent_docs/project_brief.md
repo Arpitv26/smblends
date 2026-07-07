@@ -342,7 +342,7 @@ npm test
 - Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
 
 ### Manual setup still needed
-- None for the policy popup change
+- None for the SMS research step
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -370,8 +370,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-06-22
-**Last Finished:** Added client email notification for admin-initiated cancellations, verified lint/build, deployed Cloudflare Worker version `987cfd98-86e8-485b-8b62-ea2601bda842`, confirmed the deployed bundle contains the new email call, and confirmed the live route remains protected from logged-out requests.
-**In Progress:** The feature is deployed. One controlled end-to-end email delivery check remains.
-**Needs User Action Next:** Cancel a controlled future booking from `/admin/dashboard` and confirm the client inbox receives the cancellation email.
-**Recommended Next Prompt:** I cancelled the controlled booking from admin and the client received the cancellation email.
+**Last Updated:** 2026-07-06
+**Last Finished:** Re-read the repo docs and notification-related source, then researched SMS/text-message notification options for Sanchit. No app code was changed. Current recommendation is to keep Resend email as the free default and only add SMS as a v2 layer if the added provider setup, consent/opt-out handling, and per-message billing are acceptable.
+**In Progress:** SMS is only being evaluated. No provider account, env vars, database changes, or notification code have been added.
+**Needs User Action Next:** Decide whether SMS should be admin-only alerts, client booking/cancellation confirmations, appointment reminders, or no SMS for now.
+**Recommended Next Prompt:** Add SMS for [admin alerts/client confirmations/reminders] using the simplest reliable provider.
