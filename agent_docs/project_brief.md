@@ -45,10 +45,11 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Appointment slot length: 60 minutes
 - After-hours: every day from 9:00 PM-12:00 AM with a +$10 surcharge
 - Services: Haircut $20, Haircut & Beard $30
-- Active add-ons: Beard Fade / Line-up +$10
+- Active add-ons: Beard Fade +$5 and Beard Line-up +$5
 - Disabled future add-on: Design +$5
 - Same-day booking is enabled with no cutoff except real slot availability
-- Required booking fields: full name, phone number, email, date, time, service
+- Required booking fields: full name, phone number, date, time, service
+- Optional booking fields: email, notes
 - Optional booking fields: notes
 
 ## Persistent Workflow Rules
@@ -114,6 +115,11 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Split the combined Beard Fade / Line-up add-on into independently selectable Beard Fade +$5 and Beard Line-up +$5 options.
+- Added and applied migration `20260717070000_split_beard_add_ons.sql`; the legacy combined value remains readable for historical bookings.
+- Verified lint/build, live UI labels/prices, new add-on API validation, and rejection of the old combined value for new bookings.
+- Cancelled the temporary validation booking immediately so its slot reopened.
+- Deployed the add-on split to Cloudflare Worker version `4678f9f9-7800-4a6d-a712-c57550c04785`.
 - Replaced client booking and cancellation emails with Twilio SMS while keeping Sanchit's barber alerts on Resend email.
 - Made client email optional and kept phone required.
 - Added server-side phone normalization, Twilio REST delivery, short Trial-safe SMS copy, SMS consent/STOP copy, and private cancellation links in texts.
@@ -279,7 +285,7 @@ npm test
 - `/book` now unlocks the booking-details form after slot selection
 - `/book` lets clients choose `Haircut` or `Haircut & Beard`
 - `/book` lets clients select optional add-ons
-- `/book` currently shows only Beard Fade / Line-up as an active add-on; Design is intentionally disabled until Sanchit offers it
+- `/book` shows Beard Fade and Beard Line-up as separate +$5 add-ons; Design remains disabled until Sanchit offers it
 - `/api/bookings` rejects Design add-on submissions while Design is disabled
 - `/book` previews the estimated total from local shared pricing config
 - `/book` saves valid bookings to Supabase
@@ -379,8 +385,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-07-16
-**Last Finished:** Switched client booking/cancellation notifications from Resend email to Twilio SMS, made client email optional, kept barber alerts on Resend, tested real delivery, configured Cloudflare secrets, and deployed Worker version `2356e900-d117-4638-a730-007eaa9abc77`.
-**In Progress:** The SMS switch is deployed. The final production check is one normal booking and cancellation from `https://smblends.ca` using the upgraded Twilio account.
-**Needs User Action Next:** Complete one production booking with a real phone number, confirm both booking texts arrive without the Trial prefix, then cancel from the private link and confirm the cancellation text arrives.
-**Recommended Next Prompt:** Verify the production SMS booking and cancellation flow.
+**Last Updated:** 2026-07-17
+**Last Finished:** Split Beard Fade / Line-up into separate +$5 Beard Fade and +$5 Beard Line-up options, retained the legacy value for historical records, applied the database migration, verified production behavior, and deployed Worker version `4678f9f9-7800-4a6d-a712-c57550c04785`.
+**In Progress:** Nothing; the add-on split is live.
+**Needs User Action Next:** Visually confirm both +$5 add-ons on `https://smblends.ca/book`.
+**Recommended Next Prompt:** Continue with the next requested SMBLENDS change.

@@ -11,7 +11,8 @@ import {
   formatPrice,
   SERVICE_PRICES,
   SERVICE_TYPES,
-  type AddOnType,
+  STORED_ADD_ON_TYPES,
+  type ActiveAddOnType,
   type ServiceType
 } from "@/lib/bookings/config";
 import {
@@ -140,7 +141,9 @@ function isConfirmedBooking(
   return (
     Array.isArray(candidate.addOns) &&
     candidate.addOns.every((addOn) =>
-      ADD_ON_TYPES.includes(addOn as AddOnType)
+      STORED_ADD_ON_TYPES.includes(
+        addOn as (typeof STORED_ADD_ON_TYPES)[number]
+      )
     ) &&
     typeof candidate.bookingDate === "string" &&
     typeof candidate.cancelToken === "string" &&
@@ -347,7 +350,7 @@ export function BookingAvailability({
     markFieldTouched("serviceType");
   }
 
-  function toggleAddOn(addOn: AddOnType): void {
+  function toggleAddOn(addOn: ActiveAddOnType): void {
     setFormValues((currentValues) => {
       const nextAddOns = currentValues.addOns.includes(addOn)
         ? currentValues.addOns.filter((currentAddOn) => currentAddOn !== addOn)

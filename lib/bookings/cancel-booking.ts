@@ -1,8 +1,8 @@
 import "server-only";
 
 import {
-  ADD_ON_TYPES,
   SERVICE_TYPES,
+  STORED_ADD_ON_TYPES,
   type AddOnType,
   type ServiceType
 } from "@/lib/bookings/config";
@@ -63,7 +63,7 @@ export type CancelBookingResult =
 
 function toAddOns(value: string[]): AddOnType[] {
   return value.filter((addOn): addOn is AddOnType =>
-    ADD_ON_TYPES.includes(addOn as AddOnType)
+    STORED_ADD_ON_TYPES.includes(addOn as AddOnType)
   );
 }
 

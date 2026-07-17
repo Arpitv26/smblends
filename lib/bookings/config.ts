@@ -1,10 +1,17 @@
 export const SERVICE_TYPES = ["Haircut", "Haircut & Beard"] as const;
 
-export const ADD_ON_TYPES = ["Beard Fade / Line-up"] as const;
+export const ADD_ON_TYPES = ["Beard Fade", "Beard Line-up"] as const;
+
+export const STORED_ADD_ON_TYPES = [
+  ...ADD_ON_TYPES,
+  "Beard Fade / Line-up"
+] as const;
 
 export type ServiceType = (typeof SERVICE_TYPES)[number];
 
-export type AddOnType = (typeof ADD_ON_TYPES)[number];
+export type ActiveAddOnType = (typeof ADD_ON_TYPES)[number];
+
+export type AddOnType = (typeof STORED_ADD_ON_TYPES)[number];
 
 export type PriceInput = {
   addOns: AddOnType[];
@@ -18,6 +25,8 @@ export const SERVICE_PRICES: Record<ServiceType, number> = {
 };
 
 export const ADD_ON_PRICES: Record<AddOnType, number> = {
+  "Beard Fade": 5,
+  "Beard Line-up": 5,
   "Beard Fade / Line-up": 10
 };
 

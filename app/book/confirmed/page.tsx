@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { ADD_ON_TYPES, formatPrice, SERVICE_TYPES } from "@/lib/bookings/config";
+import {
+  formatPrice,
+  SERVICE_TYPES,
+  STORED_ADD_ON_TYPES
+} from "@/lib/bookings/config";
 import {
   BOOKING_CONFIRMATION_STORAGE_KEY,
   type BookingConfirmationSummary
@@ -21,7 +25,9 @@ function isBookingConfirmationSummary(
   return (
     Array.isArray(candidate.addOns) &&
     candidate.addOns.every((addOn) =>
-      ADD_ON_TYPES.includes(addOn as (typeof ADD_ON_TYPES)[number])
+      STORED_ADD_ON_TYPES.includes(
+        addOn as (typeof STORED_ADD_ON_TYPES)[number]
+      )
     ) &&
     typeof candidate.bookingDate === "string" &&
     typeof candidate.cancelToken === "string" &&

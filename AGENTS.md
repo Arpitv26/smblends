@@ -177,14 +177,14 @@ Load only what is needed for the current task:
 - Do NOT require code edits for the barber to use admin features.
 
 ## Current State (Update This Every Session)
-**Last Updated:** 2026-07-16
-**Completed This Session:** Switched client booking/cancellation notifications from Resend email to Twilio SMS, made client email optional, kept phone required, and kept Sanchit's alerts on Resend email. Added phone normalization, Twilio REST transport, short booking details + private cancel-link texts, cancellation texts, and consent/STOP copy. Upgraded Twilio, configured production Worker secrets, verified real Canadian SMS delivery, and deployed Worker version `2356e900-d117-4638-a730-007eaa9abc77`.
-**Currently Working:** Phase 1 and Phase 2 remain functionally complete. Production now shows optional email, required phone, and SMS confirmation copy. Client booking confirmations use two short texts, client/admin cancellations send a client text, and barber alerts remain email. Existing availability, admin, policy, and cancellation-token behavior remains in place.
-**Currently Working Well:** `npm run lint` and `npm run build` pass. Real Twilio booking-detail, cancel-link, and cancellation texts delivered successfully. Live `/` and `/book` return `200`; live `/book` contains optional-email, confirmation-text, and Reply STOP copy; malformed live booking requests return a friendly `400`. SMS/email failures remain non-fatal after durable database changes.
+**Last Updated:** 2026-07-17
+**Completed This Session:** Split Beard Fade / Line-up into separate Beard Fade +$5 and Beard Line-up +$5 options. Added/applied migration `20260717070000_split_beard_add_ons.sql`, retained the legacy combined value for historical bookings, verified lint/build and live validation, cancelled the temporary validation booking, and deployed Worker version `4678f9f9-7800-4a6d-a712-c57550c04785`.
+**Currently Working:** Phase 1 and Phase 2 remain complete. Production uses Twilio SMS for clients and Resend email for Sanchit. The booking form now exposes two independent beard add-ons at +$5 each; selecting both totals +$10.
+**Currently Working Well:** `npm run lint` and `npm run build` pass. Live `/book` returns `200` and shows Beard Fade and Beard Line-up separately at $5. The API rejects the old combined add-on for new bookings while historical records remain readable.
 **Unfinished Work:** No automated test suite exists beyond lint/build/manual smoke checks.
 **Blockers Or Risks:** Twilio is prepaid and charges per SMS segment plus the monthly phone-number fee; auto-recharge is initially disabled, so texts stop when the balance runs out. Fake bookings can consume SMS credit and fill slots. No bot protection is installed; add Cloudflare Turnstile first if spam appears. Admin sessions still use the Supabase access token lifetime. `npm test` is not configured.
-**Manual Setup Still Needed:** Complete one production booking/cancellation flow on `smblends.ca` and confirm all three texts arrive without the Trial prefix.
-**Next Recommended Task:** Verify the live booking details text, private cancellation-link text, and cancellation confirmation text end-to-end.
+**Manual Setup Still Needed:** None for the add-on split.
+**Next Recommended Task:** Continue with the next requested SMBLENDS change.
 
 ## Next session prompt
- Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Twilio SMS for client booking/cancellation notifications is deployed. Next focus: complete one production end-to-end SMS booking/cancellation check, then add automated tests or Turnstile only if requested.
+ Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Twilio SMS is deployed and the beard add-ons are split into two +$5 options. Continue with the next requested change.

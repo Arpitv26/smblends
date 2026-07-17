@@ -35,8 +35,9 @@ Live site: [https://smblends.ca](https://smblends.ca)
 - Services:
   - Haircut: `$20`
   - Haircut & Beard: `$30`
-- Active add-on:
-  - Beard Fade / Line-up: `$10`
+- Active add-ons:
+  - Beard Fade: `$5`
+  - Beard Line-up: `$5`
 - Disabled launch add-on:
   - Design: hidden in the UI and rejected by the API until the barber offers it
 - Payment: in person by cash or e-transfer
@@ -141,6 +142,7 @@ Apply the SQL migrations in `supabase/migrations` in chronological order:
 20260513090000_special_availability.sql
 20260519090000_booking_cancel_tokens.sql
 20260622090000_expand_weekly_availability.sql
+20260717070000_split_beard_add_ons.sql
 ```
 
 The confirmed booking unique-slot migration creates a partial unique index for confirmed bookings only, so cancelled bookings do not keep slots blocked.

@@ -1,8 +1,8 @@
 import "server-only";
 
 import {
-  ADD_ON_TYPES,
   SERVICE_TYPES,
+  STORED_ADD_ON_TYPES,
   type AddOnType,
   type ServiceType
 } from "@/lib/bookings/config";
@@ -73,7 +73,7 @@ function getTodayInVancouver(): string {
 }
 
 function isAddOnType(value: string): value is AddOnType {
-  return ADD_ON_TYPES.includes(value as AddOnType);
+  return STORED_ADD_ON_TYPES.includes(value as AddOnType);
 }
 
 function toAddOns(values: string[] | null): AddOnType[] {
