@@ -5,7 +5,7 @@ import { sendBookingNotifications } from "@/lib/notifications/send-booking-notif
 import { bookingDraftSchema } from "@/lib/validators/booking";
 
 const GENERIC_INVALID_BOOKING_MESSAGE =
-  "Please fill in your name, phone number, email, date, time, and service.";
+  "Please fill in your name, phone number, date, time, and service.";
 
 function getInvalidBookingMessage(
   issues: Array<{ message: string }>
@@ -50,8 +50,11 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     try {
       await sendBookingNotifications(result.notification, siteOrigin);
-    } catch (emailError: unknown) {
-      console.error("Booking saved, but notification email failed.", emailError);
+    } catch (notificationError: unknown) {
+      console.error(
+        "Booking saved, but notification delivery failed.",
+        notificationError
+      );
     }
 
     return NextResponse.json({ booking: result.booking }, { status: 201 });

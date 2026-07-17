@@ -48,10 +48,10 @@ export async function POST(
 
   try {
     await sendClientCancellationNotification(result.booking);
-  } catch (emailError: unknown) {
+  } catch (notificationError: unknown) {
     console.error(
-      "Booking cancelled by admin, but client cancellation email failed.",
-      emailError
+      "Booking cancelled by admin, but client cancellation SMS failed.",
+      notificationError
     );
   }
 

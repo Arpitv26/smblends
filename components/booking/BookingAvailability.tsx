@@ -144,8 +144,9 @@ function isConfirmedBooking(
     ) &&
     typeof candidate.bookingDate === "string" &&
     typeof candidate.cancelToken === "string" &&
-    typeof candidate.clientEmail === "string" &&
+    (candidate.clientEmail === null || typeof candidate.clientEmail === "string") &&
     typeof candidate.clientName === "string" &&
+    typeof candidate.clientPhone === "string" &&
     typeof candidate.isAfterHours === "boolean" &&
     typeof candidate.priceCharged === "number" &&
     SERVICE_TYPES.includes(candidate.serviceType as ServiceType) &&
@@ -638,6 +639,10 @@ export function BookingAvailability({
               type="tel"
               value={formValues.clientPhone}
             />
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              We&apos;ll text your confirmation and cancel link to this number.
+              Reply STOP to opt out.
+            </p>
             {touchedFields.clientPhone && fieldErrors.clientPhone ? (
               <p className="mt-2 text-sm text-red-200">
                 {fieldErrors.clientPhone}
@@ -722,6 +727,7 @@ export function BookingAvailability({
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-zinc-200">
               Email
+              <span className="ml-2 text-zinc-500">Optional</span>
             </span>
             <input
               aria-invalid={touchedFields.clientEmail && fieldErrors.clientEmail ? true : undefined}
@@ -731,7 +737,6 @@ export function BookingAvailability({
               onBlur={() => markFieldTouched("clientEmail")}
               onChange={(event) => updateField("clientEmail", event.target.value)}
               placeholder="name@example.com"
-              required
               type="email"
               value={formValues.clientEmail}
             />
@@ -828,7 +833,7 @@ export function BookingAvailability({
           </p>
           <p className="mt-2 text-sm leading-6 text-zinc-400">
             {isBookingConfirmed
-              ? "Keep this screen for your records. Your email includes a private cancellation link."
+              ? "Keep this screen for your records. Your confirmation text includes a private cancellation link."
               : selectedSlot
                 ? "The site will recheck availability before saving to prevent double-booking."
                 : "Select a slot first, then fill the form to preview the complete booking flow."}
@@ -839,7 +844,7 @@ export function BookingAvailability({
             <p>Same-day cancellation or no-show: $10 fee on next cut.</p>
             <p>Maximum 2 extra people per client.</p>
             <p>
-              Need to cancel? Use the private link in your confirmation email.
+              Need to cancel? Use the private link in your confirmation text.
               For rescheduling, message @smblends._ or text 778-681-7694.
             </p>
           </div>

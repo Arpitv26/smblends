@@ -46,10 +46,12 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Users see a clear retry message
 
 ### 4. Booking Notifications
-- After booking, the client receives a confirmation notification and the barber gets a booking alert.
+- After booking, the client receives an SMS confirmation and the barber gets an email alert.
 - Success criteria:
   - Notification is sent to the barber at sanchitmehta51@gmail.com
-  - Client notification is sent only if client email is collected or another contact method is added later
+  - Client SMS includes appointment details and a private cancellation link
+  - Client receives an SMS after a successful cancellation
+  - Client email is optional
   - Booking details match the database record
 
 ### 5. Admin Dashboard
@@ -58,7 +60,7 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Barber can authenticate securely
   - Upcoming bookings display correctly
   - Future bookings can be cancelled without deleting the record
-  - Clients receive an email when the barber cancels their appointment
+  - Clients receive an SMS when the barber cancels their appointment
   - Hours and blocked dates can be updated
   - No-shows can be marked with one click
   - No-shows remain stored and visible for follow-up
@@ -150,7 +152,8 @@ The barber / business owner managing the schedule.
 - Only the barber has admin authentication
 - Row Level Security enabled on booking-related tables
 - Collect only necessary client data
-- Required public booking fields are full name, phone number, email, date, time, and service
+- Required public booking fields are full name, phone number, date, time, and service
+- Client email is optional
 - Notes are optional unless the barber asks to require them later
 - Test on iPhone Safari before launch
 - Support Chrome, Safari, Firefox, Edge

@@ -25,8 +25,9 @@ function isBookingConfirmationSummary(
     ) &&
     typeof candidate.bookingDate === "string" &&
     typeof candidate.cancelToken === "string" &&
-    typeof candidate.clientEmail === "string" &&
+    (candidate.clientEmail === null || typeof candidate.clientEmail === "string") &&
     typeof candidate.clientName === "string" &&
+    typeof candidate.clientPhone === "string" &&
     typeof candidate.isAfterHours === "boolean" &&
     typeof candidate.priceCharged === "number" &&
     SERVICE_TYPES.includes(candidate.serviceType as (typeof SERVICE_TYPES)[number]) &&
@@ -112,8 +113,8 @@ export default function BookingConfirmedPage(): JSX.Element {
                 You&apos;re locked in.
               </h1>
               <p className="mt-4 max-w-xl text-base leading-7 text-zinc-300">
-                Your appointment has been saved, and a confirmation email was
-                sent to your inbox.
+                Your appointment has been saved, and a confirmation text was
+                sent to your phone.
               </p>
             </div>
 
@@ -147,8 +148,13 @@ export default function BookingConfirmedPage(): JSX.Element {
                     {confirmation.clientName}
                   </p>
                   <p className="mt-2 break-all text-sm text-zinc-400">
-                    Confirmation sent to {confirmation.clientEmail}
+                    Confirmation text sent to {confirmation.clientPhone}
                   </p>
+                  {confirmation.clientEmail ? (
+                    <p className="mt-1 break-all text-sm text-zinc-500">
+                      Email on file: {confirmation.clientEmail}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
@@ -203,7 +209,7 @@ export default function BookingConfirmedPage(): JSX.Element {
                 </p>
                 <p className="mt-3 text-sm leading-6 text-zinc-400">
                   Use your private cancellation link below or in your
-                  confirmation email.
+                  confirmation text.
                 </p>
                 <Link
                   className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] px-5 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.07]"

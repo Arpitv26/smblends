@@ -17,10 +17,10 @@ Live site: [https://smblends.ca](https://smblends.ca)
 - Calculates prices on the server, including add-ons and after-hours surcharge.
 - Prevents double-booking with both server-side slot checks and a database unique index.
 - Saves bookings in Supabase with status history.
-- Sends barber and client confirmation emails through Resend.
-- Gives clients a private cancellation link in their confirmation email.
+- Sends client booking/cancellation texts through Twilio and barber alerts through Resend.
+- Gives clients a private cancellation link in their confirmation text.
 - Gives the barber an authenticated admin dashboard for upcoming bookings, no-shows, availability, and blocked dates.
-- Emails the client when the barber cancels an appointment from the admin dashboard.
+- Texts the client when the barber cancels an appointment from the admin dashboard.
 - Supports one-off special-date hours that override the normal weekly schedule for a single date.
 - Keeps cancelled and no-show bookings stored for history while reopening cancelled slots.
 
@@ -49,7 +49,8 @@ Live site: [https://smblends.ca](https://smblends.ca)
 - **UI:** shadcn/ui conventions plus local components
 - **Database/Auth:** Supabase
 - **Validation:** Zod
-- **Email:** Resend
+- **Client SMS:** Twilio
+- **Barber email:** Resend
 - **Deployment:** Cloudflare Workers with OpenNext
 
 ## App Structure
@@ -80,7 +81,7 @@ components/
 lib/
   admin/                          Admin data/actions
   bookings/                       Booking creation and pricing
-  notifications/                  Resend email logic
+  notifications/                  Twilio SMS and Resend email logic
   slots/                          Availability and slot generation
   supabase/                       Supabase clients and env helpers
   validators/                     Zod/date/time validation
@@ -95,6 +96,7 @@ supabase/
 - Node.js 20+
 - npm
 - Supabase project
+- Twilio account with an SMS-capable number
 - Resend account
 - Cloudflare account for deployment
 
@@ -115,6 +117,9 @@ SUPABASE_SERVICE_ROLE_KEY=
 RESEND_API_KEY=
 BARBER_NOTIFICATION_EMAIL=
 RESEND_FROM_EMAIL=
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=
 ```
 
 Notes:
@@ -123,6 +128,7 @@ Notes:
 - `SUPABASE_SERVICE_ROLE_KEY` must stay server-side only.
 - `RESEND_FROM_EMAIL` is optional locally. Without a verified sending domain, Resend can use `SMBLENDS Bookings <onboarding@resend.dev>` for limited testing.
 - Production barber notifications are intended to use `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`.
+- Twilio credentials must remain server-side. `TWILIO_PHONE_NUMBER` uses E.164 format, for example `+12362421617`.
 
 ### Database Setup
 
@@ -188,11 +194,14 @@ SUPABASE_SERVICE_ROLE_KEY
 RESEND_API_KEY
 BARBER_NOTIFICATION_EMAIL
 RESEND_FROM_EMAIL
+TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN
+TWILIO_PHONE_NUMBER
 ```
 
 ## Current Status
 
-The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, special-date availability, admin login, upcoming bookings, admin cancellations with client email notification, no-shows, weekly availability edits, policy display, a one-time public policy popup, client self-cancellation, barber notification emails, and required client confirmation emails. `send.smblends.ca` is verified in Resend.
+The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, special-date availability, admin login, upcoming bookings, admin cancellations with client SMS notification, no-shows, weekly availability edits, policy display, a one-time public policy popup, client self-cancellation, barber notification emails, and client booking/cancellation texts. Client email is optional and phone is required.
 
 Remaining launch hardening:
 
@@ -202,7 +211,7 @@ Remaining launch hardening:
 
 - Keep the site mobile-first.
 - Keep the visual direction black, white, and neutral zinc. Do not add gold or amber brand accents.
-- Do not add payments, SMS, client accounts, or multi-staff scheduling in the MVP.
+- Do not add payments, client accounts, multi-staff scheduling, or automated SMS reminders in the MVP.
 - Keep booking rules out of React components; shared logic belongs in `lib/slots`, `lib/bookings`, and `lib/validators`.
 - Do not commit `.env.local` or any production secrets.
 

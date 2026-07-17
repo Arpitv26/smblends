@@ -7,8 +7,9 @@ export type BookingConfirmationSummary = {
   addOns: AddOnType[];
   bookingDate: string;
   cancelToken: string;
-  clientEmail: string;
+  clientEmail: string | null;
   clientName: string;
+  clientPhone: string;
   isAfterHours: boolean;
   priceCharged: number;
   serviceType: ServiceType;

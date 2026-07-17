@@ -16,6 +16,7 @@
 - Cloudflare Pages environment variables
 - Resend domain verification
 - Resend verified sending domain setup with SPF/DKIM before production barber notifications
+- Twilio Programmable Messaging pricing, delivery logs, and account balance
 - Cloudflare Turnstile for booking-form bot protection
 - Cloudflare Worker metrics and free-plan request limits
 - Supabase usage dashboard, free-plan quota warnings, and service restrictions
@@ -41,6 +42,7 @@ Client should own:
 - Cloudflare account
 - Supabase project
 - Resend account
+- Twilio account and sending number
 
 You can keep the GitHub repo during build and transfer later if needed.
 
@@ -55,14 +57,16 @@ You can keep the GitHub repo during build and transfer later if needed.
 - Cloudflare Worker free request limit being reached during unusual traffic spikes
 - Supabase free quota warnings or service restrictions if traffic/storage grows
 - Resend sending limits or test-mode restrictions causing notification failures
+- Twilio balance, carrier filtering, or delivery failures affecting client texts
 
 ## Post-Launch Abuse And Quota Plan
-The handoff launch uses free Cloudflare, Supabase, and Resend accounts. The expected failure mode for abuse or unusually high traffic is service degradation, not surprise billing.
+The handoff launch uses free Cloudflare, Supabase, and Resend accounts plus prepaid Twilio SMS. Cloudflare/Supabase/Resend abuse should cause service degradation or limits, while Twilio usage consumes the prepaid account balance.
 
 ### Current free-plan expectation
 - Cloudflare Workers Free has a daily Worker request limit; if exceeded, the Worker can return a Cloudflare error until the limit resets.
 - Supabase Free should notify the account owner when quotas are exceeded and may apply service restrictions if usage is not reduced or the project is not upgraded.
 - Resend can reject sends if the account hits limits or test-mode restrictions; booking creation currently still succeeds if email notification fails.
+- Twilio charges per SMS segment plus carrier fees and the monthly sending-number fee. Auto-recharge is disabled initially to prevent surprise charges.
 
 ### Current protections already in the app
 - Server-side booking validation with Zod.
@@ -79,7 +83,7 @@ The handoff launch uses free Cloudflare, Supabase, and Resend accounts. The expe
 - Add a simple server-side rate rule, such as no more than 2 bookings per phone number per day.
 - Consider Cloudflare dashboard rate limiting or WAF rules for `/api/bookings` if bot traffic is high.
 - Add an admin workflow for quickly cancelling obvious fake bookings.
-- Add lightweight monitoring: periodically check Cloudflare Worker requests/errors, Supabase usage, and Resend email activity.
+- Add lightweight monitoring: periodically check Cloudflare Worker requests/errors, Supabase usage, Resend email activity, and Twilio balance/delivery logs.
 
 ### Recommended first response if fake bookings appear
 1. Cancel fake bookings from `/admin/dashboard` so slots reopen.

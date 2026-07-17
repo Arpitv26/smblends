@@ -54,19 +54,21 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - future rate-limit checks reject excessive same-phone or same-client booking attempts if booking throttling is added later
 
 ### 4. Notifications
-- client confirmation email sends
+- client booking confirmation sends as two short SMS messages: appointment details, then private cancellation link
 - barber notification email sends
-- client confirmation email includes the private cancellation link
-- client cancellation emails send to the client and barber after a successful self-cancel
-- booking still exists if email fails after insert
+- client email remains optional while client phone remains required
+- client cancellation SMS and barber cancellation email send after a successful self-cancel
+- admin cancellation sends the client a cancellation SMS
+- booking still exists if SMS/email delivery fails after insert
+- SMS messages remain GSM-7/short enough to avoid unnecessary segments
 - failure is logged safely
 
 ### 5. Admin flow
 - unauthenticated users cannot access admin pages
 - barber can log in
 - upcoming bookings load
-- admin cancellation changes the booking status and sends the client a cancellation email
-- admin cancellation still succeeds if the client email cannot be sent
+- admin cancellation changes the booking status and sends the client a cancellation SMS
+- admin cancellation still succeeds if the client SMS cannot be sent
 - no-show action updates status
 - availability editor saves correctly
 - special-date availability can add, toggle, and remove one-off schedule windows
@@ -94,7 +96,7 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - test one blocked date
 - test one duplicate booking attempt
 - test one admin login session
-- test one client cancellation link from the confirmation email
+- test one client cancellation link from the confirmation text
 - test one no-show update
 - test one weekly hours change
 - test one blocked date add/remove action

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { ADD_ON_TYPES, SERVICE_TYPES } from "@/lib/bookings/config";
+import { toE164PhoneNumber } from "@/lib/notifications/phone";
 import {
   isBeforeTodayInVancouver,
   isIsoCalendarDate
@@ -29,9 +30,11 @@ export const bookingDraftSchema = z.object({
     .string()
     .trim()
     .toLowerCase()
-    .min(1, "Enter your email address.")
     .max(120, "Email must be 120 characters or less.")
-    .refine((value) => z.email().safeParse(value).success, "Enter a valid email address."),
+    .refine(
+      (value) => value.length === 0 || z.email().safeParse(value).success,
+      "Enter a valid email address."
+    ),
   clientName: z
     .string()
     .trim()
@@ -42,7 +45,11 @@ export const bookingDraftSchema = z.object({
     .trim()
     .min(7, "Enter your phone number.")
     .max(30, "Phone number must be 30 characters or less.")
-    .regex(PHONE_PATTERN, "Enter a valid phone number."),
+    .regex(PHONE_PATTERN, "Enter a valid phone number.")
+    .refine(
+      (value) => toE164PhoneNumber(value) !== null,
+      "Enter a valid phone number including area code."
+    ),
   notes: z
     .string()
     .trim()

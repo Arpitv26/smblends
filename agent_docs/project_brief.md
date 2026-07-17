@@ -13,12 +13,13 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Hosting should be **Cloudflare Workers with OpenNext** because the app uses full-stack Next.js route handlers
 - A free `*.workers.dev` URL is acceptable for first testing before buying a custom domain
 - Backend should be **Supabase**
-- Notifications should be **email first with Resend**
+- Client booking/cancellation notifications use **Twilio SMS**
+- Barber booking/cancellation notifications remain **Resend email**
 - Production barber notifications should use `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
 - Resend production delivery to the barber email requires a verified sending domain
 - Online payments are **not** part of MVP
 - Payment is in person by cash or e-transfer
-- SMS is **not** part of MVP
+- Automated appointment reminders are not part of MVP
 - The design should feel **dark, sleek, premium, minimal, modern**
 - The brand palette should stay **black-and-white / neutral zinc**; Sanchit does not want gold/amber accents
 - The site must be **mobile-first**
@@ -113,6 +114,14 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Replaced client booking and cancellation emails with Twilio SMS while keeping Sanchit's barber alerts on Resend email.
+- Made client email optional and kept phone required.
+- Added server-side phone normalization, Twilio REST delivery, short Trial-safe SMS copy, SMS consent/STOP copy, and private cancellation links in texts.
+- Upgraded Twilio from Trial, retained Canadian sender `+1 236-242-1617`, and left auto-recharge disabled.
+- Added `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_PHONE_NUMBER` to the Cloudflare Worker secrets.
+- Verified booking-detail, cancellation-link, and cancellation texts delivered to a real Canadian phone.
+- Verified `npm run lint`, `npm run build`, live `/` and `/book` responses, optional-email UI copy, and friendly invalid booking API validation.
+- Deployed to Cloudflare Worker version `2356e900-d117-4638-a730-007eaa9abc77`.
 - Confirmed admin-initiated cancellations previously changed the booking status without emailing the client.
 - Added `sendClientCancellationNotification` using the existing client cancellation email template.
 - Updated the protected admin cancellation route to email the client after a successful cancellation.
@@ -286,7 +295,7 @@ npm test
 - Server returns a friendly error when a selected slot is unavailable
 - Notification code runs after successful booking creation
 - Booking creation still succeeds if notification sending fails
-- Notification code currently sends only the barber email for free launch without a verified domain
+- Notification code sends client booking/cancellation texts through Twilio and barber alerts through Resend
 - Live Cloudflare `BARBER_NOTIFICATION_EMAIL` now points to `sanchitmehta51@gmail.com`
 - Resend local testing works when the recipient is the Resend account email
 - Resend local testing now works for Sanchit's barber notification email using Sanchit's Resend account
@@ -370,8 +379,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-07-06
-**Last Finished:** Re-read the repo docs and notification-related source, then researched SMS/text-message notification options for Sanchit. No app code was changed. Current recommendation is to keep Resend email as the free default and only add SMS as a v2 layer if the added provider setup, consent/opt-out handling, and per-message billing are acceptable.
-**In Progress:** SMS is only being evaluated. No provider account, env vars, database changes, or notification code have been added.
-**Needs User Action Next:** Decide whether SMS should be admin-only alerts, client booking/cancellation confirmations, appointment reminders, or no SMS for now.
-**Recommended Next Prompt:** Add SMS for [admin alerts/client confirmations/reminders] using the simplest reliable provider.
+**Last Updated:** 2026-07-16
+**Last Finished:** Switched client booking/cancellation notifications from Resend email to Twilio SMS, made client email optional, kept barber alerts on Resend, tested real delivery, configured Cloudflare secrets, and deployed Worker version `2356e900-d117-4638-a730-007eaa9abc77`.
+**In Progress:** The SMS switch is deployed. The final production check is one normal booking and cancellation from `https://smblends.ca` using the upgraded Twilio account.
+**Needs User Action Next:** Complete one production booking with a real phone number, confirm both booking texts arrive without the Trial prefix, then cancel from the private link and confirm the cancellation text arrives.
+**Recommended Next Prompt:** Verify the production SMS booking and cancellation flow.

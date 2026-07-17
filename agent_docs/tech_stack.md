@@ -11,7 +11,8 @@ This project is a **mobile-first web app** for Smblends. It is being built for a
 - **Backend/data/auth:** Supabase
 - **Database:** PostgreSQL via Supabase
 - **Validation:** Zod
-- **Email notifications:** Resend
+- **Client SMS notifications:** Twilio Programmable Messaging
+- **Barber email notifications:** Resend
 - **Deployment:** Cloudflare Workers with OpenNext
 - **Repository host:** GitHub
 - **Timezone:** `America/Vancouver`
@@ -120,6 +121,9 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 RESEND_API_KEY=
 BARBER_NOTIFICATION_EMAIL=
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=
 ```
 
 If Supabase shows the older key name instead, `NEXT_PUBLIC_SUPABASE_ANON_KEY` is also acceptable as a fallback.
@@ -127,6 +131,7 @@ If Supabase shows the older key name instead, `NEXT_PUBLIC_SUPABASE_ANON_KEY` is
 Known production values from `agent_docs/clientInformation.md`:
 - `BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com`
 - E-transfer display email: `sanchitmehta51@gmail.com`
+- `TWILIO_PHONE_NUMBER=+12362421617`
 
 ## Manual Setup Rule for This Project
 Whenever setup leaves the terminal and goes into a dashboard or website:
@@ -194,7 +199,8 @@ Current schema note: migration `20260430090000_real_smblends_booking_rules.sql` 
 - `lib/supabase/server.ts` — server-side client
 - `lib/validators/booking.ts` — booking schema
 - `lib/slots/get-available-slots.ts` — slot logic
-- `lib/notifications/send-booking-emails.ts` — Resend logic
+- `lib/notifications/send-booking-notifications.ts` — Twilio client texts and Resend barber emails
+- `lib/notifications/send-sms.ts` — server-only Twilio REST transport
 
 ## Example: Slot utility shape
 ```ts
@@ -262,6 +268,9 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 RESEND_API_KEY=
 BARBER_NOTIFICATION_EMAIL=sanchitmehta51@gmail.com
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=+12362421617
 ```
 
 Useful deployment commands:

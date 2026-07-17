@@ -127,8 +127,13 @@ export function CancelBookingPanel({
               {booking.clientName}
             </p>
             <p className="mt-2 break-all text-sm text-zinc-400">
-              {booking.clientEmail ?? booking.clientPhone}
+              {booking.clientPhone}
             </p>
+            {booking.clientEmail ? (
+              <p className="mt-1 break-all text-sm text-zinc-500">
+                {booking.clientEmail}
+              </p>
+            ) : null}
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
@@ -180,8 +185,8 @@ export function CancelBookingPanel({
               Your appointment has been cancelled.
             </p>
             <p className="mt-2 text-sm leading-6 text-emerald-100/80">
-              The time slot is now open again. A cancellation email has been
-              sent to you and Sanchit.
+              The time slot is now open again. A cancellation text was sent to
+              you, and Sanchit was emailed.
             </p>
           </div>
         ) : unavailableMessage ? (

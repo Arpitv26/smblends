@@ -177,7 +177,7 @@ Always enforce these rules:
 
 ## What NOT To Do
 - do not add Stripe in MVP
-- do not add SMS in MVP
+- do not add automated SMS reminders or marketing campaigns in MVP
 - do not add client accounts in MVP
 - do not build multi-staff scheduling
 - do not over-engineer service durations yet

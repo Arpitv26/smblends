@@ -55,8 +55,11 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   try {
     await sendCancellationNotifications(result.booking);
-  } catch (emailError: unknown) {
-    console.error("Booking cancelled, but cancellation email failed.", emailError);
+  } catch (notificationError: unknown) {
+    console.error(
+      "Booking cancelled, but cancellation notification failed.",
+      notificationError
+    );
   }
 
   return NextResponse.json({ booking: result.booking, ok: true });

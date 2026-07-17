@@ -150,6 +150,8 @@
 ## 8. Notifications & Admin
 
 - **Primary Notification Email:** sanchitmehta51@gmail.com
+- **Client Booking/Cancellation Notifications:** SMS through Twilio
+- **Barber Booking/Cancellation Notifications:** Email through Resend
 - **Backup Email:** None
 - **Admin Preferences:** None
 
@@ -173,12 +175,12 @@
 
 - Full Name
 - Phone Number
-- Email
 - Date
 - Time
 
 ### Additional Fields
 
+- Email (optional)
 - Notes (optional)
 
 ---
