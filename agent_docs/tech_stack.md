@@ -53,6 +53,7 @@ smblends/
 │   └── api/
 │       ├── bookings/route.ts
 │       ├── availability/route.ts
+│       ├── availability/week/route.ts
 │       └── blocked-dates/route.ts
 ├── components/
 │   ├── ui/
@@ -199,6 +200,7 @@ Current schema note: migration `20260430090000_real_smblends_booking_rules.sql` 
 - `lib/supabase/server.ts` — server-side client
 - `lib/validators/booking.ts` — booking schema
 - `lib/slots/get-available-slots.ts` — slot logic
+- `lib/slots/get-weekly-availability.ts` — consolidated Monday-Sunday slot-status calendar data
 - `lib/notifications/send-booking-notifications.ts` — Twilio client texts and Resend barber emails
 - `lib/notifications/send-sms.ts` — server-only Twilio REST transport
 

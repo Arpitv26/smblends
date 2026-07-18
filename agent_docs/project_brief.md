@@ -115,6 +115,12 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Replaced the public single-date picker with a responsive Monday-Sunday booking calendar.
+- Added a consolidated weekly availability service and `GET /api/availability/week?start=YYYY-MM-DD`; responses contain only slot statuses and never client details.
+- Added desktop/tablet seven-day status grids and a mobile seven-day strip with one selected day's vertical slot list.
+- Preserved blocked dates, special-date overrides, Vancouver time, same-day past-slot rules, booked states, Sunday hours, after-hours pricing, server-side revalidation, and duplicate-booking handling.
+- Verified current/next-week navigation, Sunday and after-hours slots, booked/unavailable states, desktop selection, mobile layout without horizontal overflow, form unlocking, lint, build, and live production responses.
+- Deployed the weekly calendar to Cloudflare Worker version `135a23e0-50a5-43b7-91ce-d2c9ae7034c0`.
 - Split the combined Beard Fade / Line-up add-on into independently selectable Beard Fade +$5 and Beard Line-up +$5 options.
 - Added and applied migration `20260717070000_split_beard_add_ons.sql`; the legacy combined value remains readable for historical bookings.
 - Verified lint/build, live UI labels/prices, new add-on API validation, and rejection of the old combined value for new bookings.
@@ -279,9 +285,12 @@ npm test
 - Supabase connection works from the app
 - `availability`, `blocked_dates`, and `bookings` tables exist
 - Real 60-minute weekly availability and 9 PM-midnight after-hours rows are applied in Supabase
-- `/api/availability` returns slots for valid dates from the real schedule
+- `/api/availability` remains compatible for valid single-date slot requests
+- `/api/availability/week` returns Monday-Sunday slot statuses from consolidated schedule queries without exposing client details
 - Invalid availability requests return a clear `400` response
-- `/book` loads the selected date and shows live slots from the API
+- `/book` shows a responsive weekly calendar with desktop/tablet status grid and mobile day strip
+- `/book` supports previous, next, and current-week navigation
+- `/book` distinguishes available, booked, and unavailable slots while preserving after-hours labels
 - `/book` now unlocks the booking-details form after slot selection
 - `/book` lets clients choose `Haircut` or `Haircut & Beard`
 - `/book` lets clients select optional add-ons
@@ -386,7 +395,7 @@ Update this file:
 
 ## Session Handoff Block
 **Last Updated:** 2026-07-17
-**Last Finished:** Split Beard Fade / Line-up into separate +$5 Beard Fade and +$5 Beard Line-up options, retained the legacy value for historical records, applied the database migration, verified production behavior, and deployed Worker version `4678f9f9-7800-4a6d-a712-c57550c04785`.
-**In Progress:** Nothing; the add-on split is live.
-**Needs User Action Next:** Visually confirm both +$5 add-ons on `https://smblends.ca/book`.
+**Last Finished:** Added and deployed the responsive weekly booking calendar with a status-only weekly API, desktop grid, mobile day strip, week navigation, and stale-slot refresh. Production Worker version: `135a23e0-50a5-43b7-91ce-d2c9ae7034c0`.
+**In Progress:** Nothing; the weekly calendar is live.
+**Needs User Action Next:** None.
 **Recommended Next Prompt:** Continue with the next requested SMBLENDS change.

@@ -178,13 +178,13 @@ Load only what is needed for the current task:
 
 ## Current State (Update This Every Session)
 **Last Updated:** 2026-07-17
-**Completed This Session:** Split Beard Fade / Line-up into separate Beard Fade +$5 and Beard Line-up +$5 options. Added/applied migration `20260717070000_split_beard_add_ons.sql`, retained the legacy combined value for historical bookings, verified lint/build and live validation, cancelled the temporary validation booking, and deployed Worker version `4678f9f9-7800-4a6d-a712-c57550c04785`.
-**Currently Working:** Phase 1 and Phase 2 remain complete. Production uses Twilio SMS for clients and Resend email for Sanchit. The booking form now exposes two independent beard add-ons at +$5 each; selecting both totals +$10.
-**Currently Working Well:** `npm run lint` and `npm run build` pass. Live `/book` returns `200` and shows Beard Fade and Beard Line-up separately at $5. The API rejects the old combined add-on for new bookings while historical records remain readable.
+**Completed This Session:** Replaced the single-date slot picker with a responsive Monday-Sunday booking calendar. Added a consolidated weekly availability service and `/api/availability/week`, desktop status grid, mobile day strip and slot list, week navigation, stale-slot refresh, and status-only public responses. Verified lint/build, local desktop/mobile behavior, production API/page behavior, and deployed Worker version `135a23e0-50a5-43b7-91ce-d2c9ae7034c0`.
+**Currently Working:** Phase 1 and Phase 2 remain complete. Production uses the weekly booking calendar, Twilio SMS for clients, Resend email for Sanchit, and separate Beard Fade and Beard Line-up add-ons at +$5 each.
+**Currently Working Well:** `npm run lint` and `npm run build` pass. Live `/book` returns `200` with the new calendar. The weekly API returns seven status-only days and preserves weekly hours, special-date overrides, blocked dates, booked slots, same-day past-slot rules, Sunday hours, and after-hours pricing.
 **Unfinished Work:** No automated test suite exists beyond lint/build/manual smoke checks.
 **Blockers Or Risks:** Twilio is prepaid and charges per SMS segment plus the monthly phone-number fee; auto-recharge is initially disabled, so texts stop when the balance runs out. Fake bookings can consume SMS credit and fill slots. No bot protection is installed; add Cloudflare Turnstile first if spam appears. Admin sessions still use the Supabase access token lifetime. `npm test` is not configured.
-**Manual Setup Still Needed:** None for the add-on split.
+**Manual Setup Still Needed:** None for the weekly calendar.
 **Next Recommended Task:** Continue with the next requested SMBLENDS change.
 
 ## Next session prompt
- Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. Twilio SMS is deployed and the beard add-ons are split into two +$5 options. Continue with the next requested change.
+ Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. The responsive weekly booking calendar, Twilio SMS, and split +$5 beard add-ons are deployed. Continue with the next requested change.

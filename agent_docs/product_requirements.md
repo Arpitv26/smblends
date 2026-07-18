@@ -28,16 +28,19 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Booking is stored successfully in the database
 
 ### 2. Availability and Slot Logic
-- The system reads weekly availability and blocked dates, then displays only valid time slots.
+- The system reads weekly availability, special dates, blocked dates, and confirmed bookings, then displays a Monday-Sunday calendar of slot statuses.
 - Success criteria:
+  - Desktop/tablet shows time rows across seven day columns
+  - Mobile shows a seven-day strip with one selected day's vertical slot list
+  - Clients can navigate previous/current/next weeks without navigating before the current week
   - Monday-Saturday standard hours are 9:00 AM-9:00 PM
   - Sunday standard hours are 3:00 PM-9:00 PM
   - After-hours slots are offered daily from 9:00 PM-12:00 AM
   - Appointment slots are 60 minutes
   - Same-day booking is allowed with no cutoff other than actual slot availability
-  - Only available slots are shown
-  - Blocked dates cannot be booked
-  - Already-booked slots are hidden or disabled
+  - Available slots are selectable
+  - Blocked and otherwise unavailable slots are visible but disabled
+  - Already-booked slots are labeled and disabled without exposing client details
 
 ### 3. Double-Booking Prevention
 - The backend prevents two bookings from being made for the same date and time.

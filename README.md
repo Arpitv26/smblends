@@ -11,8 +11,9 @@ Live site: [https://smblends.ca](https://smblends.ca)
 
 ## What It Does
 
-- Lets clients choose a date, service, add-ons, and available time slot.
-- Generates real availability from Supabase weekly schedule rows.
+- Lets clients choose an appointment from a responsive Monday-Sunday calendar, then select a service and add-ons.
+- Shows available, booked, and unavailable one-hour slots without exposing client details.
+- Generates real availability from Supabase weekly schedule rows, special dates, blocked dates, and confirmed bookings.
 - Supports standard and after-hours appointments.
 - Calculates prices on the server, including add-ons and after-hours surcharge.
 - Prevents double-booking with both server-side slot checks and a database unique index.
@@ -59,7 +60,7 @@ Live site: [https://smblends.ca](https://smblends.ca)
 ```text
 app/
   api/
-    availability/                 Public slot lookup
+    availability/                 Public single-day and weekly slot lookup
     bookings/                     Public booking creation
     bookings/cancel               Public private-link cancellation
     admin/                        Protected admin write routes
@@ -203,7 +204,7 @@ TWILIO_PHONE_NUMBER
 
 ## Current Status
 
-The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports booking creation, live availability, blocked dates, special-date availability, admin login, upcoming bookings, admin cancellations with client SMS notification, no-shows, weekly availability edits, policy display, a one-time public policy popup, client self-cancellation, barber notification emails, and client booking/cancellation texts. Client email is optional and phone is required.
+The Phase 1 public booking flow and Phase 2 admin MVP are functionally complete. The live app supports a responsive weekly booking calendar, booking creation, blocked dates, special-date availability, admin login, upcoming bookings, admin cancellations with client SMS notification, no-shows, weekly availability edits, policy display, a one-time public policy popup, client self-cancellation, barber notification emails, and client booking/cancellation texts. Client email is optional and phone is required.
 
 Remaining launch hardening:
 

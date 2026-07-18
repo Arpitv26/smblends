@@ -27,9 +27,15 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - shadcn/ui components render correctly
 
 ### 2. Booking page
-- user can select a date
-- valid slots appear
-- blocked dates show no slots
+- current and next Monday-Sunday weeks load and navigate correctly
+- desktop/tablet shows seven day columns with time rows
+- mobile shows a seven-day strip and one selected day's vertical slot list without horizontal overflow
+- available, booked, and unavailable states are visually distinct
+- selecting an available slot sets its date/time and unlocks the existing booking form
+- blocked dates show unavailable cells
+- special-date windows replace recurring weekly hours for that date
+- passed same-day slots are unavailable
+- Sunday morning is unavailable and Sunday appointments begin at 3:00 PM
 - after-hours slots from 9:00 PM-12:00 AM are labeled
 - same-day booking is available when slots remain
 - service selection shows Haircut and Haircut & Beard
@@ -41,9 +47,12 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - submit button behavior is clear
 
 ### 3. Booking API
+- weekly availability returns exactly seven days and never exposes client details
+- the existing single-day availability endpoint remains compatible
 - valid booking succeeds
 - invalid payload fails with friendly message
 - duplicate booking fails safely
+- a stale selected slot refreshes to booked/unavailable after a `409`
 - server calculates `price_charged`; it does not trust a client-submitted price
 - server marks 9:00 PM and later slots as after-hours
 - server returns useful JSON errors
