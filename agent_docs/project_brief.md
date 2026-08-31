@@ -41,7 +41,7 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Notification/payment email: sanchitmehta51@gmail.com
 - Phone: +1 778-681-7694
 - Appointment address: do not display publicly; clients should text Sanchit at 778-681-7694 for the address
-- Standard hours: Monday-Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM
+- Standard hours: Monday-Friday 4:00 PM-9:00 PM, Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM
 - Appointment slot length: 60 minutes
 - After-hours: every day from 9:00 PM-12:00 AM with a +$10 surcharge
 - Services: Haircut $20, Haircut & Beard $30
@@ -115,6 +115,11 @@ npm test
 - Professional GitHub README added with setup, architecture, deployment, status notes, author credit, and All Rights Reserved redistribution terms
 
 ### Completed this session
+- Added migration `20260831190000_school_year_weekly_availability.sql` for school-year hours: Monday-Friday 4:00 PM-9:00 PM from 2026-09-09, Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM, after-hours 9:00 PM-midnight unchanged.
+- Preserved summer weekday 9:00 AM-9:00 PM hours on 2026-08-31, 2026-09-01, 2026-09-02, 2026-09-03, 2026-09-04, 2026-09-07, and 2026-09-08 with special_availability so already-booked morning slots before Sep 9 stay offered.
+- Did not modify the `bookings` table, so existing appointments stay stored.
+- Updated `clientInformation.md`, README, product requirements, code patterns, tech stack, testing notes, and AGENTS.md.
+- The user applied the SQL in Supabase. Live weekdays from 2026-09-09 start at 4:00 PM. No Cloudflare deploy was required.
 - Replaced the public single-date picker with a responsive Monday-Sunday booking calendar.
 - Added a consolidated weekly availability service and `GET /api/availability/week?start=YYYY-MM-DD`; responses contain only slot statuses and never client details.
 - Added desktop/tablet seven-day status grids and a mobile seven-day strip with one selected day's vertical slot list.
@@ -285,6 +290,7 @@ npm test
 - Supabase connection works from the app
 - `availability`, `blocked_dates`, and `bookings` tables exist
 - Real 60-minute weekly availability and 9 PM-midnight after-hours rows are applied in Supabase
+- School-year weekday hours (Monday-Friday 4:00 PM-9:00 PM from 2026-09-09) are applied in live Supabase; weekdays before 2026-09-09 keep summer 9:00 AM hours
 - `/api/availability` remains compatible for valid single-date slot requests
 - `/api/availability/week` returns Monday-Sunday slot statuses from consolidated schedule queries without exposing client details
 - Invalid availability requests return a clear `400` response
@@ -366,7 +372,7 @@ npm test
 - Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
 
 ### Manual setup still needed
-- None for the SMS research step
+- None for the school-year hours change
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -394,8 +400,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-07-17
-**Last Finished:** Added and deployed the responsive weekly booking calendar with a status-only weekly API, desktop grid, mobile day strip, week navigation, and stale-slot refresh. Production Worker version: `135a23e0-50a5-43b7-91ce-d2c9ae7034c0`.
-**In Progress:** Nothing; the weekly calendar is live.
+**Last Updated:** 2026-08-31
+**Last Finished:** Applied school-year hours in live Supabase. Monday-Friday 4:00 PM-9:00 PM from 2026-09-09, Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM, after-hours unchanged.
+**In Progress:** Nothing; the school-year schedule is live.
 **Needs User Action Next:** None.
 **Recommended Next Prompt:** Continue with the next requested SMBLENDS change.

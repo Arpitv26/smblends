@@ -33,7 +33,8 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Desktop/tablet shows time rows across seven day columns
   - Mobile shows a seven-day strip with one selected day's vertical slot list
   - Clients can navigate previous/current/next weeks without navigating before the current week
-  - Monday-Saturday standard hours are 9:00 AM-9:00 PM
+  - Monday-Friday standard hours are 4:00 PM-9:00 PM
+  - Saturday standard hours are 9:00 AM-9:00 PM
   - Sunday standard hours are 3:00 PM-9:00 PM
   - After-hours slots are offered daily from 9:00 PM-12:00 AM
   - Appointment slots are 60 minutes

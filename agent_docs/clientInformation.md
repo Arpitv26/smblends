@@ -14,11 +14,18 @@
 
 ### Weekly Schedule
 
-- **Monday – Saturday:**
+School-year hours from Wednesday, September 9, 2026:
+
+- **Monday – Friday:**
+  - 4:00 PM – 9:00 PM
+
+- **Saturday:**
   - 9:00 AM – 9:00 PM
 
 - **Sunday:**
   - 3:00 PM – 9:00 PM
+
+Weekdays before September 9, 2026 keep the summer 9:00 AM – 9:00 PM window.
 
 ### Booking Rules
 

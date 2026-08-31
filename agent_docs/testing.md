@@ -35,7 +35,10 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - blocked dates show unavailable cells
 - special-date windows replace recurring weekly hours for that date
 - passed same-day slots are unavailable
+- Monday-Friday mornings are unavailable and weekday appointments begin at 4:00 PM
+- Saturday appointments begin at 9:00 AM
 - Sunday morning is unavailable and Sunday appointments begin at 3:00 PM
+- Weekdays before 2026-09-09 still offer summer 9:00 AM-9:00 PM hours plus after-hours
 - after-hours slots from 9:00 PM-12:00 AM are labeled
 - same-day booking is available when slots remain
 - service selection shows Haircut and Haircut & Beard

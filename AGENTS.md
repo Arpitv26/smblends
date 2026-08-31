@@ -177,14 +177,14 @@ Load only what is needed for the current task:
 - Do NOT require code edits for the barber to use admin features.
 
 ## Current State (Update This Every Session)
-**Last Updated:** 2026-07-17
-**Completed This Session:** Replaced the single-date slot picker with a responsive Monday-Sunday booking calendar. Added a consolidated weekly availability service and `/api/availability/week`, desktop status grid, mobile day strip and slot list, week navigation, stale-slot refresh, and status-only public responses. Verified lint/build, local desktop/mobile behavior, production API/page behavior, and deployed Worker version `135a23e0-50a5-43b7-91ce-d2c9ae7034c0`.
+**Last Updated:** 2026-08-31
+**Completed This Session:** Added and applied school-year weekly hours migration `20260831190000_school_year_weekly_availability.sql`. Monday-Friday standard hours are 4:00 PM-9:00 PM from 2026-09-09. Saturday is 9:00 AM-9:00 PM, Sunday is 3:00 PM-9:00 PM, and daily 9:00 PM-midnight after-hours stay unchanged. Weekdays before 2026-09-09 keep summer 9:00 AM hours via special_availability. Existing bookings were not modified. The user applied the SQL in Supabase and confirmed the live calendar.
 **Currently Working:** Phase 1 and Phase 2 remain complete. Production uses the weekly booking calendar, Twilio SMS for clients, Resend email for Sanchit, and separate Beard Fade and Beard Line-up add-ons at +$5 each.
-**Currently Working Well:** `npm run lint` and `npm run build` pass. Live `/book` returns `200` with the new calendar. The weekly API returns seven status-only days and preserves weekly hours, special-date overrides, blocked dates, booked slots, same-day past-slot rules, Sunday hours, and after-hours pricing.
+**Currently Working Well:** Live weekdays from 2026-09-09 start at 4:00 PM. Saturday starts at 9:00 AM after the admin Standard toggle was turned on. Sunday starts at 3:00 PM. After-hours +$10 is unchanged. No Cloudflare deploy was needed.
 **Unfinished Work:** No automated test suite exists beyond lint/build/manual smoke checks.
 **Blockers Or Risks:** Twilio is prepaid and charges per SMS segment plus the monthly phone-number fee; auto-recharge is initially disabled, so texts stop when the balance runs out. Fake bookings can consume SMS credit and fill slots. No bot protection is installed; add Cloudflare Turnstile first if spam appears. Admin sessions still use the Supabase access token lifetime. `npm test` is not configured.
-**Manual Setup Still Needed:** None for the weekly calendar.
+**Manual Setup Still Needed:** None for the school-year hours change.
 **Next Recommended Task:** Continue with the next requested SMBLENDS change.
 
 ## Next session prompt
- Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. The responsive weekly booking calendar, Twilio SMS, and split +$5 beard add-ons are deployed. Continue with the next requested change.
+ Read `AGENTS.md`, `agent_docs/project_brief.md`, and `agent_docs/clientInformation.md` first. School-year weekday hours are 4:00 PM-9:00 PM from 2026-09-09. Saturday is 9:00 AM-9:00 PM and Sunday is 3:00 PM-9:00 PM. Continue with the next requested change.

@@ -111,7 +111,8 @@ Always enforce these rules:
 
 ## Smblends Business Rules
 - Standard hours:
-  - Monday-Saturday: 9:00 AM-9:00 PM
+  - Monday-Friday: 4:00 PM-9:00 PM
+  - Saturday: 9:00 AM-9:00 PM
   - Sunday: 3:00 PM-9:00 PM
 - After-hours:
   - Every day: 9:00 PM-12:00 AM

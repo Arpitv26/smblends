@@ -29,7 +29,8 @@ Live site: [https://smblends.ca](https://smblends.ca)
 
 - Timezone: `America/Vancouver`
 - Slot length: 60 minutes
-- Monday-Saturday: 9:00 AM-9:00 PM
+- Monday-Friday: 4:00 PM-9:00 PM
+- Saturday: 9:00 AM-9:00 PM
 - Sunday: 3:00 PM-9:00 PM
 - After-hours: 9:00 PM-12:00 AM daily
 - After-hours surcharge: `$10`
@@ -144,12 +145,14 @@ Apply the SQL migrations in `supabase/migrations` in chronological order:
 20260519090000_booking_cancel_tokens.sql
 20260622090000_expand_weekly_availability.sql
 20260717070000_split_beard_add_ons.sql
+20260831190000_school_year_weekly_availability.sql
 ```
 
 The confirmed booking unique-slot migration creates a partial unique index for confirmed bookings only, so cancelled bookings do not keep slots blocked.
 The special availability migration adds one-off date-specific schedule windows. When a date has special availability rows, those rows override the normal weekly schedule for that date.
 The booking cancel token migration adds private per-booking cancellation tokens used by client cancellation links.
 The expanded weekly availability migration changes regular hours to 9:00 AM-9:00 PM Monday-Saturday while preserving Sunday at 3:00 PM-9:00 PM and leaving daily 9:00 PM-midnight after-hours rows unchanged.
+The school-year weekly availability migration changes Monday-Friday standard hours to 4:00 PM-9:00 PM from 2026-09-09, keeps Saturday at 9:00 AM-9:00 PM and Sunday at 3:00 PM-9:00 PM, leaves after-hours unchanged, and preserves summer weekday hours on weekdays before 2026-09-09.
 
 ### Run Locally
 
