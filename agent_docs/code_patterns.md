@@ -69,7 +69,7 @@ export const bookingSchema = z.object({
   clientPhone: z.string().min(7).max(30),
   clientEmail: z.string().email().optional(),
   serviceType: z.enum(["Haircut", "Haircut & Beard"]),
-  addOns: z.array(z.enum(["Beard Fade", "Beard Line-up"])).default([]),
+  addOns: z.array(z.enum(["Goatee", "Beard Line-up", "Beard Fade"])).default([]),
   notes: z.string().max(500).optional()
 });
 ```
@@ -123,8 +123,9 @@ Always enforce these rules:
   - Haircut: $20
   - Haircut & Beard: $30
 - Add-ons:
-  - Beard Fade: +$5
+  - Goatee: +$5
   - Beard Line-up: +$5
+  - Beard Fade: +$5
 - Disabled future add-on:
   - Design: +$5
 - Payment:

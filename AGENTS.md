@@ -177,13 +177,13 @@ Load only what is needed for the current task:
 - Do NOT require code edits for the barber to use admin features.
 
 ## Current State (Update This Every Session)
-**Last Updated:** 2026-08-31
-**Completed This Session:** Added and applied school-year weekly hours migration `20260831190000_school_year_weekly_availability.sql`. Monday-Friday standard hours are 4:00 PM-9:00 PM from 2026-09-09. Saturday is 9:00 AM-9:00 PM, Sunday is 3:00 PM-9:00 PM, and daily 9:00 PM-midnight after-hours stay unchanged. Weekdays before 2026-09-09 keep summer 9:00 AM hours via special_availability. Existing bookings were not modified. The user applied the SQL in Supabase and confirmed the live calendar.
-**Currently Working:** Phase 1 and Phase 2 remain complete. Production uses the weekly booking calendar, Twilio SMS for clients, Resend email for Sanchit, and separate Beard Fade and Beard Line-up add-ons at +$5 each.
-**Currently Working Well:** Live weekdays from 2026-09-09 start at 4:00 PM. Saturday starts at 9:00 AM after the admin Standard toggle was turned on. Sunday starts at 3:00 PM. After-hours +$10 is unchanged. No Cloudflare deploy was needed.
+**Last Updated:** 2026-10-05
+**Completed This Session:** Added Goatee +$5 as a separate add-on beside Beard Line-up +$5 and Beard Fade +$5. Taken calendar slots now show a dash, the same as other closed times. Deployed the booking page to Cloudflare Worker version `858c5655-4d25-44b6-8d22-e25b008e8921`. The user applied `20261004160000_add_goatee_add_on.sql` in Supabase. A temporary cancelled Goatee booking saved and was deleted immediately.
+**Currently Working:** Phase 1 and Phase 2 remain complete. Production uses the weekly booking calendar, Twilio SMS for clients, Resend email for Sanchit, and separate Goatee, Beard Line-up, and Beard Fade add-ons at +$5 each.
+**Currently Working Well:** Live `https://smblends.ca/book` shows the new add-ons and dash-style closed slots. Goatee can be stored on a booking. School-year hours are unchanged.
 **Unfinished Work:** No automated test suite exists beyond lint/build/manual smoke checks.
 **Blockers Or Risks:** Twilio is prepaid and charges per SMS segment plus the monthly phone-number fee; auto-recharge is initially disabled, so texts stop when the balance runs out. Fake bookings can consume SMS credit and fill slots. No bot protection is installed; add Cloudflare Turnstile first if spam appears. Admin sessions still use the Supabase access token lifetime. `npm test` is not configured.
-**Manual Setup Still Needed:** None for the school-year hours change.
+**Manual Setup Still Needed:** None for the Goatee add-on.
 **Next Recommended Task:** Continue with the next requested SMBLENDS change.
 
 ## Next session prompt

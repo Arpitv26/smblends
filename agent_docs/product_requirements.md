@@ -41,7 +41,7 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Same-day booking is allowed with no cutoff other than actual slot availability
   - Available slots are selectable
   - Blocked and otherwise unavailable slots are visible but disabled
-  - Already-booked slots are labeled and disabled without exposing client details
+  - Already-booked slots use the same dash as unavailable slots and stay disabled without exposing client details
 
 ### 3. Double-Booking Prevention
 - The backend prevents two bookings from being made for the same date and time.
@@ -85,8 +85,9 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Haircut: $20
   - Haircut & Beard: $30
 - Add-ons:
-  - Beard Fade: +$5
+  - Goatee: +$5
   - Beard Line-up: +$5
+  - Beard Fade: +$5
 - Disabled for launch:
   - Design: +$5, re-enable later when Sanchit offers it
 - Pricing rules:

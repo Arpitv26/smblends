@@ -45,7 +45,7 @@ Smblends Booking Website is a mobile-first booking web app that replaces Instagr
 - Appointment slot length: 60 minutes
 - After-hours: every day from 9:00 PM-12:00 AM with a +$10 surcharge
 - Services: Haircut $20, Haircut & Beard $30
-- Active add-ons: Beard Fade +$5 and Beard Line-up +$5
+- Active add-ons: Goatee +$5, Beard Line-up +$5, and Beard Fade +$5
 - Disabled future add-on: Design +$5
 - Same-day booking is enabled with no cutoff except real slot availability
 - Required booking fields: full name, phone number, date, time, service
@@ -296,11 +296,11 @@ npm test
 - Invalid availability requests return a clear `400` response
 - `/book` shows a responsive weekly calendar with desktop/tablet status grid and mobile day strip
 - `/book` supports previous, next, and current-week navigation
-- `/book` distinguishes available, booked, and unavailable slots while preserving after-hours labels
+- `/book` shows open slots as selectable and shows both booked and unavailable slots as a dash, without exposing client details, while preserving after-hours labels
 - `/book` now unlocks the booking-details form after slot selection
 - `/book` lets clients choose `Haircut` or `Haircut & Beard`
 - `/book` lets clients select optional add-ons
-- `/book` shows Beard Fade and Beard Line-up as separate +$5 add-ons; Design remains disabled until Sanchit offers it
+- `/book` shows Goatee, Beard Line-up, and Beard Fade as separate +$5 add-ons; Design remains disabled until Sanchit offers it
 - `/api/bookings` rejects Design add-on submissions while Design is disabled
 - `/book` previews the estimated total from local shared pricing config
 - `/book` saves valid bookings to Supabase
@@ -372,7 +372,7 @@ npm test
 - Browsers may still show saved login suggestions despite app-level autocomplete settings, but the app no longer injects the admin email value
 
 ### Manual setup still needed
-- None for the school-year hours change
+- None for the Goatee add-on change
 
 ## Likely First Build Order
 1. Bootstrap Next.js app
@@ -400,8 +400,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-08-31
-**Last Finished:** Applied school-year hours in live Supabase. Monday-Friday 4:00 PM-9:00 PM from 2026-09-09, Saturday 9:00 AM-9:00 PM, Sunday 3:00 PM-9:00 PM, after-hours unchanged.
-**In Progress:** Nothing; the school-year schedule is live.
+**Last Updated:** 2026-10-05
+**Last Finished:** Deployed Goatee +$5 and dash-style closed slots to Cloudflare Worker version `858c5655-4d25-44b6-8d22-e25b008e8921`. The user applied the Goatee SQL, and a temporary cancelled Goatee booking saved and was deleted.
+**In Progress:** Nothing.
 **Needs User Action Next:** None.
 **Recommended Next Prompt:** Continue with the next requested SMBLENDS change.

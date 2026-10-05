@@ -1,6 +1,6 @@
 export const SERVICE_TYPES = ["Haircut", "Haircut & Beard"] as const;
 
-export const ADD_ON_TYPES = ["Beard Fade", "Beard Line-up"] as const;
+export const ADD_ON_TYPES = ["Goatee", "Beard Line-up", "Beard Fade"] as const;
 
 export const STORED_ADD_ON_TYPES = [
   ...ADD_ON_TYPES,
@@ -25,8 +25,9 @@ export const SERVICE_PRICES: Record<ServiceType, number> = {
 };
 
 export const ADD_ON_PRICES: Record<AddOnType, number> = {
-  "Beard Fade": 5,
+  "Goatee": 5,
   "Beard Line-up": 5,
+  "Beard Fade": 5,
   "Beard Fade / Line-up": 10
 };
 

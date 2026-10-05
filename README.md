@@ -12,7 +12,7 @@ Live site: [https://smblends.ca](https://smblends.ca)
 ## What It Does
 
 - Lets clients choose an appointment from a responsive Monday-Sunday calendar, then select a service and add-ons.
-- Shows available, booked, and unavailable one-hour slots without exposing client details.
+- Shows open one-hour slots, and marks taken or closed times with a dash, without exposing client details.
 - Generates real availability from Supabase weekly schedule rows, special dates, blocked dates, and confirmed bookings.
 - Supports standard and after-hours appointments.
 - Calculates prices on the server, including add-ons and after-hours surcharge.
@@ -38,8 +38,9 @@ Live site: [https://smblends.ca](https://smblends.ca)
   - Haircut: `$20`
   - Haircut & Beard: `$30`
 - Active add-ons:
-  - Beard Fade: `$5`
+  - Goatee: `$5`
   - Beard Line-up: `$5`
+  - Beard Fade: `$5`
 - Disabled launch add-on:
   - Design: hidden in the UI and rejected by the API until the barber offers it
 - Payment: in person by cash or e-transfer
@@ -146,6 +147,7 @@ Apply the SQL migrations in `supabase/migrations` in chronological order:
 20260622090000_expand_weekly_availability.sql
 20260717070000_split_beard_add_ons.sql
 20260831190000_school_year_weekly_availability.sql
+20261004160000_add_goatee_add_on.sql
 ```
 
 The confirmed booking unique-slot migration creates a partial unique index for confirmed bookings only, so cancelled bookings do not keep slots blocked.
@@ -153,6 +155,7 @@ The special availability migration adds one-off date-specific schedule windows. 
 The booking cancel token migration adds private per-booking cancellation tokens used by client cancellation links.
 The expanded weekly availability migration changes regular hours to 9:00 AM-9:00 PM Monday-Saturday while preserving Sunday at 3:00 PM-9:00 PM and leaving daily 9:00 PM-midnight after-hours rows unchanged.
 The school-year weekly availability migration changes Monday-Friday standard hours to 4:00 PM-9:00 PM from 2026-09-09, keeps Saturday at 9:00 AM-9:00 PM and Sunday at 3:00 PM-9:00 PM, leaves after-hours unchanged, and preserves summer weekday hours on weekdays before 2026-09-09.
+The Goatee add-on migration allows new bookings to store `Goatee` while keeping Beard Fade, Beard Line-up, the old combined beard label, and Design valid for existing rows.
 
 ### Run Locally
 

@@ -30,7 +30,7 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - current and next Monday-Sunday weeks load and navigate correctly
 - desktop/tablet shows seven day columns with time rows
 - mobile shows a seven-day strip and one selected day's vertical slot list without horizontal overflow
-- available, booked, and unavailable states are visually distinct
+- available slots stay selectable; booked and unavailable slots both show a dash and stay disabled
 - selecting an available slot sets its date/time and unlocks the existing booking form
 - blocked dates show unavailable cells
 - special-date windows replace recurring weekly hours for that date
@@ -42,8 +42,8 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - after-hours slots from 9:00 PM-12:00 AM are labeled
 - same-day booking is available when slots remain
 - service selection shows Haircut and Haircut & Beard
-- add-ons show Beard Fade and Beard Line-up separately at +$5 each
-- selecting both beard add-ons adds $10 total
+- add-ons show Goatee, Beard Line-up, and Beard Fade separately at +$5 each
+- selecting all three add-ons adds $15 total
 - Design add-on is not visible and is rejected by the booking API while Sanchit does not offer it
 - price preview matches service + add-ons + after-hours surcharge
 - form validation works

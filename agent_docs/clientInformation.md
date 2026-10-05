@@ -60,8 +60,9 @@ Weekdays before September 9, 2026 keep the summer 9:00 AM – 9:00 PM window.
 
 ### Add-ons
 
-- **Beard Fade:** +$5
+- **Goatee:** +$5
 - **Beard Line-up:** +$5
+- **Beard Fade:** +$5
 - **Design:** Not currently offered. Keep disabled until Sanchit is ready to offer it.
 
 ### After-Hours Pricing (Auto Calculated)
