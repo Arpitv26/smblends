@@ -308,18 +308,26 @@ export async function getWeeklyAvailability(
     );
     const isBlocked = blockedDateSet.has(date);
     const labels = getDateLabels(date);
-    const slots: WeeklySlot[] = timeSlots.map((slot) => ({
-      ...slot,
-      status: getSlotStatus({
-        bookedTimes,
-        currentMinutes,
-        date,
-        isBlocked,
-        offeredTimes,
-        timeSlot: slot.value,
-        today
-      })
-    }));
+    const slots: WeeklySlot[] = timeSlots.flatMap((slot) => {
+      if (!offeredTimes.has(slot.value) && !bookedTimes.has(slot.value)) {
+        return [];
+      }
+
+      return [
+        {
+          ...slot,
+          status: getSlotStatus({
+            bookedTimes,
+            currentMinutes,
+            date,
+            isBlocked,
+            offeredTimes,
+            timeSlot: slot.value,
+            today
+          })
+        }
+      ];
+    });
 
     return {
       date,

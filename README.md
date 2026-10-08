@@ -12,7 +12,7 @@ Live site: [https://smblends.ca](https://smblends.ca)
 ## What It Does
 
 - Lets clients choose an appointment from a responsive Monday-Sunday calendar, then select a service and add-ons.
-- Shows open one-hour slots, and marks taken or closed times with a dash, without exposing client details.
+- Shows open one-hour slots, labels taken times as Booked, and leaves hours outside that day's schedule off the calendar.
 - Generates real availability from Supabase weekly schedule rows, special dates, blocked dates, and confirmed bookings.
 - Supports standard and after-hours appointments.
 - Calculates prices on the server, including add-ons and after-hours surcharge.

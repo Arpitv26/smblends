@@ -296,7 +296,7 @@ npm test
 - Invalid availability requests return a clear `400` response
 - `/book` shows a responsive weekly calendar with desktop/tablet status grid and mobile day strip
 - `/book` supports previous, next, and current-week navigation
-- `/book` shows open slots as selectable and shows both booked and unavailable slots as a dash, without exposing client details, while preserving after-hours labels
+- `/book` shows open slots as selectable, labels booked slots as Booked, and omits hours outside that day's schedule without exposing client details
 - `/book` now unlocks the booking-details form after slot selection
 - `/book` lets clients choose `Haircut` or `Haircut & Beard`
 - `/book` lets clients select optional add-ons
@@ -400,8 +400,8 @@ Update this file:
 - before handing work to a new Codex session
 
 ## Session Handoff Block
-**Last Updated:** 2026-10-05
-**Last Finished:** Deployed Goatee +$5 and dash-style closed slots to Cloudflare Worker version `858c5655-4d25-44b6-8d22-e25b008e8921`. The user applied the Goatee SQL, and a temporary cancelled Goatee booking saved and was deleted.
+**Last Updated:** 2026-10-07
+**Last Finished:** Deployed the calendar cleanup to Cloudflare Worker version `7d9433c2-8216-48e8-9a42-b2e9021ee4ea`. Weekdays begin at 4:00 PM, Sunday at 3:00 PM, Saturday at 9:00 AM, and taken slots say Booked.
 **In Progress:** Nothing.
 **Needs User Action Next:** None.
 **Recommended Next Prompt:** Continue with the next requested SMBLENDS change.

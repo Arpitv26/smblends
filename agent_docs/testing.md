@@ -30,14 +30,14 @@ If `npm test` is not set up yet, say so clearly and propose the smallest useful 
 - current and next Monday-Sunday weeks load and navigate correctly
 - desktop/tablet shows seven day columns with time rows
 - mobile shows a seven-day strip and one selected day's vertical slot list without horizontal overflow
-- available slots stay selectable; booked and unavailable slots both show a dash and stay disabled
+- available slots stay selectable; booked slots say Booked and stay disabled; other closed times stay disabled
 - selecting an available slot sets its date/time and unlocks the existing booking form
-- blocked dates show unavailable cells
+- blocked dates show unavailable cells for that day's real hours
 - special-date windows replace recurring weekly hours for that date
 - passed same-day slots are unavailable
-- Monday-Friday mornings are unavailable and weekday appointments begin at 4:00 PM
+- Monday-Friday hours before 4:00 PM are omitted, so weekday lists start at 4:00 PM
 - Saturday appointments begin at 9:00 AM
-- Sunday morning is unavailable and Sunday appointments begin at 3:00 PM
+- Sunday hours before 3:00 PM are omitted, so Sunday lists start at 3:00 PM
 - Weekdays before 2026-09-09 still offer summer 9:00 AM-9:00 PM hours plus after-hours
 - after-hours slots from 9:00 PM-12:00 AM are labeled
 - same-day booking is available when slots remain

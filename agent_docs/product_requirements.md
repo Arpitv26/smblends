@@ -41,7 +41,8 @@ A reliable, mobile-first self-serve booking website for Smblends that reduces In
   - Same-day booking is allowed with no cutoff other than actual slot availability
   - Available slots are selectable
   - Blocked and otherwise unavailable slots are visible but disabled
-  - Already-booked slots use the same dash as unavailable slots and stay disabled without exposing client details
+  - Already-booked slots say Booked and stay disabled without exposing client details
+  - Hours outside that day's schedule are omitted, so weekdays begin at 4:00 PM and Sunday begins at 3:00 PM
 
 ### 3. Double-Booking Prevention
 - The backend prevents two bookings from being made for the same date and time.

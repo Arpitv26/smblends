@@ -177,13 +177,13 @@ Load only what is needed for the current task:
 - Do NOT require code edits for the barber to use admin features.
 
 ## Current State (Update This Every Session)
-**Last Updated:** 2026-10-05
-**Completed This Session:** Added Goatee +$5 as a separate add-on beside Beard Line-up +$5 and Beard Fade +$5. Taken calendar slots now show a dash, the same as other closed times. Deployed the booking page to Cloudflare Worker version `858c5655-4d25-44b6-8d22-e25b008e8921`. The user applied `20261004160000_add_goatee_add_on.sql` in Supabase. A temporary cancelled Goatee booking saved and was deleted immediately.
+**Last Updated:** 2026-10-07
+**Completed This Session:** Weekday and Sunday calendars no longer list hours before the school-day start. Monday-Friday lists begin at 4:00 PM and Sunday begins at 3:00 PM. Saturday still begins at 9:00 AM. Taken slots say Booked. Deployed to Cloudflare Worker version `7d9433c2-8216-48e8-9a42-b2e9021ee4ea`.
 **Currently Working:** Phase 1 and Phase 2 remain complete. Production uses the weekly booking calendar, Twilio SMS for clients, Resend email for Sanchit, and separate Goatee, Beard Line-up, and Beard Fade add-ons at +$5 each.
-**Currently Working Well:** Live `https://smblends.ca/book` shows the new add-ons and dash-style closed slots. Goatee can be stored on a booking. School-year hours are unchanged.
+**Currently Working Well:** Live `https://smblends.ca/book` starts weekdays at 4:00 PM, Sunday at 3:00 PM, and Saturday at 9:00 AM. Taken slots say Booked. Goatee can be stored on a booking.
 **Unfinished Work:** No automated test suite exists beyond lint/build/manual smoke checks.
 **Blockers Or Risks:** Twilio is prepaid and charges per SMS segment plus the monthly phone-number fee; auto-recharge is initially disabled, so texts stop when the balance runs out. Fake bookings can consume SMS credit and fill slots. No bot protection is installed; add Cloudflare Turnstile first if spam appears. Admin sessions still use the Supabase access token lifetime. `npm test` is not configured.
-**Manual Setup Still Needed:** None for the Goatee add-on.
+**Manual Setup Still Needed:** None for this calendar display change.
 **Next Recommended Task:** Continue with the next requested SMBLENDS change.
 
 ## Next session prompt

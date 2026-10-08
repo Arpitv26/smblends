@@ -650,6 +650,10 @@ export function BookingAvailability({
                 Available
               </span>
               <span className="inline-flex items-center gap-2">
+                <span className="size-3 rounded-sm bg-zinc-600" />
+                Booked
+              </span>
+              <span className="inline-flex items-center gap-2">
                 <span className="size-3 rounded-sm border border-white/10 bg-white/[0.03]" />
                 Unavailable
               </span>
@@ -736,32 +740,36 @@ export function BookingAvailability({
                             day.date === selectedDate &&
                             slot?.value === selectedSlotValue;
 
+                          if (!slot) {
+                            return <div className="m-1 min-h-14" key={day.date} />;
+                          }
+
                           return (
                             <button
-                              aria-label={`${day.dayLabel} ${day.dateLabel} at ${timeSlot.label}: ${slot?.status ?? "unavailable"}`}
+                              aria-label={`${day.dayLabel} ${day.dateLabel} at ${timeSlot.label}: ${slot.status}`}
                               aria-pressed={isSelected}
                               className={`m-1 min-h-14 rounded-xl border px-1 py-2 text-xs font-medium transition ${
-                                slot?.status === "available"
+                                slot.status === "available"
                                   ? isSelected
                                     ? "border-white bg-white text-black ring-2 ring-white/40 ring-offset-2 ring-offset-zinc-950"
                                     : "border-white/80 bg-white text-black hover:bg-zinc-200"
-                                  : "cursor-not-allowed border-white/5 bg-white/[0.025] text-zinc-600"
+                                  : slot.status === "booked"
+                                    ? "cursor-not-allowed border-zinc-600 bg-zinc-700 text-zinc-200"
+                                    : "cursor-not-allowed border-white/5 bg-white/[0.025] text-zinc-600"
                               }`}
-                              disabled={slot?.status !== "available"}
+                              disabled={slot.status !== "available"}
                               key={day.date}
                               onBlur={() => markFieldTouched("timeSlot")}
-                              onClick={() => {
-                                if (slot) {
-                                  selectSlot(day.date, slot);
-                                }
-                              }}
+                              onClick={() => selectSlot(day.date, slot)}
                               type="button"
                             >
-                              {slot?.status === "available"
+                              {slot.status === "available"
                                 ? isSelected
                                   ? "Selected"
                                   : "Open"
-                                : "—"}
+                                : slot.status === "booked"
+                                  ? "Booked"
+                                  : "—"}
                             </button>
                           );
                         })}
@@ -840,7 +848,9 @@ export function BookingAvailability({
                                     ? isSelected
                                       ? "border-white bg-white text-black"
                                       : "border-white/20 bg-white/[0.06] text-white hover:bg-white/10"
-                                    : "cursor-not-allowed border-white/5 bg-white/[0.02] text-zinc-600"
+                                    : slot.status === "booked"
+                                      ? "cursor-not-allowed border-zinc-600 bg-zinc-700/80 text-zinc-200"
+                                      : "cursor-not-allowed border-white/5 bg-white/[0.02] text-zinc-600"
                                 }`}
                                 disabled={slot.status !== "available"}
                                 onBlur={() => markFieldTouched("timeSlot")}
@@ -864,7 +874,9 @@ export function BookingAvailability({
                                     ? isSelected
                                       ? "Selected"
                                       : "Available"
-                                    : "Unavailable"}
+                                    : slot.status === "booked"
+                                      ? "Booked"
+                                      : "Unavailable"}
                                 </span>
                               </button>
                             </li>
